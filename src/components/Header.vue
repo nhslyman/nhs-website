@@ -1,27 +1,33 @@
 <template>
   <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <img alt="Vue logo" src="../assets/logo.png" />
+    <div class="spacer"></div>
+    <router-link to="/">Lyman NHS</router-link>
   </div>
 </template>
 
-<script>
-export default {
+<style scoped lang="scss">
+@import "@/shared-style/variables.scss";
 
-}
-</script>
-
-<style lang="scss">
 #nav {
   padding: 30px;
+  display: flex;
+  align-items: center;
+  background-color: lightgray;
 
   a {
+    font-size: 30px;
     font-weight: bold;
-    color: #2c3e50;
+    color: $headingColor;
+    text-decoration: none;
+  }
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+  img {
+    max-height: 30px;
+  }
+
+  .spacer {
+    width: 10px;
   }
 }
 </style>
