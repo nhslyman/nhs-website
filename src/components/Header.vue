@@ -18,12 +18,12 @@
   a {
     font-size: 30px;
     font-weight: bold;
-    color: $headingColor;
+    color: $titleBlue;
     text-decoration: none;
   }
 
   img {
-    max-height: 30px;
+    max-height: 50px;
   }
 
   .spacer {

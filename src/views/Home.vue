@@ -31,7 +31,7 @@ export default class Home extends Vue {
   h1 {
     font-size: 30px;
     line-height: 150%;
-    color: darkblue;
+    color: $titleBlue;
   }
 
   h2 {
@@ -51,11 +51,11 @@ export default class Home extends Vue {
   }
 
   a {
-    color: $accentColor;
+    color: $linkColor;
   }
 
   a:hover {
-    color: green;
+    color: $hoverLinkColor;
   }
 }
 </style>
