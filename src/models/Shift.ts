@@ -1,14 +1,23 @@
 import UID from "@/util/UID";
 
-class DateTimeRange {
+class Shift {
   constructor(
-    private day: Date,
-    private startTime: Date,
-    private endTime: Date,
+    public time: ShiftTime,
+    public signedUp: String[],
+    public target: number,
+    public max: number,
     private _id: String = UID()
   ) {}
 
-  humanReadableTime(time: Date) {
+  get id() {
+    return this._id;
+  }
+}
+
+class ShiftTime {
+  constructor(public day: Date, public startTime: Date, public endTime: Date) {}
+
+  private humanReadableTime(time: Date) {
     let options = {
       hour: "numeric",
       minute: "numeric",
@@ -17,7 +26,7 @@ class DateTimeRange {
     return time.toLocaleString("en-US", options);
   }
 
-  get humanReadableDay() {
+  private get humanReadableDay() {
     let day = this.day.getDay();
     let mon = this.day.getMonth() + 1;
     let year = this.day.getFullYear();
@@ -38,10 +47,6 @@ class DateTimeRange {
       this.humanReadableTime(this.endTime)
     );
   }
-
-  get id() {
-    return this._id;
-  }
 }
 
-export default DateTimeRange;
+export { Shift, ShiftTime };

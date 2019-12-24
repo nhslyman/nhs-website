@@ -14,14 +14,16 @@
         </div>
 
         <div class="right">
-          <div class="attendance">
-            <p>Signed Up: {{ event.signedUp.length }}</p>
-            <p>Target: {{ event.target }}</p>
-            <p>Maximum: {{ event.max }}</p>
-          </div>
-          <div class="times">
-            <div v-for="time in event.times" :key="time.id">
-              <p>{{ time.humanReadable }}</p>
+          <div class="shifts">
+            <div v-for="shift in event.shifts" :key="shift.id">
+              <div class="shift">
+                <strong>{{ shift.time.humanReadable }}</strong>
+                <div class="attendance">
+                  <p>Signed Up: {{ shift.signedUp.length }}</p>
+                  <p>Target: {{ shift.target }}</p>
+                  <p>Maximum: {{ shift.max }}</p>
+                </div>
+              </div>
             </div>
             <div v-if="event.wholeShift">
               <em>Note: Whole Shift Required</em>
@@ -48,11 +50,9 @@ export default class EventPreview extends Vue {
 @import "@/shared-style/mixins.scss";
 
 .box {
-  @include rounded;
+  @include event-box;
   width: 100%;
-  background-color: #fefefe;
   margin-bottom: 3em;
-  filter: drop-shadow(0.5em 0.5em 1em #bbbbbb);
 
   .inside {
     padding: 1em 1em 2.5em 1em;
@@ -97,16 +97,28 @@ export default class EventPreview extends Vue {
       margin-top: 2em;
     }
 
-    .times {
-      margin-top: 1em;
+    .shift {
+      margin-bottom: 0.75em;
+    }
+
+    .attendance {
+      font-size: 14px;
     }
 
     .button {
       @include rounded;
       background-color: $linkColor;
-      color: white;
       text-align: center;
       width: 50%;
+
+      strong {
+        color: white;
+        text-decoration: none;
+      }
+
+      &:hover {
+        background-color: $hoverLinkColor;
+      }
     }
   }
 }
