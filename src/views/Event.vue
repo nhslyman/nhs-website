@@ -7,6 +7,8 @@
         <div class="text">
           <div class="blurb">
             <p>{{ event.blurb }}</p>
+            <br />
+            <p>{{ event.details }}</p>
           </div>
           <div v-if="event.wholeShift">
             <em>Note: Whole Shift Required</em>
@@ -14,8 +16,14 @@
         </div>
 
         <div class="shifts">
+          <h4>Select Shift(s)</h4>
           <div v-for="shift in event.shifts" :key="shift.id">
             <div class="shift">
+              <input
+                type="checkbox"
+                :value="shift.id"
+                v-model="selectedShifts"
+              />
               <strong>{{ shift.time.humanReadable }}</strong>
               <div class="attendance">
                 <p>Signed Up: {{ shift.signedUp.length }}</p>
@@ -28,9 +36,7 @@
       </div>
 
       <div class="more">
-        <router-link :to="eventPageLink">
-          <p>more</p>
-        </router-link>
+        <p>Sign Up</p>
       </div>
     </div>
   </div>
@@ -38,14 +44,23 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import EventPreview from "@/components/EventPreview.vue";
 import EventInfo from "@/models/EventInfo";
+import { Shift } from "@/models/Shift";
+import EventStore from "@/mock/events";
 
-@Component
-export default class EventPreview extends Vue {
-  @Prop() private event!: EventInfo;
+@Component({
+  components: { EventPreview }
+})
+export default class Event extends Vue {
+  selectedShifts: Shift[] = [];
 
-  get eventPageLink() {
-    return "/volunteer/event/" + this.event.id;
+  get event() {
+    EventStore.import();
+    let event = EventStore.events.find(
+      event => event.id === this.$route.params["id"]
+    );
+    return event;
   }
 }
 </script>
@@ -57,7 +72,16 @@ export default class EventPreview extends Vue {
 .box {
   @include shadow-box;
   @include event-format;
-  width: 100%;
-  margin-bottom: 3em;
+  width: 80%;
+  margin: 1.75em auto 3em auto;
+
+  h4 {
+    width: 100%;
+    margin-bottom: 0.5em;
+  }
+
+  strong {
+    padding-left: 0.25em;
+  }
 }
 </style>
