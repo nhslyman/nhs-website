@@ -4,32 +4,31 @@
       <h3>{{ event.name }}</h3>
 
       <div class="insideContent">
-        <div class="left">
+        <div class="text">
           <div class="blurb">
             <p>{{ event.blurb }}</p>
           </div>
-          <div class="more button">
-            <strong>more</strong>
+          <div v-if="event.wholeShift">
+            <em>Note: Whole Shift Required</em>
           </div>
         </div>
 
-        <div class="right">
-          <div class="shifts">
-            <div v-for="shift in event.shifts" :key="shift.id">
-              <div class="shift">
-                <strong>{{ shift.time.humanReadable }}</strong>
-                <div class="attendance">
-                  <p>Signed Up: {{ shift.signedUp.length }}</p>
-                  <p>Target: {{ shift.target }}</p>
-                  <p>Maximum: {{ shift.max }}</p>
-                </div>
+        <div class="shifts">
+          <div v-for="shift in event.shifts" :key="shift.id">
+            <div class="shift">
+              <strong>{{ shift.time.humanReadable }}</strong>
+              <div class="attendance">
+                <p>Signed Up: {{ shift.signedUp.length }}</p>
+                <p>Target: {{ shift.target }}</p>
+                <p>Maximum: {{ shift.max }}</p>
               </div>
-            </div>
-            <div v-if="event.wholeShift">
-              <em>Note: Whole Shift Required</em>
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="more button">
+        <strong>more</strong>
       </div>
     </div>
   </div>
@@ -49,13 +48,15 @@ export default class EventPreview extends Vue {
 @import "@/shared-style/variables.scss";
 @import "@/shared-style/mixins.scss";
 
+$maxMobileSize: 800px;
+
 .box {
   @include event-box;
   width: 100%;
   margin-bottom: 3em;
 
   .inside {
-    padding: 1em 1em 2.5em 1em;
+    padding: 1em 1em 1.5em 1em;
   }
 
   h3 {
@@ -71,54 +72,74 @@ export default class EventPreview extends Vue {
 
   .insideContent {
     display: flex;
-    flex-wrap: row;
-    flex-direction: row;
+    flex-wrap: nowrap;
+    flex-direction: column;
 
-    div {
+    @media (min-width: $maxMobileSize) {
+      flex-direction: row;
+    }
+
+    .shifts {
       display: flex;
-      flex-wrap: row;
-      flex-direction: column;
-      flex-basis: calc(50% - 1em);
+      flex-wrap: wrap;
+      flex-direction: row;
+      margin-top: 1em;
+
+      @media (min-width: $maxMobileSize) {
+        margin-top: 0;
+        margin-left: 1em;
+      }
+
+      @media (min-width: $maxMobileSize) {
+        flex-direction: column;
+      }
 
       div {
         flex-basis: auto;
       }
     }
 
-    .left {
-      margin-right: 1em;
-    }
-
-    .right {
-      margin-left: 1em;
-    }
-
-    .more {
-      margin-top: 2em;
+    .text {
+      width: 100%;
+      @media (min-width: $maxMobileSize) {
+        margin-right: 1em;
+        width: calc(50% - 1em);
+      }
     }
 
     .shift {
       margin-bottom: 0.75em;
+      width: 75%;
+      padding-left: 10%;
+      padding-right: 10%;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .attendance {
       font-size: 14px;
     }
+  }
 
-    .button {
-      @include rounded;
-      background-color: $linkColor;
-      text-align: center;
-      width: 50%;
+  .more {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0.5em;
+  }
 
-      strong {
-        color: white;
-        text-decoration: none;
-      }
+  .button {
+    @include rounded;
+    background-color: $linkColor;
+    text-align: center;
+    width: 8em;
 
-      &:hover {
-        background-color: $hoverLinkColor;
-      }
+    strong {
+      color: white;
+      text-decoration: none;
+    }
+
+    &:hover {
+      background-color: $hoverLinkColor;
     }
   }
 }

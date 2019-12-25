@@ -56,6 +56,28 @@
         "target": 20462,
         "max": 65882,
         "_id": "K4KBHAIRE53D7"
+      },
+      {
+        "time": {
+          "day": "2020-05-20T15:00:22.847Z",
+          "startTime": "2020-05-20T15:00:22.847Z",
+          "endTime": "2020-05-20T15:17:02.847Z"
+        },
+        "signedUp": [],
+        "target": 22038,
+        "max": 21309,
+        "_id": "K4KBHAIQWW3E3"
+      },
+      {
+        "time": {
+          "day": "2020-11-09T20:59:25.105Z",
+          "startTime": "2020-11-09T20:59:25.105Z",
+          "endTime": "2020-11-09T23:46:05.105Z"
+        },
+        "signedUp": [],
+        "target": 32152,
+        "max": 11506,
+        "_id": "K4KBHAIQAGR6S"
       }
     ],
     "wholeShift": false,
@@ -76,17 +98,6 @@
         "target": 28841,
         "max": 28502,
         "_id": "K4KBHAIRTRMV1"
-      },
-      {
-        "time": {
-          "day": "2020-03-24T04:37:44.053Z",
-          "startTime": "2020-03-24T04:37:44.053Z",
-          "endTime": "2020-03-24T07:24:24.053Z"
-        },
-        "signedUp": [],
-        "target": 58208,
-        "max": 46480,
-        "_id": "K4KBHAIRL13EG"
       }
     ],
     "wholeShift": true,
