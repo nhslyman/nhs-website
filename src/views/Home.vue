@@ -31,7 +31,7 @@ export default class Home extends Vue {
   h1 {
     font-size: 30px;
     line-height: 150%;
-    color: $titleBlue;
+    color: $titleColor;
   }
 
   h2 {

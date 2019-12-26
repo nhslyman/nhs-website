@@ -37,7 +37,6 @@
               placeholder="Email"
               value
               required
-              autofocus
               v-model="form.email"
             />
           </div>
@@ -61,6 +60,24 @@
           </div>
         </div>
 
+        <div class="group">
+          <label for="comfirmPassword">
+            Comfirm Password
+          </label>
+
+          <div>
+            <input
+              id="comfirmPassword"
+              type="password"
+              class="form-control"
+              name="comfirmPassword"
+              placeholder="Comfirm Password"
+              required
+              v-model="form.comfirmPassword"
+            />
+          </div>
+        </div>
+
         <div>
           <button type="submit" class="submit">
             <p>Register</p>
@@ -77,20 +94,27 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import firebase from "firebase";
+import firebase from "firebase/app";
 
 @Component
 export default class Register extends Vue {
   form = {
     name: "",
     email: "",
-    password: ""
+    password: "",
+    comfirmPassword: ""
   };
 
   error: String = "";
 
   submit() {
     this.error = "";
+
+    if (this.form.password != this.form.comfirmPassword) {
+      this.error = "Passwords do not match";
+      return;
+    }
+
     firebase
       .auth()
       .createUserWithEmailAndPassword(this.form.email, this.form.password)

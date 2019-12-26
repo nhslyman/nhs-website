@@ -18,7 +18,7 @@
 
   h1 {
     font-size: 40px;
-    color: $titleBlue;
+    color: $titleColor;
   }
 
   h2 {

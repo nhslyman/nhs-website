@@ -63,7 +63,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import firebase from "firebase";
+import firebase from "firebase/app";
 
 @Component
 export default class Login extends Vue {
