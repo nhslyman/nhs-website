@@ -10,4 +10,4 @@ class UserAttributes {
   }
 }
 
-export default UserAttributes;
+export { UserAttributes };

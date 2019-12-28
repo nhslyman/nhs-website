@@ -1,4 +1,4 @@
-import { Shift } from "@/models/Shift";
+import { Shift } from "@/models";
 import UID from "@/util/UID";
 
 class EventInfo {
@@ -16,4 +16,4 @@ class EventInfo {
   }
 }
 
-export default EventInfo;
+export { EventInfo };

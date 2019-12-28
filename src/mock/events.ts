@@ -1,6 +1,5 @@
 import faker from "faker";
-import EventInfo from "@/models/EventInfo";
-import { Shift, ShiftTime } from "@/models/Shift";
+import { EventInfo, Shift, ShiftTime } from "@/models";
 
 function randomEvent(): EventInfo {
   let shifts: Shift[] = [];

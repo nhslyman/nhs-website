@@ -1,6 +1,6 @@
 import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
 import firebase from "firebase/app";
-import UserAttributes from "@/models/UserAttributes.ts";
+import { UserAttributes } from "@/models";
 import { db } from "@/main";
 
 type OptUser = firebase.User | null;

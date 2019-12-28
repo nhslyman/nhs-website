@@ -45,8 +45,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import EventPreview from "@/components/EventPreview.vue";
-import EventInfo from "@/models/EventInfo";
-import { Shift } from "@/models/Shift";
+import { EventInfo, Shift } from "@/models";
 import EventStore from "@/mock/events";
 
 @Component({

@@ -39,7 +39,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { Getter } from "vuex-class";
-import UserAttributes from "@/models/UserAttributes.ts";
+import { UserAttributes } from "@/models";
 
 @Component
 export default class Header extends Vue {

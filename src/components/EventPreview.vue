@@ -38,7 +38,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import EventInfo from "@/models/EventInfo";
+import { EventInfo } from "@/models";
 
 @Component
 export default class EventPreview extends Vue {
