@@ -109,10 +109,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 @Component
 export default class Register extends Vue {
+  // form handling
   form = {
     firstName: "",
     lastName: "",
@@ -144,6 +145,20 @@ export default class Register extends Vue {
       .catch(err => {
         this.error = err.message;
       });
+  }
+
+  // go back to home if already logged in
+  mounted() {
+    if (this.$store.getters.loggedIn) {
+      this.$router.push("/");
+    }
+  }
+
+  @Watch("$store.getters.loggedIn")
+  test(loggedIn: boolean) {
+    if (loggedIn) {
+      this.$router.push("/");
+    }
   }
 }
 </script>
