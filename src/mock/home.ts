@@ -17,12 +17,12 @@ brief blurb
 
 - Hours
   - 20 hours in the entire year
-  - Complete by May 1st
   - At least 10 must be through NHS
+  - Complete by May 1st
 - Committees
-  - 30 minutes for every official committee meeting
-  - Must have at least 1.5 hours worth of committee time
-- DUES
+  - Must attend at least 3 official committee meetings
+  - Official committee meetings must be approx 30 minutes
+- Dues
   - $30 for Seniors (covers graduation materials)
   - $20 for Junior
 - Dress-up days/Donations

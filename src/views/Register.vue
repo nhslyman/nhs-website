@@ -4,21 +4,38 @@
       <h1>Register</h1>
       <form action="#" @submit.prevent="submit">
         <div class="group">
-          <label for="name">
-            Name
+          <label for="firstName">
+            First Name
           </label>
 
           <div>
             <input
-              id="name"
-              type="name"
+              type="text"
               class="form-control"
-              name="name"
-              placeholder="Name"
-              value
+              name="first-name"
+              autocomplete="given-name"
+              placeholder="First Name"
               required
               autofocus
-              v-model="form.name"
+              v-model="form.firstName"
+            />
+          </div>
+        </div>
+
+        <div class="group">
+          <label for="lastName">
+            Last Name
+          </label>
+
+          <div>
+            <input
+              type="text"
+              class="form-control"
+              name="last-name"
+              autocomplete="family-name"
+              placeholder="Last Name"
+              required
+              v-model="form.lastName"
             />
           </div>
         </div>
@@ -30,12 +47,11 @@
 
           <div>
             <input
-              id="email"
               type="email"
               class="form-control"
               name="email"
+              autocomplete="email"
               placeholder="Email"
-              value
               required
               v-model="form.email"
             />
@@ -49,10 +65,10 @@
 
           <div>
             <input
-              id="password"
               type="password"
               class="form-control"
               name="password"
+              autocomplete="new-password"
               placeholder="Password"
               required
               v-model="form.password"
@@ -67,10 +83,10 @@
 
           <div>
             <input
-              id="comfirmPassword"
               type="password"
               class="form-control"
               name="comfirmPassword"
+              autocomplete="new-password"
               placeholder="Comfirm Password"
               required
               v-model="form.comfirmPassword"
@@ -94,12 +110,12 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import firebase from "firebase/app";
 
 @Component
 export default class Register extends Vue {
   form = {
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     comfirmPassword: ""
@@ -115,22 +131,15 @@ export default class Register extends Vue {
       return;
     }
 
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(this.form.email, this.form.password)
-      .then(data => {
-        if (data.user === null) {
-          throw new Error(
-            "Account Registration Failed. Please Contact Support."
-          );
-        }
-        data.user
-          .updateProfile({
-            displayName: this.form.name
-          })
-          .then(() => {
-            this.$router.push("/");
-          });
+    this.$store
+      .dispatch("registerUser", {
+        email: this.form.email,
+        password: this.form.password,
+        firstName: this.form.firstName,
+        lastName: this.form.lastName
+      })
+      .then(() => {
+        this.$router.push("/");
       })
       .catch(err => {
         this.error = err.message;

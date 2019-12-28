@@ -8,10 +8,15 @@
         </router-link>
       </div>
       <div id="user">
-        <template v-if="loggedIn()">
+        <template v-if="loggedIn">
           <div class="dropdown">
             <div id="name">
-              <p>Name: {{ user.displayName }}</p>
+              <template v-if="attributes != null">
+                <p>{{ attributes.fullName }}</p>
+              </template>
+              <template v-else>
+                <p>Account</p>
+              </template>
             </div>
             <div class="dropdown-content">
               <router-link to="user">Manage Account</router-link>
@@ -33,32 +38,24 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { mapGetters, mapState } from "vuex";
-import firebase from "firebase/app";
+import { Getter } from "vuex-class";
+import UserAttributes from "@/models/UserAttributes.ts";
 
-@Component({
-  methods: {
-    ...mapGetters({
-      loggedIn: "loggedIn"
-    }),
-    ...mapState({
-      user: "user"
-    })
-  }
-})
+@Component
 export default class Header extends Vue {
-  user!: firebase.User;
-  loggedIn!: boolean;
+  @Getter("loggedIn") loggedIn!: boolean;
+
+  get attributes() {
+    // for some reason using vuex-class with this is always undefined
+    return this.$store.state.user.attributes;
+  }
 
   signOut() {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        if (this.$route.path != "/") {
-          this.$router.push("/");
-        }
-      });
+    this.$store.dispatch("signOut").then(() => {
+      if (this.$route.path != "/") {
+        this.$router.push("/");
+      }
+    });
   }
 }
 </script>

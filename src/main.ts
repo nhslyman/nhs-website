@@ -1,14 +1,10 @@
-import Vue from "vue";
-import App from "./App.vue";
-import router from "./router";
-import store from "./store";
+// Firebase
 import firebase from "firebase/app";
 import "firebase/auth";
+import "firebase/firestore";
 
-Vue.config.productionTip = false;
-
-// all set in .env file
 const configOptions = {
+  // all set in .env file
   apiKey: process.env.VUE_APP_API_KEY,
   authDomain: process.env.VUE_APP_AUTH_DOMAIN,
   databaseURL: process.env.VUE_APP_DATABASE_URL,
@@ -20,9 +16,20 @@ const configOptions = {
 
 firebase.initializeApp(configOptions);
 
+export const db = firebase.firestore();
+
 firebase.auth().onAuthStateChanged(user => {
-  store.commit("setUser", user);
+  console.log("AUTH STATE CHANGED");
+  store.dispatch("setUser", user);
 });
+
+// Create Vue Instance
+import Vue from "vue";
+import App from "./App.vue";
+import router from "./router";
+import store from "./store";
+
+Vue.config.productionTip = false;
 
 new Vue({
   router,

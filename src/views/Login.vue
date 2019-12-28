@@ -10,12 +10,11 @@
 
           <div>
             <input
-              id="email"
               type="email"
               class="form-control"
               name="email"
+              autocomplete="email"
               placeholder="Email"
-              value
               required
               autofocus
               v-model="form.email"
@@ -30,10 +29,10 @@
 
           <div>
             <input
-              id="password"
               type="password"
               class="form-control"
-              name="password"
+              name="current-password"
+              autocomplete="current-password"
               placeholder="Password"
               required
               v-model="form.password"
@@ -63,7 +62,6 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import firebase from "firebase/app";
 
 @Component
 export default class Login extends Vue {
@@ -76,9 +74,11 @@ export default class Login extends Vue {
 
   submit() {
     this.error = "";
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(this.form.email, this.form.password)
+    this.$store
+      .dispatch("signIn", {
+        email: this.form.email,
+        password: this.form.password
+      })
       .then(() => {
         this.$router.push("/");
       })
