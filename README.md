@@ -22,6 +22,18 @@ npm run serve
 npm run build
 ```
 
+### Send to Production
+
+```sh
+firebase deploy
+```
+
+or in one step:
+
+```sh
+npm run build && firebase deploy
+```
+
 ### Lints and fixes files
 
 ```sh
