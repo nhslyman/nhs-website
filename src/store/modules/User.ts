@@ -26,10 +26,14 @@ export default class User extends VuexModule {
   }
 
   @Action
-  setUser(user: OptUser) {
+  async setUser(user: OptUser) {
     this.context.commit("_setUser", user);
     if (user) {
-      this.context.dispatch("pullAttributes", user);
+      try {
+        await this.context.dispatch("pullAttributes", user);
+      } catch (err) {
+        // TODO: server side log
+      }
     }
   }
 
@@ -61,8 +65,7 @@ export default class User extends VuexModule {
       const doc = await usersRef.doc(id).get();
 
       if (!doc.exists) {
-        console.log("No such document for " + id);
-        return null;
+        throw new Error("No such document for " + id);
       }
 
       const newAttributes = <UserAttributes>doc.data();
@@ -72,7 +75,7 @@ export default class User extends VuexModule {
         newAttributes.admin
       );
     } catch (err) {
-      console.log("Error getting document", err);
+      throw new Error("Error getting document: " + err.message);
     }
   }
 

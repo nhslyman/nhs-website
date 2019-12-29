@@ -48,11 +48,6 @@ class EventStore {
     ];
   }
 
-  static export() {
-    let json = JSON.stringify(EventStore.events);
-    console.log(json);
-  }
-
   static import() {
     EventStore.events = [];
     const obj: EventInfo[] = require("@/mock/events.json");

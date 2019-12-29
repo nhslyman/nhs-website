@@ -19,7 +19,6 @@ firebase.initializeApp(configOptions);
 export const db = firebase.firestore();
 
 firebase.auth().onAuthStateChanged(user => {
-  console.log("AUTH STATE CHANGED");
   store.dispatch("setUser", user);
 });
 
