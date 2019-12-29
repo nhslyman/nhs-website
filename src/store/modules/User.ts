@@ -21,7 +21,7 @@ export default class User extends VuexModule {
   }
 
   @Mutation
-  setAttributes(attributes: OptAttributes) {
+  _setAttributes(attributes: OptAttributes) {
     this.attributes = attributes;
   }
 
@@ -33,7 +33,22 @@ export default class User extends VuexModule {
     }
   }
 
-  @Action({ commit: "setAttributes" })
+  @Action
+  async setAttributes(attributes: UserAttributes) {
+    if (this.user == null) {
+      return;
+    }
+
+    try {
+      const usersRef = db.collection("users");
+      await usersRef.doc(this.user.uid).set(Object.assign({}, attributes));
+      this.context.commit("_setAttributes", attributes);
+    } catch (err) {
+      throw new Error("Server Error Setting Name");
+    }
+  }
+
+  @Action({ commit: "_setAttributes" })
   async pullAttributes() {
     if (this.user == null) {
       return;
@@ -61,7 +76,7 @@ export default class User extends VuexModule {
     }
   }
 
-  @Action({ rawError: true, commit: "setAttributes" })
+  @Action({ rawError: true, commit: "_setAttributes" })
   async registerUser(payload: {
     email: string;
     password: string;
@@ -110,7 +125,7 @@ export default class User extends VuexModule {
       .auth()
       .signOut() // calls setUser automatically
       .then(() => {
-        this.context.commit("setAttributes", null);
+        this.context.commit("_setAttributes", null);
       });
   }
 }

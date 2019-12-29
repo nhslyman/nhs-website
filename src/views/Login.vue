@@ -53,8 +53,8 @@
         </router-link>
       </div>
 
-      <div v-if="error != ''" class="alert">
-        <div>{{ error }}</div>
+      <div v-if="error != ''" class="error">
+        <p>{{ error }}</p>
       </div>
     </div>
   </div>
@@ -71,7 +71,7 @@ export default class Login extends Vue {
     password: ""
   };
 
-  error: String = "";
+  error: string = "";
 
   submit() {
     this.error = "";

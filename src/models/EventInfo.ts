@@ -3,12 +3,12 @@ import UID from "@/util/UID";
 
 class EventInfo {
   constructor(
-    public name: String,
-    public blurb: String,
-    public details: String,
+    public name: string,
+    public blurb: string,
+    public details: string,
     public shifts: Shift[],
-    public wholeShift: Boolean,
-    private _id: String = UID()
+    public wholeShift: boolean,
+    private _id: string = UID()
   ) {}
 
   get id() {

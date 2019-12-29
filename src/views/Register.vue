@@ -101,8 +101,8 @@
         </div>
       </form>
 
-      <div v-if="error != ''" class="alert">
-        <div>{{ error }}</div>
+      <div v-if="error != ''" class="error">
+        <p>{{ error }}</p>
       </div>
     </div>
   </div>
@@ -122,7 +122,7 @@ export default class Register extends Vue {
     comfirmPassword: ""
   };
 
-  error: String = "";
+  error: string = "";
 
   submit() {
     this.error = "";

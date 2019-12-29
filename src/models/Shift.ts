@@ -3,10 +3,10 @@ import UID from "@/util/UID";
 class Shift {
   constructor(
     public time: ShiftTime,
-    public signedUp: String[],
+    public signedUp: string[],
     public target: number,
     public max: number,
-    private _id: String = UID()
+    private _id: string = UID()
   ) {}
 
   get id() {

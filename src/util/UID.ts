@@ -1,4 +1,4 @@
-function UID(): String {
+function UID(): string {
   return (
     Date.now().toString(36) +
     Math.random()

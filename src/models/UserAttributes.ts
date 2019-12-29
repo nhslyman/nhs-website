@@ -1,8 +1,8 @@
 class UserAttributes {
   constructor(
-    public firstName: String,
-    public lastName: String,
-    public admin: Boolean
+    public firstName: string,
+    public lastName: string,
+    public admin: boolean
   ) {}
 
   get fullName() {
