@@ -1,5 +1,6 @@
 import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
 import firebase from "firebase/app";
+import { plainToClass, classToPlain } from "class-transformer";
 import { UserAttributes } from "@/models";
 import { db } from "@/main";
 
@@ -45,7 +46,7 @@ export default class User extends VuexModule {
 
     try {
       const usersRef = db.collection("users");
-      await usersRef.doc(this.user.uid).set(Object.assign({}, attributes));
+      await usersRef.doc(this.user.uid).set(classToPlain(attributes));
       this.context.commit("_setAttributes", attributes);
     } catch (err) {
       throw new Error("Server Error Setting Name");
@@ -68,12 +69,7 @@ export default class User extends VuexModule {
         throw new Error("No such document for " + id);
       }
 
-      const newAttributes = <UserAttributes>doc.data();
-      return new UserAttributes(
-        newAttributes.firstName,
-        newAttributes.lastName,
-        newAttributes.admin
-      );
+      return plainToClass(UserAttributes, doc.data());
     } catch (err) {
       throw new Error("Error getting document: " + err.message);
     }
@@ -108,7 +104,7 @@ export default class User extends VuexModule {
 
       // save attributes to database
       const usersRef = db.collection("users");
-      usersRef.doc(userCred.user.uid).set(Object.assign({}, attributes));
+      usersRef.doc(userCred.user.uid).set(classToPlain(attributes));
 
       return attributes;
     } catch (err) {

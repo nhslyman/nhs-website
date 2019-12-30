@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div v-if="event" class="box">
     <div class="inside">
       <h3>{{ event.name }}</h3>
 
@@ -46,7 +46,6 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import EventPreview from "@/components/EventPreview.vue";
 import { EventInfo, Shift } from "@/models";
-import EventStore from "@/mock/events";
 
 @Component({
   components: { EventPreview }
@@ -54,9 +53,12 @@ import EventStore from "@/mock/events";
 export default class Event extends Vue {
   selectedShifts: Shift[] = [];
 
+  get events(): EventInfo[] {
+    return this.$store.state.events.events;
+  }
+
   get event() {
-    EventStore.import();
-    let event = EventStore.events.find(
+    let event = this.events.find(
       event => event.id === this.$route.params["id"]
     );
     return event;

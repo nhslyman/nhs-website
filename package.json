@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@types/marked": "^0.7.2",
+    "class-transformer": "^0.2.3",
     "core-js": "^3.4.3",
     "firebase": "^7.6.1",
     "marked": "^0.8.0",

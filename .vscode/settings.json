@@ -6,7 +6,6 @@
     "**/vscode-extension/**",
     "**/.git/objects/**",
     ".vscode",
-    "src/mock/events.json",
     ".env"
   ],
   "cSpell.ignoreWords": ["vuex", "firestore", "lymannhs"],

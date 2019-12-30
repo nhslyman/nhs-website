@@ -29,6 +29,7 @@ import router from "./router";
 import store from "./store";
 
 Vue.config.productionTip = false;
+store.dispatch("setEventListener");
 
 new Vue({
   router,

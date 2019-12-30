@@ -22,22 +22,21 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import EventPreview from "@/components/EventPreview.vue";
 import { EventInfo } from "@/models";
-import EventStore from "@/mock/events";
 
 @Component({
   components: { EventPreview }
 })
 export default class Volunteer extends Vue {
-  created() {
-    EventStore.import();
+  get events(): EventInfo[] {
+    return this.$store.state.events.events;
   }
 
   get regristeredEvents() {
-    return EventStore.events.slice(0, 2);
+    return this.events.slice(0, 2);
   }
 
   get availableEvents() {
-    return EventStore.events.slice(2, 5);
+    return this.events.slice(2, 5);
   }
 }
 </script>

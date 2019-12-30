@@ -2,7 +2,8 @@ import Vue from "vue";
 import Vuex from "vuex";
 import VuexPersist from "vuex-persist";
 
-import User from "@/store/modules/User.ts";
+import User from "@/store/modules/User";
+import Events from "@/store/modules/Events";
 
 Vue.use(Vuex);
 
@@ -11,9 +12,12 @@ const vuexPersist = new VuexPersist({
   storage: window.localStorage
 });
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   plugins: [vuexPersist.plugin],
   modules: {
-    user: User
+    user: User,
+    events: Events
   }
 });
+
+export default store;
