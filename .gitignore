@@ -74,6 +74,5 @@ node_modules/
 
 ### Firebase ###
 **/node_modules/*
-**/.firebaserc
 .runtimeconfig.json
 .firebase/

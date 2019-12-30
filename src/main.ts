@@ -4,14 +4,13 @@ import "firebase/auth";
 import "firebase/firestore";
 
 const configOptions = {
-  // all set in .env file
-  apiKey: process.env.VUE_APP_API_KEY,
-  authDomain: process.env.VUE_APP_AUTH_DOMAIN,
-  databaseURL: process.env.VUE_APP_DATABASE_URL,
-  projectId: process.env.VUE_APP_PROJECT_ID,
-  storageBucket: process.env.VUE_APP_STORAGE_BUCKET,
-  messagingSenderId: process.env.VUE_APP_MESSAGING_SENDER_ID,
-  appId: process.env.VUE_APP_APP_ID
+  apiKey: "AIzaSyA1_OmaD0wAVGub9IsNEk1o7KXwEpjc-TQ",
+  authDomain: "lyman-nhs.firebaseapp.com",
+  databaseURL: "https://lyman-nhs.firebaseio.com",
+  projectId: "lyman-nhs",
+  storageBucket: "lyman-nhs.appspot.com",
+  messagingSenderId: "331035825804",
+  appId: "1:331035825804:web:ecf34835b51dae4a464da9"
 };
 
 firebase.initializeApp(configOptions);
