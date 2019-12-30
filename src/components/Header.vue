@@ -19,16 +19,16 @@
               </template>
             </div>
             <div class="dropdown-content">
-              <router-link to="user">Manage Account</router-link>
+              <router-link to="/user">Manage Account</router-link>
               <button @click="signOut">Sign out</button>
             </div>
           </div>
         </template>
         <template v-else>
           <p>
-            <router-link to="login">Login</router-link>
+            <router-link to="/login">Login</router-link>
             <span> or </span>
-            <router-link to="register">Register</router-link>
+            <router-link to="/register">Register</router-link>
           </p>
         </template>
       </div>

@@ -22,6 +22,7 @@ firebase.auth().onAuthStateChanged(user => {
 });
 
 // Create Vue Instance
+import "reflect-metadata"; // for class-transformer
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";

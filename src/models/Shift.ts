@@ -1,21 +1,57 @@
 import UID from "@/util/UID";
+import { Type, Transform } from "class-transformer";
 
 class Shift {
+  @Type(() => ShiftTime) public time: ShiftTime;
+
   constructor(
-    public time: ShiftTime,
+    time: ShiftTime,
     public signedUp: string[],
     public target: number,
     public max: number,
     private _id: string = UID()
-  ) {}
+  ) {
+    this.time = time;
+  }
 
   get id() {
     return this._id;
   }
 }
 
+function ConvertibleDate(target: Object, key: string) {
+  const toPlain = Transform(
+    (value: number) => {
+      const date = new Date(value);
+      return date.toISOString();
+    },
+    { toPlainOnly: true }
+  );
+
+  const toClass = Transform(
+    (value: string) => {
+      const num = Date.parse(value);
+      return new Date(num);
+    },
+    {
+      toClassOnly: true
+    }
+  );
+
+  toPlain(target, key);
+  toClass(target, key);
+}
+
 class ShiftTime {
-  constructor(public day: Date, public startTime: Date, public endTime: Date) {}
+  @ConvertibleDate private day: Date;
+  @ConvertibleDate private startTime: Date;
+  @ConvertibleDate private endTime: Date;
+
+  constructor(day: Date, startTime: Date, endTime: Date) {
+    this.day = day;
+    this.startTime = startTime;
+    this.endTime = endTime;
+  }
 
   private humanReadableTime(time: Date) {
     let options = {

@@ -13,6 +13,7 @@
     "core-js": "^3.4.3",
     "firebase": "^7.6.1",
     "marked": "^0.8.0",
+    "reflect-metadata": "^0.1.13",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
     "vue-property-decorator": "^8.3.0",

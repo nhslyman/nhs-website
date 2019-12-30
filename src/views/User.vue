@@ -320,7 +320,7 @@ export default class Register extends Vue {
 #register {
   @include shadow-box;
   @include form;
-  width: 55%;
+  @include box-size;
   margin-top: 3em;
   margin-bottom: 3em;
   margin-left: auto;

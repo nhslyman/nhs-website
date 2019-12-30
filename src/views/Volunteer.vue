@@ -46,30 +46,13 @@ export default class Volunteer extends Vue {
 @import "@/shared-style/mixins.scss";
 
 #volunteer {
+  @include box-size;
+
   margin-left: auto;
   margin-right: auto;
-  padding: 2.5% 10% 10% 10%;
+  margin-top: 2.5%;
+  margin-bottom: 10%;
   color: black;
-
-  @media (min-width: 1000px) {
-    padding-left: 20%;
-    padding-right: 20%;
-  }
-
-  @media (min-width: 1200px) {
-    padding-left: 25%;
-    padding-right: 25%;
-  }
-
-  @media (min-width: 1800px) {
-    padding-left: 30%;
-    padding-right: 30%;
-  }
-
-  @media (min-width: 2100px) {
-    padding-left: 35%;
-    padding-right: 35%;
-  }
 
   h1 {
     font-size: 30px;

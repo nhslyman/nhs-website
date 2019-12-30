@@ -111,7 +111,7 @@ export default class Login extends Vue {
 #login {
   @include shadow-box;
   @include form;
-  width: 40%;
+  @include box-size;
   margin-top: 3em;
   margin-left: auto;
   margin-right: auto;

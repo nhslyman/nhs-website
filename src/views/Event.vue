@@ -73,7 +73,7 @@ export default class Event extends Vue {
 .box {
   @include shadow-box;
   @include event-format;
-  width: 80%;
+  @include box-size;
   margin: 1.75em auto 3em auto;
 
   h4 {
