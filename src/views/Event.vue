@@ -35,8 +35,10 @@
         </div>
       </div>
 
-      <div class="more">
-        <p>Sign Up</p>
+      <div class="actionButton">
+        <button v-on:click="signUp">
+          <p>Sign Up</p>
+        </button>
       </div>
     </div>
   </div>
@@ -62,6 +64,24 @@ export default class Event extends Vue {
       event => event.id === this.$route.params["id"]
     );
     return event;
+  }
+
+  signUp() {
+    if (this.event == null) {
+      return;
+    }
+    // triggers both user and event action
+    this.$store
+      .dispatch("signUpForEvent", {
+        eventID: this.event.id,
+        shiftIDs: this.selectedShifts
+      })
+      .then(() => {
+        this.$router.push("/volunteer");
+      })
+      .catch(() => {
+        // TODO: server log
+      });
   }
 }
 </script>

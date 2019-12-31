@@ -5,6 +5,8 @@ import VuexPersist from "vuex-persist";
 import User from "@/store/modules/User";
 import Events from "@/store/modules/Events";
 
+import { RSVP } from "@/models";
+
 Vue.use(Vuex);
 
 const vuexPersist = new VuexPersist({
@@ -17,6 +19,12 @@ const store = new Vuex.Store({
   modules: {
     user: User,
     events: Events
+  },
+  actions: {
+    async signUpForEvent(context: any, payload: RSVP) {
+      await context.dispatch("user/signUpForEvent", payload);
+      await context.dispatch("events/signUpForEvent", payload);
+    }
   }
 });
 

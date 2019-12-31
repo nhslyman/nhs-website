@@ -76,7 +76,7 @@ export default class Login extends Vue {
   submit() {
     this.error = "";
     this.$store
-      .dispatch("signIn", {
+      .dispatch("user/signIn", {
         email: this.form.email,
         password: this.form.password
       })
@@ -89,13 +89,17 @@ export default class Login extends Vue {
   }
 
   // go back to home if already logged in
+  get loggedIn(): boolean {
+    return this.$store.getters["user/loggedIn"];
+  }
+
   mounted() {
-    if (this.$store.getters.loggedIn) {
+    if (this.loggedIn) {
       this.$router.push("/");
     }
   }
 
-  @Watch("$store.getters.loggedIn")
+  @Watch("this.loggedIn")
   test(loggedIn: boolean) {
     if (loggedIn) {
       this.$router.push("/");

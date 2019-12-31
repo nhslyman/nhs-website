@@ -38,20 +38,20 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { Getter } from "vuex-class";
 import { UserAttributes } from "@/models";
 
 @Component
 export default class Header extends Vue {
-  @Getter("loggedIn") loggedIn!: boolean;
+  get loggedIn(): boolean {
+    return this.$store.getters["user/loggedIn"];
+  }
 
-  get attributes() {
-    // for some reason using vuex-class with this is always undefined
+  get attributes(): UserAttributes {
     return this.$store.state.user.attributes;
   }
 
   signOut() {
-    this.$store.dispatch("signOut").then(() => {
+    this.$store.dispatch("user/signOut").then(() => {
       if (this.$route.path != "/") {
         this.$router.push("/");
       }

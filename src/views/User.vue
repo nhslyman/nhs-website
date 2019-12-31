@@ -226,7 +226,7 @@ export default class Register extends Vue {
 
     this.$store
       .dispatch(
-        "setAttributes",
+        "user/setAttributes",
         new UserAttributes(
           this.name.first,
           this.name.last,
@@ -298,13 +298,17 @@ export default class Register extends Vue {
   }
 
   // go back to home if not logged in
+  get loggedIn(): boolean {
+    return this.$store.getters["user/loggedIn"];
+  }
+
   mounted() {
-    if (!this.$store.getters.loggedIn) {
+    if (!this.loggedIn) {
       this.$router.push("/");
     }
   }
 
-  @Watch("$store.getters.loggedIn")
+  @Watch("this.loggedIn")
   test(loggedIn: boolean) {
     if (!loggedIn) {
       this.$router.push("/");

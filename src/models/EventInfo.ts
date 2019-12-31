@@ -3,8 +3,8 @@ import UID from "@/util/UID";
 import { Type } from "class-transformer";
 
 class EventInfo {
-  @Type(() => Shift)
-  public shifts: Shift[];
+  @Type(() => Shift) public shifts: Shift[];
+  private _id: string;
 
   constructor(
     public name: string,
@@ -12,9 +12,10 @@ class EventInfo {
     public details: string,
     shifts: Shift[],
     public wholeShift: boolean,
-    private _id: string = UID()
+    id: string = UID()
   ) {
     this.shifts = shifts;
+    this._id = id;
   }
 
   get id() {

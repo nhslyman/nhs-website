@@ -21,7 +21,8 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import EventPreview from "@/components/EventPreview.vue";
-import { EventInfo } from "@/models";
+import { EventInfo, RSVP, UserAttributes } from "@/models";
+import { plainToClass } from "class-transformer";
 
 @Component({
   components: { EventPreview }
@@ -31,12 +32,29 @@ export default class Volunteer extends Vue {
     return this.$store.state.events.events;
   }
 
+  get attributes(): UserAttributes {
+    return this.$store.state.user.attributes;
+  }
+
+  get signedUpEvents(): RSVP[] {
+    return this.attributes.events || [];
+  }
+
   get regristeredEvents() {
-    return this.events.slice(0, 2);
+    return this.events.filter(event =>
+      this.signedUpEvents.some(
+        signedUpEvent => signedUpEvent.eventID == event.id
+      )
+    );
   }
 
   get availableEvents() {
-    return this.events.slice(2, 5);
+    return this.events.filter(
+      event =>
+        !this.signedUpEvents.some(
+          signedUpEvent => signedUpEvent.eventID == event.id
+        )
+    );
   }
 }
 </script>

@@ -1,13 +1,13 @@
 import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
 import firebase from "firebase/app";
 import { plainToClass, classToPlain } from "class-transformer";
-import { UserAttributes } from "@/models";
+import { UserAttributes, RSVP } from "@/models";
 import { db } from "@/main";
 
 type OptUser = firebase.User | null;
 type OptAttributes = UserAttributes | null;
 
-@Module
+@Module({ namespaced: true })
 export default class User extends VuexModule {
   user: OptUser = null;
   attributes: OptAttributes = null;
@@ -26,6 +26,14 @@ export default class User extends VuexModule {
     this.attributes = attributes;
   }
 
+  @Mutation
+  addEvent(payload: RSVP) {
+    if (this.attributes == null) {
+      return;
+    }
+    this.attributes.events.push(payload);
+  }
+
   @Action
   async setUser(user: OptUser) {
     this.context.commit("_setUser", user);
@@ -33,9 +41,20 @@ export default class User extends VuexModule {
       try {
         await this.context.dispatch("pullAttributes", user);
       } catch (err) {
-        // TODO: server side log
+        // TODO: server log
       }
     }
+  }
+
+  @Action
+  async signUpForEvent(payload: RSVP) {
+    if (this.attributes == null || this.user == null) {
+      return;
+    }
+    this.context.commit("addEvent", payload);
+    const doc = db.collection("users").doc(this.user.uid);
+    const events = classToPlain(this.attributes.events);
+    await doc.update({ events: events });
   }
 
   @Action
@@ -96,11 +115,7 @@ export default class User extends VuexModule {
       }
 
       // set attributes
-      let attributes = new UserAttributes(
-        payload.firstName,
-        payload.lastName,
-        false
-      );
+      let attributes = new UserAttributes(payload.firstName, payload.lastName);
 
       // save attributes to database
       const usersRef = db.collection("users");

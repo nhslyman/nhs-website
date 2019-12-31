@@ -3,15 +3,17 @@ import { Type, Transform } from "class-transformer";
 
 class Shift {
   @Type(() => ShiftTime) public time: ShiftTime;
+  private _id: string;
 
   constructor(
     time: ShiftTime,
     public signedUp: string[],
     public target: number,
     public max: number,
-    private _id: string = UID()
+    id: string = UID()
   ) {
     this.time = time;
+    this._id = id;
   }
 
   get id() {

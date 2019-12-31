@@ -18,7 +18,7 @@ firebase.initializeApp(configOptions);
 export const db = firebase.firestore();
 
 firebase.auth().onAuthStateChanged(user => {
-  store.dispatch("setUser", user);
+  store.dispatch("user/setUser", user);
 });
 
 // Create Vue Instance
@@ -29,7 +29,7 @@ import router from "./router";
 import store from "./store";
 
 Vue.config.productionTip = false;
-store.dispatch("setEventListener");
+store.dispatch("events/setEventListener");
 
 new Vue({
   router,

@@ -27,7 +27,7 @@
         </div>
       </div>
 
-      <div class="more">
+      <div class="actionButton">
         <router-link :to="eventPageLink">
           <p>more</p>
         </router-link>
