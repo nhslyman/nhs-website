@@ -73,7 +73,7 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import EventPreview from "@/components/EventPreview.vue";
-import { EventInfo, Shift, RSVP } from "@/models";
+import { EventInfo, Shift, RSVP, UserAttributes } from "@/models";
 
 @Component({
   components: { EventPreview }
@@ -134,8 +134,16 @@ export default class Event extends Vue {
     }
   }
 
+  get attributes(): UserAttributes | null {
+    return this.$store.state.user.attributes;
+  }
+
   get signedUpEvents(): RSVP[] {
-    return this.$store.state.user.attributes.events;
+    if (this.attributes == null) {
+      return [];
+    } else {
+      return this.attributes.events;
+    }
   }
 
   get rsvp(): RSVP | undefined {
@@ -191,6 +199,24 @@ export default class Event extends Vue {
       .catch(() => {
         // TODO: server log
       });
+  }
+
+  // go to login if not logged in
+  get loggedIn(): boolean {
+    return this.$store.getters["user/loggedIn"];
+  }
+
+  beforeMount() {
+    if (!this.loggedIn) {
+      this.$router.push("/login");
+    }
+  }
+
+  @Watch("this.loggedIn")
+  test(loggedIn: boolean) {
+    if (!loggedIn) {
+      this.$router.push("/login");
+    }
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div id="volunteer">
+  <div v-if="events != null" id="volunteer">
     <h1>Volunteer Oppurtunities</h1>
     <h2>Signed Up</h2>
     <div v-for="event in regristeredEvents" :key="event.id">
@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import EventPreview from "@/components/EventPreview.vue";
 import { EventInfo, RSVP, UserAttributes } from "@/models";
 import { plainToClass } from "class-transformer";
@@ -37,7 +37,10 @@ export default class Volunteer extends Vue {
   }
 
   get signedUpEvents(): RSVP[] {
-    return this.attributes.events || [];
+    if (this.attributes == null) {
+      return [];
+    }
+    return this.attributes.events;
   }
 
   get regristeredEvents() {
