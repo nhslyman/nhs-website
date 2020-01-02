@@ -67,12 +67,8 @@ export default class Volunteer extends Vue {
 @import "@/shared-style/mixins.scss";
 
 #volunteer {
-  @include box-size;
-
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 2.5%;
-  margin-bottom: 10%;
+  @include std-size;
+  @include std-position;
   color: black;
 
   h1 {

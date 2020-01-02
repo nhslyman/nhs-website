@@ -1,5 +1,5 @@
 <template>
-  <div id="not-found">
+  <div id="error-page">
     <h1>404 Error. 🤖</h1>
     <h2>Page Not Found</h2>
     <router-link to="/">Return Home</router-link>
@@ -9,7 +9,7 @@
 <style lang="scss">
 @import "@/shared-style/variables.scss";
 
-#not-found {
+#error-page {
   margin-left: auto;
   margin-right: auto;
   padding: 2.5% 25% 10% 25%;

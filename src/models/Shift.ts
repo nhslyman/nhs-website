@@ -64,7 +64,15 @@ class ShiftTime {
     return time.toLocaleString("en-US", options);
   }
 
-  private get humanReadableDay() {
+  get humanReadableTimeRange() {
+    return (
+      this.humanReadableTime(this.startTime) +
+      " to " +
+      this.humanReadableTime(this.endTime)
+    );
+  }
+
+  get humanReadableDate() {
     let day = this.day.getDate();
     let mon = this.day.getMonth() + 1;
     let year = this.day.getFullYear();
@@ -77,13 +85,7 @@ class ShiftTime {
   }
 
   get humanReadable() {
-    return (
-      this.humanReadableDay +
-      " " +
-      this.humanReadableTime(this.startTime) +
-      " to " +
-      this.humanReadableTime(this.endTime)
-    );
+    return this.humanReadableDate + " " + this.humanReadableTimeRange;
   }
 }
 

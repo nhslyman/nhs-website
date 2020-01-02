@@ -37,6 +37,17 @@ const routes = [
     name: "event",
     component: () => import("@/views/volunteer/Event.vue")
   },
+  // admin
+  {
+    path: "/admin",
+    name: "admin console",
+    component: () => import("@/views/admin/Console.vue")
+  },
+  {
+    path: "/admin/events",
+    name: "manage events",
+    component: () => import("@/views/admin/Events.vue")
+  },
   // errors
   {
     path: "*",

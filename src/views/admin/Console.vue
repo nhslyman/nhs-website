@@ -1,29 +1,28 @@
 <template>
-  <div id="home">
-    <h1>Lyman NHS Info</h1>
-    <div v-html="content"></div>
+  <div id="admin-console">
+    <div class="inside">
+      <h1>Admin Console</h1>
+      <ul>
+        <li><router-link to="/admin/events">Manage Events</router-link></li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import marked from "marked";
-import mockContents from "@/mock/home";
 
 @Component
-export default class Home extends Vue {
-  get content() {
-    return marked(mockContents);
-  }
-}
+export default class AdminConsole extends Vue {}
 </script>
 
 <style lang="scss">
 @import "@/shared-style/variables.scss";
 @import "@/shared-style/mixins.scss";
 
-#home {
+#admin-console {
   @include std-size;
+  @include shadow-box;
   @include std-position;
   color: black;
 
@@ -33,24 +32,15 @@ export default class Home extends Vue {
     color: $titleColor;
   }
 
-  h2 {
-    padding-top: 1.5em;
-    line-height: 150%;
-    color: $headingColor;
-  }
-
-  p {
-    padding: 10px 0;
-    line-height: 150%;
-  }
-
   ul {
     padding-left: 2.5em;
+    font-size: 1.2em;
     line-height: 150%;
   }
 
   a {
     color: $linkColor;
+    text-decoration: none;
   }
 
   a:hover {

@@ -19,6 +19,7 @@
               </template>
             </div>
             <div class="dropdown-content">
+              <router-link v-if="admin" to="/admin">Admin Console</router-link>
               <router-link to="/user">Manage Account</router-link>
               <button @click="signOut">Sign out</button>
             </div>
@@ -44,6 +45,10 @@ import { UserAttributes } from "@/models";
 export default class Header extends Vue {
   get loggedIn(): boolean {
     return this.$store.getters["user/loggedIn"];
+  }
+
+  get admin(): boolean {
+    return this.$store.state.user.attributes.admin;
   }
 
   get attributes(): UserAttributes {
@@ -76,6 +81,7 @@ export default class Header extends Vue {
     display: flex;
     float: left;
     align-items: center;
+    text-align: center;
   }
 
   h1 {
@@ -118,7 +124,6 @@ export default class Header extends Vue {
     .dropdown {
       position: relative;
       display: inline-block;
-      // float: right;
     }
 
     .dropdown-content {
