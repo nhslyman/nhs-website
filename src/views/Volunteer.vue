@@ -6,14 +6,14 @@
       <EventPreview :event="event" />
     </div>
     <div v-if="regristeredEvents.length == 0">
-      <p>No Events Avaliable</p>
+      <p>You haven't selected any events... Yet.</p>
     </div>
     <h2>Avaliable</h2>
     <div v-for="event in availableEvents" :key="event.id">
       <EventPreview :event="event" />
     </div>
     <div v-if="availableEvents.length == 0">
-      <p>No Events Avaliable</p>
+      <p>No more events avaliable</p>
     </div>
   </div>
 </template>

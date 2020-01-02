@@ -6,6 +6,7 @@ export default `
 - [Requirements](#requirements)
 - [Check Requirements](#check-requirements)
 - [Volunteer Sign Up](#volunteer-sign-up)
+- [Volunteering Details](#volunteering-details)
 - [Meeting Slides](#meeting-slides)
 - [FAQs](#faqs)
 
@@ -25,15 +26,8 @@ brief blurb
 - Dues
   - $30 for Seniors (covers graduation materials)
   - $20 for Junior
-- Dress-up days/Donations
-  - Not required
-  - 30 minutes for every activity - up to 2 hours
-  - Email Ms. Stone pictures and receipts
-- Sign up 24 hours before an event to volunteer
-  - Cancellations at last minute must be because of emergencies
-  - Always sign in and out at events
 
-(link to bylaws)
+For additional information check the bylaws (link to bylaws)
 
 ## Check Requirements
 
@@ -43,6 +37,17 @@ brief blurb
 ## Volunteer Sign Up
 
 [All Here](/volunteer)
+
+## Volunteering Details
+
+- Event sign ups lock in the day before the event
+  - Cancellations at last minute must be because of emergencies
+  - If you have such a cancellation, contact the coordinator
+  - Always physically sign in and out at events
+- Dress-up days/Donations
+  - Not required
+  - 30 minutes for every activity - up to 2 hours
+  - Email Ms. Stone pictures and receipts
 
 ## Meeting Slides
 

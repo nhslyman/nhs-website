@@ -73,19 +73,17 @@ export default class Login extends Vue {
 
   error: string = "";
 
-  submit() {
+  async submit() {
     this.error = "";
-    this.$store
-      .dispatch("user/signIn", {
+    try {
+      await this.$store.dispatch("user/signIn", {
         email: this.form.email,
         password: this.form.password
-      })
-      .then(() => {
-        this.$router.push("/");
-      })
-      .catch(err => {
-        this.error = "Invalid Username/Password";
       });
+      this.$router.push("/");
+    } catch (err) {
+      this.error = "Invalid Username/Password";
+    }
   }
 
   // go back to home if already logged in
@@ -100,7 +98,7 @@ export default class Login extends Vue {
   }
 
   @Watch("this.loggedIn")
-  test(loggedIn: boolean) {
+  loginChanged(loggedIn: boolean) {
     if (loggedIn) {
       this.$router.push("/");
     }

@@ -124,7 +124,7 @@ export default class Register extends Vue {
 
   error: string = "";
 
-  submit() {
+  async submit() {
     this.error = "";
 
     if (this.form.password != this.form.comfirmPassword) {
@@ -132,19 +132,17 @@ export default class Register extends Vue {
       return;
     }
 
-    this.$store
-      .dispatch("user/registerUser", {
+    try {
+      await this.$store.dispatch("user/registerUser", {
         email: this.form.email,
         password: this.form.password,
         firstName: this.form.firstName,
         lastName: this.form.lastName
-      })
-      .then(() => {
-        this.$router.push("/");
-      })
-      .catch(err => {
-        this.error = err.message;
       });
+      this.$router.push("/");
+    } catch (err) {
+      this.error = err.message;
+    }
   }
 
   // go back to home if already logged in
@@ -159,7 +157,7 @@ export default class Register extends Vue {
   }
 
   @Watch("this.loggedIn")
-  test(loggedIn: boolean) {
+  loginChanged(loggedIn: boolean) {
     if (loggedIn) {
       this.$router.push("/");
     }

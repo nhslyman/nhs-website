@@ -34,6 +34,16 @@ export default class User extends VuexModule {
     this.attributes.events.push(payload);
   }
 
+  @Mutation
+  removeEvent(eventID: string) {
+    if (this.attributes == null) {
+      return;
+    }
+    this.attributes.events = this.attributes.events.filter(
+      event => event.eventID != eventID
+    );
+  }
+
   @Action
   async setUser(user: OptUser) {
     this.context.commit("_setUser", user);
@@ -52,6 +62,23 @@ export default class User extends VuexModule {
       return;
     }
     this.context.commit("addEvent", payload);
+    this.context.dispatch("pushEvents");
+  }
+
+  @Action
+  async unregisterForEvent(payload: RSVP) {
+    if (this.attributes == null || this.user == null) {
+      return;
+    }
+    this.context.commit("removeEvent", payload.eventID);
+    this.context.dispatch("pushEvents");
+  }
+
+  @Action
+  async pushEvents() {
+    if (this.attributes == null || this.user == null) {
+      return;
+    }
     const doc = db.collection("users").doc(this.user.uid);
     const events = classToPlain(this.attributes.events);
     await doc.update({ events: events });
@@ -130,12 +157,14 @@ export default class User extends VuexModule {
   @Action({ rawError: true })
   async signIn(payload: { email: string; password: string }) {
     // calls setUser automatically on success
-    firebase.auth().signInWithEmailAndPassword(payload.email, payload.password);
+    await firebase
+      .auth()
+      .signInWithEmailAndPassword(payload.email, payload.password);
   }
 
   @Action
   async signOut() {
-    firebase
+    await firebase
       .auth()
       .signOut() // calls setUser automatically
       .then(() => {

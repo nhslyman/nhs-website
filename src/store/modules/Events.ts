@@ -29,6 +29,30 @@ export default class Events extends VuexModule {
     });
   }
 
+  @Mutation
+  removeAttendance(payload: {
+    index: number;
+    shiftIDs: string[];
+    userID: string;
+  }) {
+    this.events[payload.index].shifts = this.events[payload.index].shifts.map(
+      shift => {
+        const modified = payload.shiftIDs.some(
+          selectedShiftID => selectedShiftID == shift.id
+        );
+        if (modified) {
+          const newPeople = shift.signedUp.filter(
+            userID => userID != payload.userID
+          );
+          shift.signedUp = newPeople;
+          return shift;
+        } else {
+          return shift;
+        }
+      }
+    );
+  }
+
   @Action
   async signUpForEvent(payload: RSVP) {
     const index = this.events.findIndex(event => event.id == payload.eventID);
@@ -39,15 +63,39 @@ export default class Events extends VuexModule {
       userID: userID
     });
 
+    await this.context.dispatch("pushShifts", {
+      eventID: payload.eventID,
+      index: index
+    });
+  }
+
+  @Action
+  async unregisterForEvent(payload: RSVP) {
+    const index = this.events.findIndex(event => event.id == payload.eventID);
+    const userID = this.context.rootState.user.user.uid;
+    this.context.commit("removeAttendance", {
+      index: index,
+      shiftIDs: payload.shiftIDs,
+      userID: userID
+    });
+
+    await this.context.dispatch("pushShifts", {
+      eventID: payload.eventID,
+      index: index
+    });
+  }
+
+  @Action
+  async pushShifts(payload: { eventID: string; index: number }) {
     const eventRef = db.collection("events").doc(payload.eventID);
-    const shifts = classToPlain(this.events[index].shifts);
+    const shifts = classToPlain(this.events[payload.index].shifts);
     await eventRef.update({
       shifts: shifts
     });
   }
 
   @Action
-  setEventListener() {
+  setListener() {
     const collection = db.collection("events");
     collection.onSnapshot(
       snap => {

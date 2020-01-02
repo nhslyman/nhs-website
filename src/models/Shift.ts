@@ -45,9 +45,9 @@ function ConvertibleDate(target: Object, key: string) {
 }
 
 class ShiftTime {
-  @ConvertibleDate private day: Date;
-  @ConvertibleDate private startTime: Date;
-  @ConvertibleDate private endTime: Date;
+  @ConvertibleDate public day: Date;
+  @ConvertibleDate public startTime: Date;
+  @ConvertibleDate public endTime: Date;
 
   constructor(day: Date, startTime: Date, endTime: Date) {
     this.day = day;
@@ -65,7 +65,7 @@ class ShiftTime {
   }
 
   private get humanReadableDay() {
-    let day = this.day.getDay();
+    let day = this.day.getDate();
     let mon = this.day.getMonth() + 1;
     let year = this.day.getFullYear();
 

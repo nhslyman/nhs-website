@@ -21,9 +21,16 @@ const store = new Vuex.Store({
     events: Events
   },
   actions: {
+    setListeners(context: any) {
+      context.dispatch("events/setListener");
+    },
     async signUpForEvent(context: any, payload: RSVP) {
       await context.dispatch("user/signUpForEvent", payload);
       await context.dispatch("events/signUpForEvent", payload);
+    },
+    async unregisterForEvent(context: any, payload: RSVP) {
+      await context.dispatch("user/unregisterForEvent", payload);
+      await context.dispatch("events/unregisterForEvent", payload);
     }
   }
 });

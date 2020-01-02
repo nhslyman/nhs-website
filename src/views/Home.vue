@@ -20,12 +20,14 @@ export default class Home extends Vue {
 
 <style lang="scss">
 @import "@/shared-style/variables.scss";
+@import "@/shared-style/mixins.scss";
 
 #home {
+  @include box-size;
   margin-left: auto;
   margin-right: auto;
-  padding: 2.5% 25% 10% 25%;
-  max-width: 50em;
+  margin-top: 2.5%;
+  margin-bottom: 25%;
   color: black;
 
   h1 {
