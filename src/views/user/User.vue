@@ -174,7 +174,7 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import firebase from "firebase/app";
-import { UserAttributes } from "../models";
+import { UserAttributes } from "@/models";
 
 @Component
 export default class Register extends Vue {

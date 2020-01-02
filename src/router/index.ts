@@ -14,34 +14,34 @@ const routes = [
   {
     path: "/login",
     name: "login",
-    component: () => import("@/views/Login.vue")
+    component: () => import("@/views/user/Login.vue")
   },
   {
     path: "/register",
     name: "register",
-    component: () => import("@/views/Register.vue")
+    component: () => import("@/views/user/Register.vue")
   },
   {
     path: "/user",
     name: "user",
-    component: () => import("@/views/User.vue")
+    component: () => import("@/views/user/User.vue")
   },
   // volunteer
   {
     path: "/volunteer",
     name: "volunteer",
-    component: () => import("@/views/Volunteer.vue")
+    component: () => import("@/views/volunteer/Volunteer.vue")
   },
   {
     path: "/volunteer/event/:id",
     name: "event",
-    component: () => import("@/views/Event.vue")
+    component: () => import("@/views/volunteer/Event.vue")
   },
   // errors
   {
     path: "*",
     name: "404",
-    component: () => import("@/views/NotFound.vue")
+    component: () => import("@/views/error/NotFound.vue")
   }
 ];
 
