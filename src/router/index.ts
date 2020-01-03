@@ -1,7 +1,22 @@
 import Vue from "vue";
-import VueRouter from "vue-router";
+import VueRouter, { Route } from "vue-router";
+import store from "@/store";
 
 Vue.use(VueRouter);
+
+async function checkAdmin(to: Route, from: Route, next: Function) {
+  const loggedIn: boolean = store.getters["user/loggedIn"];
+  const admin: boolean | undefined = store.state.user.attributes?.admin;
+  if (!loggedIn) {
+    next("/login");
+  } else if (admin == undefined) {
+    next(false);
+  } else if (admin) {
+    next();
+  } else {
+    next("unauthorized");
+  }
+}
 
 const routes = [
   // home
@@ -41,14 +56,21 @@ const routes = [
   {
     path: "/admin",
     name: "admin console",
-    component: () => import("@/views/admin/Console.vue")
+    component: () => import("@/views/admin/Console.vue"),
+    beforeEnter: checkAdmin
   },
   {
     path: "/admin/events",
     name: "manage events",
-    component: () => import("@/views/admin/Events.vue")
+    component: () => import("@/views/admin/Events.vue"),
+    beforeEnter: checkAdmin
   },
   // errors
+  {
+    path: "/unauthorized",
+    name: "403",
+    component: () => import("@/views/error/Unauthorized.vue")
+  },
   {
     path: "*",
     name: "404",

@@ -10,6 +10,7 @@
 
           <div>
             <input
+              v-model="form.firstName"
               type="text"
               class="form-control"
               name="first-name"
@@ -17,7 +18,6 @@
               placeholder="First Name"
               required
               autofocus
-              v-model="form.firstName"
             />
           </div>
         </div>
@@ -29,13 +29,13 @@
 
           <div>
             <input
+              v-model="form.lastName"
               type="text"
               class="form-control"
               name="last-name"
               autocomplete="family-name"
               placeholder="Last Name"
               required
-              v-model="form.lastName"
             />
           </div>
         </div>
@@ -47,13 +47,13 @@
 
           <div>
             <input
+              v-model="form.email"
               type="email"
               class="form-control"
               name="email"
               autocomplete="email"
               placeholder="Email"
               required
-              v-model="form.email"
             />
           </div>
         </div>
@@ -65,13 +65,13 @@
 
           <div>
             <input
+              v-model="form.password"
               type="password"
               class="form-control"
               name="password"
               autocomplete="new-password"
               placeholder="Password"
               required
-              v-model="form.password"
             />
           </div>
         </div>
@@ -83,13 +83,13 @@
 
           <div>
             <input
+              v-model="form.comfirmPassword"
               type="password"
               class="form-control"
               name="comfirmPassword"
               autocomplete="new-password"
               placeholder="Comfirm Password"
               required
-              v-model="form.comfirmPassword"
             />
           </div>
         </div>
@@ -109,7 +109,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 
 @Component
 export default class Register extends Vue {

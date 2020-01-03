@@ -20,9 +20,9 @@
           <div v-for="shift in event.shifts" :key="shift.id">
             <div class="shift">
               <input
+                v-model="selectedShifts"
                 type="checkbox"
                 :value="shift.id"
-                v-model="selectedShifts"
                 :disabled="signedUp"
               />
               <strong>{{ shift.time.humanReadable }}</strong>
@@ -50,7 +50,7 @@
       <template v-else>
         <template v-if="signedUp">
           <div class="action-button unregister">
-            <button v-on:click="unregister">
+            <button @click="unregister">
               <p>Unregister</p>
             </button>
           </div>
@@ -60,7 +60,7 @@
             class="action-button"
             :class="{ disabled: selectedShifts.length == 0 }"
           >
-            <button v-on:click="signUp" :disabled="selectedShifts.length == 0">
+            <button :disabled="selectedShifts.length == 0" @click="signUp">
               <p>Sign Up</p>
             </button>
           </div>
@@ -71,7 +71,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import EventPreview from "@/components/EventPreview.vue";
 import { EventInfo, Shift, RSVP, UserAttributes } from "@/models";
 

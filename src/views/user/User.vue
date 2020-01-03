@@ -11,6 +11,7 @@
 
           <div>
             <input
+              v-model="name.first"
               type="text"
               class="form-control"
               name="first-name"
@@ -18,7 +19,6 @@
               placeholder="First Name"
               required
               autofocus
-              v-model="name.first"
             />
           </div>
         </div>
@@ -30,13 +30,13 @@
 
           <div>
             <input
+              v-model="name.last"
               type="text"
               class="form-control"
               name="last-name"
               autocomplete="family-name"
               placeholder="Last Name"
               required
-              v-model="name.last"
             />
           </div>
         </div>
@@ -64,13 +64,13 @@
 
           <div>
             <input
+              v-model="email"
               type="email"
               class="form-control"
               name="email"
               autocomplete="email"
               placeholder="Email"
               required
-              v-model="email"
             />
           </div>
         </div>
@@ -107,13 +107,13 @@
 
           <div>
             <input
+              v-model="password.current"
               type="password"
               class="form-control"
               name="password"
               autocomplete="current-password"
               placeholder="Current Password"
               required
-              v-model="password.current"
             />
           </div>
         </div>
@@ -125,13 +125,13 @@
 
           <div>
             <input
+              v-model="password.new"
               type="password"
               class="form-control"
               name="new-password"
               autocomplete="new-password"
               placeholder="New Password"
               required
-              v-model="password.new"
             />
           </div>
         </div>
@@ -143,13 +143,13 @@
 
           <div>
             <input
+              v-model="password.comfirmNew"
               type="password"
               class="form-control"
               name="comfirm-password"
               autocomplete="new-password"
               placeholder="Comfirm Password"
               required
-              v-model="password.comfirmNew"
             />
           </div>
         </div>
@@ -172,7 +172,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import firebase from "firebase/app";
 import { UserAttributes } from "@/models";
 

@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import { UserAttributes } from "@/models";
 
 @Component
@@ -48,10 +48,13 @@ export default class Header extends Vue {
   }
 
   get admin(): boolean {
-    return this.$store.state.user.attributes.admin;
+    if (this.attributes == null) {
+      return false;
+    }
+    return this.attributes.admin;
   }
 
-  get attributes(): UserAttributes {
+  get attributes(): UserAttributes | null {
     return this.$store.state.user.attributes;
   }
 

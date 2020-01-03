@@ -1,5 +1,5 @@
 <template>
-  <ErrorPage code="404" description="Page Not Found" />
+  <ErrorPage code="403" description="Access Denied: Unauthorized" />
 </template>
 
 <script lang="ts">

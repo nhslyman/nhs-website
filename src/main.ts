@@ -25,8 +25,8 @@ firebase.auth().onAuthStateChanged(user => {
 import "reflect-metadata"; // for class-transformer
 import Vue from "vue";
 import App from "./App.vue";
-import router from "./router";
 import store from "./store";
+import router from "./router";
 
 Vue.config.productionTip = false;
 store.dispatch("setListeners");

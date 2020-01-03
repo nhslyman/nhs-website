@@ -9,12 +9,17 @@ import { RSVP } from "@/models";
 
 Vue.use(Vuex);
 
-const vuexPersist = new VuexPersist({
+interface State {
+  user: User;
+  events: Events;
+}
+
+const vuexPersist = new VuexPersist<State>({
   key: "lymannhs",
   storage: window.localStorage
 });
 
-const store = new Vuex.Store({
+const store = new Vuex.Store<State>({
   plugins: [vuexPersist.plugin],
   modules: {
     user: User,

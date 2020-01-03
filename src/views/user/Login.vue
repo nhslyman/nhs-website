@@ -10,6 +10,7 @@
 
           <div>
             <input
+              v-model="form.email"
               type="email"
               class="form-control"
               name="email"
@@ -17,7 +18,6 @@
               placeholder="Email"
               required
               autofocus
-              v-model="form.email"
             />
           </div>
         </div>
@@ -29,13 +29,13 @@
 
           <div>
             <input
+              v-model="form.password"
               type="password"
               class="form-control"
               name="current-password"
               autocomplete="current-password"
               placeholder="Password"
               required
-              v-model="form.password"
             />
           </div>
         </div>
@@ -61,7 +61,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 
 @Component
 export default class Login extends Vue {
