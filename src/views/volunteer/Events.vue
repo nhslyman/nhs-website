@@ -26,7 +26,7 @@ import { EventInfo, RSVP, UserAttributes } from "@/models";
 @Component({
   components: { EventPreview }
 })
-export default class Volunteer extends Vue {
+export default class Events extends Vue {
   get events(): EventInfo[] {
     return this.$store.state.events.events;
   }
@@ -70,16 +70,7 @@ export default class Volunteer extends Vue {
   @include std-position;
   color: black;
 
-  h1 {
-    font-size: 30px;
-    line-height: 150%;
-    color: $titleColor;
-  }
-
   h2 {
-    font-size: 25px;
-    line-height: 150%;
-    color: $headingColor;
     padding-bottom: 0.25em;
   }
 

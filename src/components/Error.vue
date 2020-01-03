@@ -1,6 +1,6 @@
 <template>
   <div id="error-page">
-    <h1>{{ code }} Error. 🤖</h1>
+    <h1>{{ code }} Error 🤖</h1>
     <h2>{{ description }}</h2>
     <router-link to="/">Return Home</router-link>
   </div>
@@ -27,13 +27,12 @@ export default class ErrorPage extends Vue {
   color: black;
 
   h1 {
-    font-size: 40px;
+    font-size: 2.75em;
     color: $titleColor;
   }
 
   h2 {
-    font-size: 30px;
-    color: $headingColor;
+    font-size: 1.75em;
     padding-bottom: 10px;
   }
 

@@ -35,4 +35,16 @@ export default class App extends Vue {}
   vertical-align: baseline;
   background: transparent;
 }
+
+h1 {
+  font-size: 2em;
+  line-height: 150%;
+  color: $titleColor;
+}
+
+h2 {
+  font-size: 1.25em;
+  line-height: 150%;
+  color: $headingColor;
+}
 </style>

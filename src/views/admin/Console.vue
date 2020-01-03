@@ -26,12 +26,6 @@ export default class AdminConsole extends Vue {}
   @include std-position;
   color: black;
 
-  h1 {
-    font-size: 30px;
-    line-height: 150%;
-    color: $titleColor;
-  }
-
   ul {
     padding-left: 2.5em;
     font-size: 1.2em;

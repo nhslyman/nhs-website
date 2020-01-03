@@ -7,4 +7,4 @@ function UID(): string {
   ).toUpperCase();
 }
 
-export default UID;
+export { UID };

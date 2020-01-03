@@ -28,10 +28,7 @@
 }
 
 @mixin event-format {
-  h3 {
-    color: $headingColor;
-    font-size: 20px;
-    width: 100%;
+  h2 {
     padding-bottom: 1em;
   }
 
@@ -127,9 +124,6 @@
 
 @mixin form {
   h1 {
-    font-size: 30px;
-    line-height: 150%;
-    color: $titleColor;
     padding-bottom: 0.2em;
   }
 
@@ -157,7 +151,7 @@
 
   .error {
     @include alert;
-    background-color: darkred;
+    background-color: $scaryLinkColor;
   }
 }
 

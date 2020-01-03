@@ -1,7 +1,7 @@
 <template>
   <div id="home">
     <h1>Lyman NHS Info</h1>
-    <div v-html="content"></div>
+    <div v-html="content" />
   </div>
 </template>
 
@@ -27,16 +27,8 @@ export default class Home extends Vue {
   @include std-position;
   color: black;
 
-  h1 {
-    font-size: 30px;
-    line-height: 150%;
-    color: $titleColor;
-  }
-
   h2 {
-    padding-top: 1.5em;
-    line-height: 150%;
-    color: $headingColor;
+    padding-top: 1.25em;
   }
 
   p {

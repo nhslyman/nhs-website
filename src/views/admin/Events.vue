@@ -6,10 +6,18 @@
         <hr />
         <div v-for="event in events" :key="event.id">
           <div class="event">
-            <div class="edit">
-              <router-link :to="'/events/edit/' + event.id">
-                <p>edit</p>
-              </router-link>
+            <div class="buttons">
+              <div class="button">
+                <router-link :to="'/admin/events/view/' + event.id">
+                  <p>users</p>
+                </router-link>
+              </div>
+              <span class="spacer" />
+              <div class="button">
+                <router-link :to="'/admin/events/edit/' + event.id">
+                  <p>edit</p>
+                </router-link>
+              </div>
             </div>
             <span class="spacer" />
             <div class="event-text">
@@ -49,24 +57,19 @@ export default class Events extends Vue {
   @include std-position;
   color: black;
 
-  h1 {
-    font-size: 30px;
-    line-height: 150%;
-    color: $titleColor;
-    margin-bottom: 0.25em;
-  }
-
   hr {
     margin-top: 0.75em;
     margin-bottom: 0.75em;
     border-top: 1px solid darkgrey;
   }
 
+  .content {
+    margin-top: 0.25em;
+  }
+
   .spacer {
     height: 10px;
-    @media (min-width: 500px) {
-      width: 10px;
-    }
+    width: 10px;
   }
 
   .event {
@@ -77,7 +80,7 @@ export default class Events extends Vue {
     align-items: center;
 
     @media (min-width: 500px) {
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       flex-direction: row;
     }
 
@@ -99,13 +102,22 @@ export default class Events extends Vue {
       }
     }
 
-    .edit {
-      @include button;
-      width: 5em;
+    .buttons {
+      display: flex;
+      flex-direction: row;
 
-      a {
-        color: white;
-        text-decoration: none;
+      @media (min-width: 500px) {
+        flex-direction: column;
+      }
+
+      .button {
+        @include button;
+        width: 5em;
+
+        a {
+          color: white;
+          text-decoration: none;
+        }
       }
     }
   }

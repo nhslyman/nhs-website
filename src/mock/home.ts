@@ -36,7 +36,7 @@ For additional information check the bylaws (link to bylaws)
 
 ## Volunteer Sign Up
 
-[All Here](/volunteer)
+[All Here](/events)
 
 ## Volunteering Details
 

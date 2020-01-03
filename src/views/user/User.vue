@@ -309,14 +309,8 @@ export default class Register extends Vue {
   @include std-size;
   @include std-position;
 
-  h2 {
-    color: $headingColor;
-    font-size: 1.25em;
-    margin-bottom: 0.25em;
-  }
-
   form {
-    margin-bottom: 3em;
+    margin-bottom: 2.75em;
   }
 
   .submit {

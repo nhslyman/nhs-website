@@ -90,9 +90,6 @@ export default class Header extends Vue {
   h1 {
     padding-left: 0.4em;
     display: inline;
-    font-size: 30px;
-    font-weight: bold;
-    color: $titleColor;
   }
 
   a {

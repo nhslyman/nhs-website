@@ -1,7 +1,7 @@
 <template>
   <div class="box">
     <div class="inside">
-      <h3>{{ event.name }}</h3>
+      <h2>{{ event.name }}</h2>
 
       <div class="insideContent">
         <div class="text">
@@ -45,7 +45,7 @@ export default class EventPreview extends Vue {
   @Prop() private event!: EventInfo;
 
   get eventPageLink() {
-    return "/volunteer/event/" + this.event.id;
+    return "/events/view/" + this.event.id;
   }
 }
 </script>

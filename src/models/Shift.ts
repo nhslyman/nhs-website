@@ -1,4 +1,4 @@
-import UID from "@/util/UID";
+import { UID } from "@/util";
 import { Type, Transform } from "class-transformer";
 
 class Shift {

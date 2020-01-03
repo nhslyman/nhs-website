@@ -64,14 +64,14 @@ const routes = [
   },
   // volunteer
   {
-    path: "/volunteer",
-    name: "volunteer",
-    component: () => import("@/views/volunteer/Volunteer.vue")
+    path: "/events",
+    name: "volunteer events",
+    component: () => import("@/views/volunteer/Events.vue")
   },
   {
-    path: "/volunteer/event/:id",
-    name: "event",
-    component: () => import("@/views/volunteer/Event.vue"),
+    path: "/events/view/:id",
+    name: "view event",
+    component: () => import("@/views/volunteer/ViewEvent.vue"),
     beforeEnter: checkLoggedIn
   },
   // admin

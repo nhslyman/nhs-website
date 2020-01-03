@@ -1,5 +1,5 @@
 import { Shift } from "@/models";
-import UID from "@/util/UID";
+import { UID } from "@/util";
 import { Type } from "class-transformer";
 
 class EventInfo {

@@ -1,7 +1,7 @@
 <template>
   <div v-if="event" class="box">
     <div class="inside">
-      <h3>{{ event.name }}</h3>
+      <h2>{{ event.name }}</h2>
 
       <div class="insideContent">
         <div class="text">
@@ -16,7 +16,7 @@
         </div>
 
         <div class="shifts">
-          <h4>Select Shift(s)</h4>
+          <h3>Select Shift(s)</h3>
           <div v-for="shift in event.shifts" :key="shift.id">
             <div class="shift">
               <input
@@ -78,7 +78,7 @@ import { EventInfo, Shift, RSVP, UserAttributes } from "@/models";
 @Component({
   components: { EventPreview }
 })
-export default class Event extends Vue {
+export default class ViewEvent extends Vue {
   // shared
   selectedShifts: string[] = [];
 
@@ -105,7 +105,7 @@ export default class Event extends Vue {
         shiftIDs: this.selectedShifts
       })
       .then(() => {
-        this.$router.push("/volunteer");
+        this.$router.push("/events");
       })
       .catch(() => {
         // TODO: server log
@@ -192,7 +192,7 @@ export default class Event extends Vue {
         shiftIDs: this.selectedShifts
       })
       .then(() => {
-        this.$router.push("/volunteer");
+        this.$router.push("/events");
       })
       .catch(() => {
         // TODO: server log
@@ -211,7 +211,7 @@ export default class Event extends Vue {
   @include std-size;
   @include std-position;
 
-  h4 {
+  h3 {
     width: 100%;
     margin-bottom: 0.5em;
   }
@@ -221,7 +221,11 @@ export default class Event extends Vue {
   }
 
   .unregister {
-    background-color: darkred;
+    background-color: $scaryLinkColor;
+
+    &:hover {
+      background-color: $hoverScaryLinkColor;
+    }
   }
 
   .disabled {
