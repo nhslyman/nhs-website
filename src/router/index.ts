@@ -18,6 +18,24 @@ async function checkAdmin(to: Route, from: Route, next: Function) {
   }
 }
 
+async function checkLoggedIn(to: Route, from: Route, next: Function) {
+  const loggedIn: boolean = store.getters["user/loggedIn"];
+  if (loggedIn) {
+    next();
+  } else {
+    next("/login");
+  }
+}
+
+async function checkLoggedOut(to: Route, from: Route, next: Function) {
+  const loggedIn: boolean = store.getters["user/loggedIn"];
+  if (loggedIn) {
+    next("/");
+  } else {
+    next();
+  }
+}
+
 const routes = [
   // home
   {
@@ -29,17 +47,20 @@ const routes = [
   {
     path: "/login",
     name: "login",
-    component: () => import("@/views/user/Login.vue")
+    component: () => import("@/views/user/Login.vue"),
+    beforeEnter: checkLoggedOut
   },
   {
     path: "/register",
     name: "register",
-    component: () => import("@/views/user/Register.vue")
+    component: () => import("@/views/user/Register.vue"),
+    beforeEnter: checkLoggedOut
   },
   {
     path: "/user",
     name: "user",
-    component: () => import("@/views/user/User.vue")
+    component: () => import("@/views/user/User.vue"),
+    beforeEnter: checkLoggedIn
   },
   // volunteer
   {
@@ -50,7 +71,8 @@ const routes = [
   {
     path: "/volunteer/event/:id",
     name: "event",
-    component: () => import("@/views/volunteer/Event.vue")
+    component: () => import("@/views/volunteer/Event.vue"),
+    beforeEnter: checkLoggedIn
   },
   // admin
   {

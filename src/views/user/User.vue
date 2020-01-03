@@ -296,24 +296,6 @@ export default class Register extends Vue {
 
     this.passwordSuccess = true;
   }
-
-  // go back to home if not logged in
-  get loggedIn(): boolean {
-    return this.$store.getters["user/loggedIn"];
-  }
-
-  mounted() {
-    if (!this.loggedIn) {
-      this.$router.push("/");
-    }
-  }
-
-  @Watch("this.loggedIn")
-  test(loggedIn: boolean) {
-    if (!loggedIn) {
-      this.$router.push("/");
-    }
-  }
 }
 </script>
 

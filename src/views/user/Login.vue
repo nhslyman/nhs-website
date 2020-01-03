@@ -85,24 +85,6 @@ export default class Login extends Vue {
       this.error = "Invalid Username/Password";
     }
   }
-
-  // go back to home if already logged in
-  get loggedIn(): boolean {
-    return this.$store.getters["user/loggedIn"];
-  }
-
-  mounted() {
-    if (this.loggedIn) {
-      this.$router.push("/");
-    }
-  }
-
-  @Watch("this.loggedIn")
-  loginChanged(loggedIn: boolean) {
-    if (loggedIn) {
-      this.$router.push("/");
-    }
-  }
 }
 </script>
 

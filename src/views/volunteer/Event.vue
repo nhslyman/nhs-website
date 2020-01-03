@@ -179,8 +179,6 @@ export default class Event extends Vue {
     } else {
       return false;
     }
-
-    // return false;
   }
 
   unregister() {
@@ -199,24 +197,6 @@ export default class Event extends Vue {
       .catch(() => {
         // TODO: server log
       });
-  }
-
-  // go to login if not logged in
-  get loggedIn(): boolean {
-    return this.$store.getters["user/loggedIn"];
-  }
-
-  beforeMount() {
-    if (!this.loggedIn) {
-      this.$router.push("/login");
-    }
-  }
-
-  @Watch("this.loggedIn")
-  test(loggedIn: boolean) {
-    if (!loggedIn) {
-      this.$router.push("/login");
-    }
   }
 }
 </script>
