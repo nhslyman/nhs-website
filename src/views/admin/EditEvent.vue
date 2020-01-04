@@ -5,7 +5,7 @@
       <form action="#" @submit.prevent="saveChanges">
         <div class="group">
           <label for="name">
-            Event Name
+            <h2>Event Name</h2>
           </label>
 
           <div>
@@ -21,7 +21,7 @@
 
         <div class="group">
           <label for="blurb">
-            Blurb
+            <h2>Blurb</h2>
           </label>
 
           <div>
@@ -41,12 +41,31 @@
 
         <div class="group">
           <label for="details">
-            Details
+            <h2>Details</h2>
           </label>
 
           <div>
             <MDEditor v-model="event.details" />
             <p>Please don't use headings (#) here</p>
+          </div>
+        </div>
+
+        <div class="group">
+          <label for="shifts">
+            <h2>Shifts</h2>
+          </label>
+
+          <div>
+            <ShiftsEditor v-model="event.shifts" />
+          </div>
+
+          <div>
+            <input
+              v-model="event.wholeShift"
+              type="checkbox"
+              name="wholeShift"
+            />
+            <label for="wholeShift">Must Attend Entire Shift</label>
           </div>
         </div>
 
@@ -72,11 +91,13 @@ import { EventInfo } from "@/models";
 import { deepCopy } from "@/util";
 
 import MDEditor from "@/components/MDEditor.vue";
+import ShiftsEditor from "@/components/ShiftsEditor.vue";
 import ResizeAuto from "@/components/ResizeAuto.vue";
 
 @Component({
   components: {
     MDEditor,
+    ShiftsEditor,
     ResizeAuto
   }
 })

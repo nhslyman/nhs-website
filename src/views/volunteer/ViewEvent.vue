@@ -94,10 +94,23 @@ export default class ViewEvent extends Vue {
     return event;
   }
 
+  get renderer(): marked.Renderer {
+    let renderer = new marked.Renderer();
+    const linkRenderer = renderer.link;
+    renderer.link = (href, title, text) => {
+      const html = linkRenderer.call(renderer, href, title, text);
+      return html.replace(/^<a /, '<a target="_blank" rel="nofollow" ');
+    };
+    return renderer;
+  }
+
   get details() {
     if (this.event == null) {
       return "";
     }
+    marked.setOptions({
+      renderer: this.renderer // opens link in new tab
+    });
     return marked(this.event.details);
   }
 

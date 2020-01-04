@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="editor">
+    <div id="md-editor">
       <textarea
         id="inputField"
         ref="inputField"
@@ -41,6 +41,7 @@ export default class MDEditor extends Vue {
 
   mounted() {
     this.contents = this.value;
+    window.addEventListener("resize", this.debounceResize);
   }
 
   @Watch("value")
@@ -73,6 +74,11 @@ export default class MDEditor extends Vue {
     this.resize();
   }
 
+  @Debounce(50)
+  debounceResize() {
+    this.resize();
+  }
+
   resize() {
     let inputField = this.$refs.inputField as HTMLInputElement;
     let preview = this.$refs.preview as HTMLInputElement;
@@ -97,7 +103,7 @@ export default class MDEditor extends Vue {
 <style scoped lang="scss">
 @import "@/shared-style/mixins.scss";
 
-#editor {
+#md-editor {
   @include rounded;
   border: 1px solid #ccc;
 
