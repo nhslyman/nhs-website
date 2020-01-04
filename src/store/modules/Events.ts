@@ -5,13 +5,28 @@ import { db } from "@/main";
 
 @Module({ namespaced: true })
 export default class Events extends VuexModule {
+  // properties
   events: EventInfo[] = [];
 
+  // basic setters
   @Mutation
-  setEvents(events: EventInfo[]) {
+  private _setEvents(events: EventInfo[]) {
     this.events = events;
   }
 
+  @Mutation
+  private _setEvent(payload: { index: number; event: EventInfo }) {
+    this.events[payload.index] = payload.event;
+  }
+
+  // events
+  @Action
+  async setEvent(payload: { index: number; event: EventInfo }) {
+    this.context.commit("_setEvent", payload);
+    await this.context.dispatch("pushEvent", payload.index);
+  }
+
+  // attendance
   @Mutation
   addAttendance(payload: {
     index: number;
@@ -85,6 +100,7 @@ export default class Events extends VuexModule {
     });
   }
 
+  // firestore coordination
   @Action
   async pushShifts(payload: { eventID: string; index: number }) {
     const eventRef = db.collection("events").doc(payload.eventID);
@@ -92,6 +108,17 @@ export default class Events extends VuexModule {
     await eventRef.update({
       shifts: shifts
     });
+  }
+
+  @Action
+  async pushEvent(index: number) {
+    const newEvent = classToPlain(this.events[index]);
+    const id = this.events[index].id;
+    if (id == null) {
+      return;
+    }
+    const eventRef = db.collection("events").doc(id);
+    await eventRef.set(newEvent);
   }
 
   @Action
@@ -103,7 +130,7 @@ export default class Events extends VuexModule {
           let event = doc.data() || {};
           return plainToClass(EventInfo, event);
         });
-        this.context.commit("setEvents", events);
+        this.context.commit("_setEvents", events);
       },
       err => {
         // TODO: server log

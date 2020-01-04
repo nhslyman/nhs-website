@@ -35,18 +35,5 @@ export default class Home extends Vue {
     padding: 10px 0;
     line-height: 150%;
   }
-
-  ul {
-    padding-left: 2.5em;
-    line-height: 150%;
-  }
-
-  a {
-    color: $linkColor;
-  }
-
-  a:hover {
-    color: $hoverLinkColor;
-  }
 }
 </style>

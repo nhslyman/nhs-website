@@ -35,13 +35,5 @@ export default class ErrorPage extends Vue {
     font-size: 1.75em;
     padding-bottom: 10px;
   }
-
-  a {
-    color: $linkColor;
-  }
-
-  a:hover {
-    color: $hoverLinkColor;
-  }
 }
 </style>

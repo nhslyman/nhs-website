@@ -79,13 +79,5 @@ export default class Events extends Vue {
     padding-top: 1em;
     padding-bottom: 2em;
   }
-
-  a {
-    color: $linkColor;
-  }
-
-  a:hover {
-    color: $hoverLinkColor;
-  }
 }
 </style>

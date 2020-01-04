@@ -34,6 +34,7 @@ export default class App extends Vue {}
   font-size: 100%;
   vertical-align: baseline;
   background: transparent;
+  word-break: break-word;
 }
 
 h1 {
@@ -46,5 +47,18 @@ h2 {
   font-size: 1.25em;
   line-height: 150%;
   color: $headingColor;
+}
+
+a {
+  color: $linkColor;
+
+  &:hover {
+    color: $hoverLinkColor;
+  }
+}
+
+ul {
+  padding-left: 1.5em;
+  line-height: 150%;
 }
 </style>

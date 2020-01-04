@@ -100,13 +100,6 @@ export default class Login extends Vue {
 
   #toNew {
     margin-top: 0.5em;
-    a {
-      color: $linkColor;
-
-      &:hover {
-        color: $hoverLinkColor;
-      }
-    }
   }
 }
 </style>

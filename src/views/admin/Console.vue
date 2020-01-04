@@ -27,18 +27,11 @@ export default class AdminConsole extends Vue {}
   color: black;
 
   ul {
-    padding-left: 2.5em;
     font-size: 1.2em;
-    line-height: 150%;
   }
 
   a {
-    color: $linkColor;
     text-decoration: none;
-  }
-
-  a:hover {
-    color: $hoverLinkColor;
   }
 }
 </style>

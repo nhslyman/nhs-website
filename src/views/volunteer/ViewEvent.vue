@@ -8,7 +8,7 @@
           <div class="blurb">
             <p>{{ event.blurb }}</p>
             <br />
-            <p>{{ event.details }}</p>
+            <div v-html="details" />
           </div>
           <div v-if="event.wholeShift">
             <em>Note: Whole Shift Required</em>
@@ -74,6 +74,7 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import EventPreview from "@/components/EventPreview.vue";
 import { EventInfo, Shift, RSVP, UserAttributes } from "@/models";
+import marked from "marked";
 
 @Component({
   components: { EventPreview }
@@ -91,6 +92,13 @@ export default class ViewEvent extends Vue {
       event => event.id === this.$route.params["id"]
     );
     return event;
+  }
+
+  get details() {
+    if (this.event == null) {
+      return "";
+    }
+    return marked(this.event.details);
   }
 
   // able to sign up

@@ -94,11 +94,6 @@ export default class Header extends Vue {
 
   a {
     text-decoration: none;
-    color: $linkColor;
-
-    &:hover {
-      color: $hoverLinkColor;
-    }
   }
 
   img {
