@@ -181,3 +181,12 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+@mixin form-component {
+  display: inline-flex;
+  border: 1px solid $boarderColor;
+  border-radius: 0.25em;
+  background-color: white;
+  box-sizing: border-box;
+  padding: 0.5em;
+}

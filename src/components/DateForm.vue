@@ -63,16 +63,13 @@ export default class DateForm extends Vue {
   // validate data
   @Watch("month")
   monthChanged(current: string, prev: string) {
-    if (Number.parseInt(current) > 12) this.month = prev;
+    if (parseInt(current) > 12) this.month = prev;
   }
 
   @Watch("day")
   dayChanged(current: string, prev: string) {
-    const max = this.daysInMonth(
-      Number.parseInt(this.month),
-      Number.parseInt(this.year)
-    );
-    if (Number.parseInt(current) > max) this.day = prev;
+    const max = this.daysInMonth(parseInt(this.month), parseInt(this.year));
+    if (parseInt(current) > max) this.day = prev;
   }
 
   @Watch("year")
@@ -88,7 +85,9 @@ export default class DateForm extends Vue {
 
   // move to next field
   updateMonth() {
-    if (!this.month.length || parseInt(this.month) < 2) {
+    if (this.month.length == 0) {
+      return;
+    } else if (this.month.length == 1 && this.month.charAt(0) == "1") {
       return;
     }
 
@@ -96,7 +95,9 @@ export default class DateForm extends Vue {
   }
 
   updateDay() {
-    if (!this.day.length || parseInt(this.day) < 4) {
+    if (this.day.length == 0) {
+      return;
+    } else if (this.day.length == 1 && parseInt(this.day.charAt(0)) <= 3) {
       return;
     }
 
@@ -111,39 +112,27 @@ export default class DateForm extends Vue {
   // emiting
   @Emit("input")
   updateValue() {
-    const year = Number.parseInt("20" + this.year);
-    const month = Number.parseInt(this.month) - 1;
-    const day = Number.parseInt(this.day);
+    const year = parseInt("20" + this.year);
+    const month = parseInt(this.month) - 1;
+    const day = parseInt(this.day);
     return new Date(year, month, day);
   }
 }
 </script>
 
 <style scoped lang="scss">
+@import "@/shared-style/mixins.scss";
+@import "@/shared-style/variables.scss";
+
 .date-form {
-  $spacing: 0.5em;
-  display: inline-flex;
-  position: relative;
-  overflow: hidden;
-  border: 1px solid #888;
-  border-radius: 0.25em;
-  background-color: white;
+  @include form-component;
 
   .input {
-    padding: $spacing;
-    padding-right: $spacing / 2;
-    padding-left: $spacing / 2;
+    padding-right: 0.25em;
+    padding-left: 0.25em;
     border: none;
     text-align: center;
-    width: 2em;
-
-    &:first-child {
-      padding-left: $spacing;
-    }
-
-    &:last-child {
-      padding-right: $spacing;
-    }
+    width: 1.75em;
 
     // hide the spinner button in Chrome, Safari and Firefox.
     -moz-appearance: textfield;
@@ -154,8 +143,6 @@ export default class DateForm extends Vue {
   }
 
   .divider {
-    padding-top: $spacing;
-    padding-bottom: $spacing;
     pointer-events: none;
   }
 }

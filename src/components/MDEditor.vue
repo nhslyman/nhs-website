@@ -102,10 +102,11 @@ export default class MDEditor extends Vue {
 
 <style scoped lang="scss">
 @import "@/shared-style/mixins.scss";
+@import "@/shared-style/variables.scss";
 
 #md-editor {
   @include rounded;
-  border: 1px solid #ccc;
+  border: 1px solid $boarderColor;
 
   * {
     display: inline-block;
@@ -118,9 +119,9 @@ export default class MDEditor extends Vue {
 }
 
 #inputField {
-  border-right: 1px solid #ccc;
+  border-right: 1px solid $boarderColor;
   resize: none;
-  background-color: #f6f6f6;
+  background-color: $insetEditor;
   font-size: 14px;
   font-family: "SFMono-Regular", "Consolas", "Monaco", courier, monospace;
 }

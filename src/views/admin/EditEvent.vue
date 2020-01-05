@@ -151,11 +151,12 @@ export default class EditEvent extends Vue {
     @include rounded;
     font-family: "Avenir", Helvetica, Arial, sans-serif;
     font-size: 15px;
-    background-color: #f6f6f6;
+    background-color: $insetEditor;
     width: 100%;
     resize: none;
     box-sizing: border-box;
     padding: 10px 20px;
+    border: 1px solid $boarderColor;
   }
 
   .group {
