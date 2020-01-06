@@ -14,17 +14,29 @@
   }
 }
 
-@mixin button {
-  @include rounded;
+@mixin button-color {
   background-color: $linkColor;
-  text-align: center;
-  width: 8em;
-  color: white;
-  font-weight: bold;
 
   &:hover {
     background-color: $hoverLinkColor;
   }
+}
+
+@mixin scary-button-color {
+  background-color: $scaryLinkColor;
+
+  &:hover {
+    background-color: $hoverScaryLinkColor;
+  }
+}
+
+@mixin button {
+  @include rounded;
+  @include button-color;
+  text-align: center;
+  width: 8em;
+  color: white;
+  font-weight: bold;
 }
 
 @mixin event-format {

@@ -1,5 +1,3 @@
-import { Type } from "class-transformer";
-
 interface RSVP {
   eventID: string;
   shiftIDs: string[];

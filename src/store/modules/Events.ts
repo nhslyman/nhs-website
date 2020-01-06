@@ -105,20 +105,24 @@ export default class Events extends VuexModule {
   async pushShifts(payload: { eventID: string; index: number }) {
     const eventRef = db.collection("events").doc(payload.eventID);
     const shifts = classToPlain(this.events[payload.index].shifts);
-    await eventRef.update({
-      shifts: shifts
-    });
+    try {
+      await eventRef.update({
+        shifts: shifts
+      });
+    } catch (err) {
+      // TODO: server log
+    }
   }
 
   @Action
   async pushEvent(index: number) {
-    const newEvent = classToPlain(this.events[index]);
-    const id = this.events[index].id;
-    if (id == null) {
-      return;
+    const newEvent: any = classToPlain(this.events[index]);
+    const eventRef = db.collection("events").doc(newEvent._id);
+    try {
+      await eventRef.set(newEvent);
+    } catch (err) {
+      // TODO: server log
     }
-    const eventRef = db.collection("events").doc(id);
-    await eventRef.set(newEvent);
   }
 
   @Action

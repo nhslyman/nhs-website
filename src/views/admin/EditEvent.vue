@@ -1,8 +1,8 @@
 <template>
-  <div v-if="event" class="box">
+  <div v-if="event" id="edit-event">
     <div class="inside">
       <h1>Edit Event</h1>
-      <form action="#" @submit.prevent="saveChanges">
+      <div class="form">
         <div class="group">
           <label for="name">
             <h2>Event Name</h2>
@@ -12,7 +12,7 @@
             <input
               v-model="event.name"
               type="text"
-              class="form-control"
+              class="form-control name-editor"
               name="name"
               placeholder="Name"
             />
@@ -65,16 +65,16 @@
               type="checkbox"
               name="wholeShift"
             />
-            <label for="wholeShift">Must Attend Entire Shift</label>
+            <label for="wholeShift"> Must Attend Entire Shift</label>
           </div>
         </div>
 
         <div class="action-button save">
-          <button type="submit" class="submit">
+          <button type="submit" class="submit" @click="saveChanges">
             <p>Save Changes</p>
           </button>
         </div>
-      </form>
+      </div>
 
       <div class="action-button delete">
         <button @click="deleteEvent">
@@ -116,14 +116,40 @@ export default class EditEvent extends Vue {
 
   // buttons
   saveChanges() {
+    this.sortShifts();
     this.$store.dispatch("events/setEvent", {
       index: this.index,
       event: this.event
     });
   }
 
+  sortShifts() {
+    if (this.event == null) {
+      return;
+    }
+    this.event.shifts = this.event.shifts.sort((a, b) => {
+      if (a.time.day.comparable > b.time.day.comparable) {
+        return 1;
+      } else if (a.time.day.valueOf() < b.time.day.valueOf()) {
+        return -1;
+      } else {
+        if (a.time.startTime.minutesIntoDay > b.time.startTime.minutesIntoDay) {
+          return 1;
+        } else {
+          return -1;
+        }
+      }
+    });
+  }
+
   deleteEvent() {
-    // TODO: Cloud Function
+    if (
+      confirm(
+        `Are you sure you want to delete ${this.event?.name || "this event"}?`
+      )
+    ) {
+      // TODO: Cloud Function
+    }
   }
 
   // load copy of event
@@ -142,10 +168,14 @@ export default class EditEvent extends Vue {
 @import "@/shared-style/variables.scss";
 @import "@/shared-style/mixins.scss";
 
-.box {
+#edit-event {
   @include shadow-box;
   @include std-size;
   @include std-position;
+
+  .name-editor {
+    width: 100%;
+  }
 
   textarea {
     @include rounded;
@@ -170,23 +200,12 @@ export default class EditEvent extends Vue {
     margin-right: auto;
 
     p {
+      padding: 0.25em 0.5em;
       color: white;
     }
-  }
 
-  .delete {
-    background-color: $scaryLinkColor;
-
-    &:hover {
-      background-color: $hoverScaryLinkColor;
-    }
-  }
-
-  .save {
-    background-color: $linkColor;
-
-    &:hover {
-      background-color: $hoverLinkColor;
+    &.delete {
+      @include scary-button-color;
     }
   }
 }

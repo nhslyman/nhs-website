@@ -1,5 +1,5 @@
 <template>
-  <div class="date-form" @keyup.capture="updateValue">
+  <div class="date-form" @keyup="emit">
     <input
       ref="month"
       v-model="month"
@@ -8,6 +8,7 @@
       placeholder="mm"
       @input="updateMonth"
       @blur="month = month.padStart(2, 0)"
+      @keydown="blockChar"
     />
 
     <span class="divider">/</span>
@@ -20,6 +21,7 @@
       placeholder="dd"
       @input="updateDay"
       @blur="day = day.padStart(2, 0)"
+      @keydown="blockChar"
     />
 
     <span class="divider">/</span>
@@ -30,12 +32,14 @@
       type="number"
       placeholder="yy"
       @blur="year = year.padStart(2, 0)"
+      @keydown="blockChar"
     />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop, Emit, Watch } from "vue-property-decorator";
+import { PlainDate } from "@/models";
 
 @Component
 export default class DateForm extends Vue {
@@ -45,15 +49,12 @@ export default class DateForm extends Vue {
   year: string = ""; // 20YY
 
   // setup
-  @Prop() value!: Date;
+  @Prop() value!: PlainDate;
 
   mounted() {
-    this.day = this.pad(this.value.getDate());
-    this.month = this.pad(this.value.getMonth() + 1);
-    this.year = this.value
-      .getFullYear()
-      .toString()
-      .substring(2, 4);
+    this.day = this.pad(this.value.day);
+    this.month = this.pad(this.value.month);
+    this.year = this.value.year.toString().substring(2, 4);
   }
 
   pad(num: number): string {
@@ -61,20 +62,40 @@ export default class DateForm extends Vue {
   }
 
   // validate data
+  invalidChars = [".", "-", "+", "e"];
+  blockChar(event: KeyboardEvent) {
+    if (this.invalidChars.includes(event.key)) {
+      event.preventDefault();
+    }
+  }
+
   @Watch("month")
   monthChanged(current: string, prev: string) {
-    if (parseInt(current) > 12) this.month = prev;
+    if (current == "00") {
+      this.month = "01";
+    }
+    const num = parseInt(current);
+    if (num > 12 || num < 0) {
+      this.month = prev;
+    }
   }
 
   @Watch("day")
   dayChanged(current: string, prev: string) {
+    if (current == "00") {
+      this.day = "01";
+    }
     const max = this.daysInMonth(parseInt(this.month), parseInt(this.year));
-    if (parseInt(current) > max) this.day = prev;
+    const num = parseInt(current);
+    if (num > max || num < 0) {
+      this.day = prev;
+    }
   }
 
   @Watch("year")
   yearChanged(current: string, prev: string) {
-    if (current.length > 2) {
+    const num = parseInt(current);
+    if (current.length > 2 || num < 0) {
       this.year = prev;
     }
   }
@@ -87,7 +108,7 @@ export default class DateForm extends Vue {
   updateMonth() {
     if (this.month.length == 0) {
       return;
-    } else if (this.month.length == 1 && this.month.charAt(0) == "1") {
+    } else if (this.month.length == 1 && parseInt(this.month.charAt(0)) <= 1) {
       return;
     }
 
@@ -111,11 +132,11 @@ export default class DateForm extends Vue {
 
   // emiting
   @Emit("input")
-  updateValue() {
+  emit() {
     const year = parseInt("20" + this.year);
-    const month = parseInt(this.month) - 1;
+    const month = parseInt(this.month);
     const day = parseInt(this.day);
-    return new Date(year, month, day);
+    return new PlainDate(day, month, year);
   }
 }
 </script>

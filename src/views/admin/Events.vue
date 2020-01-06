@@ -25,7 +25,7 @@
                 <strong>{{ event.name }}</strong>
               </p>
               <span class="spacer" />
-              <p>{{ event.shifts[0].time.humanReadableDate }}</p>
+              <p>{{ event.shifts[0].time.day.humanReadable }}</p>
             </div>
           </div>
           <hr />

@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div class="event-preview">
     <div class="inside">
       <h2>{{ event.name }}</h2>
 
@@ -20,7 +20,7 @@
               <div class="attendance">
                 <p>Signed Up: {{ shift.signedUp.length }}</p>
                 <p>Target: {{ shift.target }}</p>
-                <p>Maximum: {{ shift.max == 0 ? "none" : shift.max }}</p>
+                <p v-if="shift.max != 0">Maximum: {{ shift.max }}</p>
               </div>
             </div>
           </div>
@@ -54,7 +54,7 @@ export default class EventPreview extends Vue {
 @import "@/shared-style/variables.scss";
 @import "@/shared-style/mixins.scss";
 
-.box {
+.event-preview {
   @include shadow-box;
   @include event-format;
   width: 100%;

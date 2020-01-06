@@ -1,5 +1,5 @@
 <template>
-  <div v-if="event" class="box">
+  <div v-if="event" id="view-event">
     <div class="inside">
       <h2>{{ event.name }}</h2>
 
@@ -29,7 +29,7 @@
               <div class="attendance">
                 <p>Signed Up: {{ shift.signedUp.length }}</p>
                 <p>Target: {{ shift.target }}</p>
-                <p>Maximum: {{ shift.max == 0 ? "none" : shift.max }}</p>
+                <p v-if="shift.max != 0">Maximum: {{ shift.max }}</p>
               </div>
             </div>
           </div>
@@ -192,9 +192,9 @@ export default class ViewEvent extends Vue {
     const currentDate = new Date();
 
     if (
-      firstShift.getFullYear() == currentDate.getFullYear() &&
-      firstShift.getMonth() == currentDate.getMonth() &&
-      firstShift.getDate() - currentDate.getDate() <= 1
+      firstShift.year == currentDate.getFullYear() &&
+      firstShift.month == currentDate.getMonth() + 1 &&
+      firstShift.day - currentDate.getDate() <= 1
     ) {
       return true;
     } else {
@@ -206,18 +206,20 @@ export default class ViewEvent extends Vue {
     if (this.event == null) {
       return;
     }
-    // triggers both user and event action
-    this.$store
-      .dispatch("unregisterForEvent", {
-        eventID: this.event.id,
-        shiftIDs: this.selectedShifts
-      })
-      .then(() => {
-        this.$router.push("/events");
-      })
-      .catch(() => {
-        // TODO: server log
-      });
+    if (confirm("Are you sure you want to unregister?")) {
+      // triggers both user and event action
+      this.$store
+        .dispatch("unregisterForEvent", {
+          eventID: this.event.id,
+          shiftIDs: this.selectedShifts
+        })
+        .then(() => {
+          this.$router.push("/events");
+        })
+        .catch(() => {
+          // TODO: server log
+        });
+    }
   }
 }
 </script>
@@ -226,7 +228,7 @@ export default class ViewEvent extends Vue {
 @import "@/shared-style/variables.scss";
 @import "@/shared-style/mixins.scss";
 
-.box {
+#view-event {
   @include shadow-box;
   @include event-format;
   @include std-size;
@@ -242,11 +244,7 @@ export default class ViewEvent extends Vue {
   }
 
   .unregister {
-    background-color: $scaryLinkColor;
-
-    &:hover {
-      background-color: $hoverScaryLinkColor;
-    }
+    @include scary-button-color;
   }
 
   .disabled {
