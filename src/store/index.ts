@@ -28,7 +28,7 @@ const store = new Vuex.Store<State>({
   actions: {
     setListeners(context: any) {
       context.dispatch("user/setListener");
-      context.dispatch("events/setListener");
+      context.dispatch("events/setListeners");
     },
     async signUpForEvent(context: any, payload: RSVP) {
       await context.dispatch("user/signUpForEvent", payload);

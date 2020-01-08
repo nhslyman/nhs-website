@@ -84,7 +84,7 @@ export default class ViewEvent extends Vue {
   selectedShifts: string[] = [];
 
   get events(): EventInfo[] {
-    return this.$store.state.events.events;
+    return this.$store.getters["events/sortedEvents"];
   }
 
   get event() {
@@ -191,14 +191,24 @@ export default class ViewEvent extends Vue {
     const firstShift = this.event.shifts[0].time.day;
     const currentDate = new Date();
 
-    if (
-      firstShift.year == currentDate.getFullYear() &&
-      firstShift.month == currentDate.getMonth() + 1 &&
-      firstShift.day - currentDate.getDate() <= 1
-    ) {
+    if (firstShift.year < currentDate.getFullYear()) {
       return true;
     } else {
-      return false;
+      if (
+        firstShift.year == currentDate.getFullYear() &&
+        firstShift.month < currentDate.getMonth() + 1
+      ) {
+        return true;
+      } else {
+        if (
+          firstShift.month == currentDate.getMonth() + 1 &&
+          firstShift.day - currentDate.getDate() <= 1
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      }
     }
   }
 

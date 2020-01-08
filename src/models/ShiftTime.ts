@@ -19,6 +19,13 @@ class ShiftTime {
   get humanReadable() {
     return this.day.humanReadable + " " + this.humanReadableTimeRange;
   }
+
+  get comparable(): number {
+    return parseInt(
+      this.day.comparable +
+        this.startTime.minutesIntoDay.toString().padStart(4, "0")
+    );
+  }
 }
 
 export { ShiftTime };

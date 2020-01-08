@@ -89,6 +89,7 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { EventInfo } from "@/models";
 import { deepCopy } from "@/util";
+import { plainToClass } from "class-transformer";
 
 import MDEditor from "@/components/MDEditor.vue";
 import ShiftsEditor from "@/components/ShiftsEditor.vue";
@@ -105,7 +106,7 @@ export default class EditEvent extends Vue {
   event: EventInfo | null = null;
 
   get events(): EventInfo[] {
-    return this.$store.state.events.events;
+    return this.$store.getters["events/sortedEvents"];
   }
 
   get index(): number {
@@ -116,9 +117,12 @@ export default class EditEvent extends Vue {
 
   // buttons
   saveChanges() {
+    if (this.event == null) {
+      return;
+    }
     this.sortShifts();
     this.$store.dispatch("events/setEvent", {
-      index: this.index,
+      eventID: this.event.id,
       event: this.event
     });
   }
@@ -130,7 +134,7 @@ export default class EditEvent extends Vue {
     this.event.shifts = this.event.shifts.sort((a, b) => {
       if (a.time.day.comparable > b.time.day.comparable) {
         return 1;
-      } else if (a.time.day.valueOf() < b.time.day.valueOf()) {
+      } else if (a.time.day.comparable < b.time.day.comparable) {
         return -1;
       } else {
         if (a.time.startTime.minutesIntoDay > b.time.startTime.minutesIntoDay) {
@@ -153,8 +157,11 @@ export default class EditEvent extends Vue {
   }
 
   // load copy of event
-  created() {
-    this.event = deepCopy<EventInfo>(this.events[this.index]);
+  mounted() {
+    this.event = plainToClass(
+      EventInfo,
+      deepCopy<EventInfo>(this.events[this.index])
+    );
   }
 
   @Watch("events")

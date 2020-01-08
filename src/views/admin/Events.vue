@@ -42,7 +42,7 @@ import { EventInfo } from "@/models";
 @Component
 export default class Events extends Vue {
   get events(): EventInfo[] {
-    return this.$store.state.events.events;
+    return this.$store.getters["events/sortedEvents"];
   }
 }
 </script>
