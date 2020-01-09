@@ -2,7 +2,7 @@
   <div id="nav">
     <div id="inside">
       <div id="logo">
-        <img alt="Lyman NHS Logo" src="../assets/logo.png" />
+        <img alt="Lyman NHS Logo" src="../assets/logo.svg" />
         <router-link to="/">
           <h1>Lyman NHS</h1>
         </router-link>
@@ -74,6 +74,10 @@ export default class Header extends Vue {
 #nav {
   background-color: #dddddd;
 
+  a {
+    text-decoration: none;
+  }
+
   #inside {
     padding: 20px;
     display: flex;
@@ -85,19 +89,18 @@ export default class Header extends Vue {
     float: left;
     align-items: center;
     text-align: center;
-  }
 
-  h1 {
-    padding-left: 0.4em;
-    display: inline;
-  }
+    img {
+      max-height: 3em;
 
-  a {
-    text-decoration: none;
-  }
+      @media (min-width: $maxMobileSize) {
+        max-height: 4em;
+      }
+    }
 
-  img {
-    max-height: 50px;
+    h1 {
+      padding-left: 0.4em;
+    }
   }
 
   #user {
