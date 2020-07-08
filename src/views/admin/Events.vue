@@ -3,32 +3,17 @@
     <div class="inside">
       <h1>Manage Events</h1>
       <div class="content">
-        <hr />
-        <div v-for="event in events" :key="event.id">
-          <div class="event">
-            <div class="buttons">
-              <div class="button">
-                <router-link :to="'/admin/events/view/' + event.id">
-                  <p>users</p>
-                </router-link>
-              </div>
-              <span class="spacer" />
-              <div class="button">
-                <router-link :to="'/admin/events/edit/' + event.id">
-                  <p>edit</p>
-                </router-link>
-              </div>
-            </div>
-            <span class="spacer" />
-            <div class="event-text">
-              <p>
-                <strong>{{ event.name }}</strong>
-              </p>
-              <span class="spacer" />
-              <p>{{ event.shifts[0].time.day.humanReadable }}</p>
-            </div>
-          </div>
+        <h2>Future</h2>
+        <div v-for="event in futureEvents" :key="event.id">
           <hr />
+          <EventListItem :event="event" />
+        </div>
+
+        <hr />
+        <h2>Past</h2>
+        <div v-for="event in pastEvents" :key="event.id">
+          <hr />
+          <EventListItem :event="event" />
         </div>
       </div>
     </div>
@@ -39,10 +24,18 @@
 import { Component, Vue } from "vue-property-decorator";
 import { EventInfo } from "@/models";
 
-@Component
+import EventListItem from "@/components/admin/EventListItem.vue";
+
+@Component({
+  components: { EventListItem },
+})
 export default class Events extends Vue {
-  get events(): EventInfo[] {
-    return this.$store.getters["events/sortedEvents"];
+  get futureEvents(): EventInfo[] {
+    return this.$store.getters["events/sortedFutureEvents"];
+  }
+
+  get pastEvents(): EventInfo[] {
+    return this.$store.getters["events/sortedPastEvents"];
   }
 }
 </script>

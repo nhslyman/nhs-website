@@ -36,6 +36,16 @@ class PlainDate {
     const now = new Date();
     return new PlainDate(now.getDate(), now.getMonth() + 1, now.getFullYear());
   }
+
+  static yesterday(): PlainDate {
+    let yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    return new PlainDate(
+      yesterday.getDate(),
+      yesterday.getMonth() + 1,
+      yesterday.getFullYear()
+    );
+  }
 }
 
 export { PlainDate };

@@ -28,7 +28,7 @@ import { EventInfo, RSVP, UserAttributes } from "@/models";
 })
 export default class Events extends Vue {
   get events(): EventInfo[] {
-    return this.$store.getters["events/sortedEvents"];
+    return this.$store.getters["events/sortedFutureEvents"];
   }
 
   get attributes(): UserAttributes {

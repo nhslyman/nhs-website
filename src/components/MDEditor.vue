@@ -12,10 +12,7 @@
     <p>
       This field is Markdown that will be rendered as HTML. For formatting
       rules, read
-      <a
-        href="https://daringfireball.net/projects/markdown/syntax"
-        target="_blank"
-      >
+      <a href="https://www.markdownguide.org/basic-syntax/" target="_blank">
         here</a
       >. Use two spaces instead of tab.
     </p>

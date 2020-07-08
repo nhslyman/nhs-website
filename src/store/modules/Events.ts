@@ -1,6 +1,6 @@
 import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
 import { plainToClass, classToPlain } from "class-transformer";
-import { EventInfo, RSVP } from "@/models";
+import { EventInfo, RSVP, PlainDate } from "@/models";
 import { db } from "@/main";
 
 interface EventDict {
@@ -17,7 +17,45 @@ export default class Events extends VuexModule {
   private events: EventDict = {};
   private unsubscribes: ActionDict = {};
 
-  get sortedEvents() {
+  // TODO: move to query to reduce database reads
+  get futureEvents(): EventInfo[] {
+    let array = Object.values(this.events);
+    // shifts are assumed to be in order
+    array = array.filter(
+      event =>
+        event.shifts[0].time.day.comparable > PlainDate.yesterday().comparable
+    );
+    return array;
+  }
+
+  // TODO: move to query to reduce database reads
+  get pastEvents(): EventInfo[] {
+    let array = Object.values(this.events);
+    // shifts are assumed to be in order
+    array = array.filter(
+      event =>
+        event.shifts[0].time.day.comparable <= PlainDate.yesterday().comparable
+    );
+    return array;
+  }
+
+  get sortedFutureEvents(): EventInfo[] {
+    let array = this.futureEvents;
+    array = array.sort(
+      (a, b) => a.shifts[0].time.comparable - b.shifts[0].time.comparable
+    );
+    return array;
+  }
+
+  get sortedPastEvents(): EventInfo[] {
+    let array = this.pastEvents;
+    array = array.sort(
+      (a, b) => b.shifts[0].time.comparable - a.shifts[0].time.comparable
+    );
+    return array;
+  }
+
+  get sortedEvents(): EventInfo[] {
     let array = Object.values(this.events);
     array = array.sort(
       (a, b) => a.shifts[0].time.comparable - b.shifts[0].time.comparable
