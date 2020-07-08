@@ -72,9 +72,10 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import EventPreview from "@/components/EventPreview.vue";
 import { EventInfo, Shift, RSVP, UserAttributes } from "@/models";
 import marked from "marked";
+
+import EventPreview from "@/components/volunteer/EventPreview.vue";
 
 @Component({
   components: { EventPreview }

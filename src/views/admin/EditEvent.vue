@@ -91,9 +91,9 @@ import { EventInfo } from "@/models";
 import { deepCopy } from "@/util";
 import { plainToClass } from "class-transformer";
 
-import MDEditor from "@/components/MDEditor.vue";
-import ShiftsEditor from "@/components/ShiftsEditor.vue";
-import ResizeAuto from "@/components/ResizeAuto.vue";
+import MDEditor from "@/components/inputs/MDEditor.vue";
+import ShiftsEditor from "@/components/admin/ShiftsEditor.vue";
+import ResizeAuto from "@/components/util/ResizeAuto.vue";
 
 @Component({
   components: {

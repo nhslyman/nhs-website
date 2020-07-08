@@ -84,8 +84,8 @@
 import { Component, Vue, Prop, Emit, Watch } from "vue-property-decorator";
 import marked from "marked";
 import { Shift, ShiftTime, Time, PlainDate } from "@/models";
-import DateForm from "@/components/DateForm.vue";
-import TimeForm from "@/components/TimeForm.vue";
+import DateForm from "@/components/inputs/DateForm.vue";
+import TimeForm from "@/components/inputs/TimeForm.vue";
 
 @Component({
   components: {

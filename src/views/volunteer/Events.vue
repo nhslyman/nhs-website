@@ -20,8 +20,9 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import EventPreview from "@/components/EventPreview.vue";
 import { EventInfo, RSVP, UserAttributes } from "@/models";
+
+import EventPreview from "@/components/volunteer/EventPreview.vue";
 
 @Component({
   components: { EventPreview }
