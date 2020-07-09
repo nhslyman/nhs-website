@@ -22,8 +22,10 @@ export default class Events extends VuexModule {
     let array = Object.values(this.events);
     // shifts are assumed to be in order
     array = array.filter(
-      event =>
-        event.shifts[0].time.day.comparable > PlainDate.yesterday().comparable
+      (event) =>
+        event instanceof EventInfo && // check that nothing strange slipped in
+        event.shifts[event.shifts.length - 1].time.day.comparable > // check that the last shift is in a past day
+          PlainDate.yesterday().comparable
     );
     return array;
   }
@@ -33,8 +35,10 @@ export default class Events extends VuexModule {
     let array = Object.values(this.events);
     // shifts are assumed to be in order
     array = array.filter(
-      event =>
-        event.shifts[0].time.day.comparable <= PlainDate.yesterday().comparable
+      (event) =>
+        event instanceof EventInfo && // check that nothing strange slipped in
+        event.shifts[event.shifts.length - 1].time.day.comparable <=
+          PlainDate.yesterday().comparable // check that the last shift is in a past day
     );
     return array;
   }
@@ -57,6 +61,10 @@ export default class Events extends VuexModule {
 
   get sortedEvents(): EventInfo[] {
     let array = Object.values(this.events);
+    array = array.filter(
+      // check that nothing strange slipped in
+      (event) => event instanceof EventInfo
+    );
     array = array.sort(
       (a, b) => a.shifts[0].time.comparable - b.shifts[0].time.comparable
     );
@@ -90,7 +98,7 @@ export default class Events extends VuexModule {
   }) {
     this.events[payload.eventID].shifts = this.events[
       payload.eventID
-    ].shifts.map(shift => {
+    ].shifts.map((shift) => {
       if (payload.shiftIDs.includes(shift.id)) {
         shift.signedUp.push(payload.userID);
       }
@@ -106,13 +114,13 @@ export default class Events extends VuexModule {
   }) {
     this.events[payload.eventID].shifts = this.events[
       payload.eventID
-    ].shifts.map(shift => {
+    ].shifts.map((shift) => {
       const modified = payload.shiftIDs.some(
-        selectedShiftID => selectedShiftID == shift.id
+        (selectedShiftID) => selectedShiftID == shift.id
       );
       if (modified) {
         const newPeople = shift.signedUp.filter(
-          userID => userID != payload.userID
+          (userID) => userID != payload.userID
         );
         shift.signedUp = newPeople;
         return shift;
@@ -128,7 +136,7 @@ export default class Events extends VuexModule {
     this.context.commit("addAttendance", {
       eventID: payload.eventID,
       shiftIDs: payload.shiftIDs,
-      userID: userID
+      userID: userID,
     });
 
     await this.context.dispatch("pushShifts", payload.eventID);
@@ -140,7 +148,7 @@ export default class Events extends VuexModule {
     this.context.commit("removeAttendance", {
       eventID: payload.eventID,
       shiftIDs: payload.shiftIDs,
-      userID: userID
+      userID: userID,
     });
 
     await this.context.dispatch("pushShifts", payload.eventID);
@@ -163,7 +171,7 @@ export default class Events extends VuexModule {
     const shifts = classToPlain(this.events[eventID].shifts);
     try {
       await eventRef.update({
-        shifts: shifts
+        shifts: shifts,
       });
     } catch (err) {
       // TODO: server log
@@ -185,18 +193,18 @@ export default class Events extends VuexModule {
   async setListeners() {
     const collection = await db.collection("events").get();
     let unsubs: ActionDict = {};
-    collection.docs.forEach(doc => {
+    collection.docs.forEach((doc) => {
       const id = doc.id;
       unsubs[id] = doc.ref.onSnapshot(
-        snap => {
+        (snap) => {
           const event = snap.data() || {};
           const obj = plainToClass(EventInfo, event);
           this.context.commit("_setEvent", {
             eventID: id,
-            event: obj
+            event: obj,
           });
         },
-        err => {
+        (err) => {
           // TODO: server log
         }
       );

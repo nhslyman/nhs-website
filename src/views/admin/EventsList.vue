@@ -27,7 +27,7 @@ import { EventInfo } from "@/models";
 import EventListItem from "@/components/admin/EventListItem.vue";
 
 @Component({
-  components: { EventListItem }
+  components: { EventListItem },
 })
 export default class Events extends Vue {
   get futureEvents(): EventInfo[] {

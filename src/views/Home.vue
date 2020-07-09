@@ -8,12 +8,11 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import marked from "marked";
-import mockContents from "@/mock/home";
 
 @Component
 export default class Home extends Vue {
   get content() {
-    return marked(mockContents);
+    return marked(this.$store.getters["text/homeText"]);
   }
 }
 </script>

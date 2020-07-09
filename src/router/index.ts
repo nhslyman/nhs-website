@@ -41,75 +41,81 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: () => import("@/views/Home.vue")
+    component: () => import("@/views/Home.vue"),
   },
   // account
   {
     path: "/login",
     name: "login",
     component: () => import("@/views/user/Login.vue"),
-    beforeEnter: checkLoggedOut
+    beforeEnter: checkLoggedOut,
   },
   {
     path: "/register",
     name: "register",
     component: () => import("@/views/user/Register.vue"),
-    beforeEnter: checkLoggedOut
+    beforeEnter: checkLoggedOut,
   },
   {
     path: "/user",
     name: "user",
     component: () => import("@/views/user/User.vue"),
-    beforeEnter: checkLoggedIn
+    beforeEnter: checkLoggedIn,
   },
   // volunteer
   {
     path: "/events",
     name: "volunteer events",
-    component: () => import("@/views/volunteer/Events.vue")
+    component: () => import("@/views/volunteer/Events.vue"),
   },
   {
     path: "/events/view/:id",
     name: "view event",
     component: () => import("@/views/volunteer/ViewEvent.vue"),
-    beforeEnter: checkLoggedIn
+    beforeEnter: checkLoggedIn,
   },
   // admin
   {
     path: "/admin",
     name: "admin console",
     component: () => import("@/views/admin/Console.vue"),
-    beforeEnter: checkAdmin
+    beforeEnter: checkAdmin,
+  },
+  {
+    path: "/admin/home",
+    name: "edit home text",
+    component: () => import("@/views/admin/EditHome.vue"),
+    beforeEnter: checkAdmin,
   },
   {
     path: "/admin/events",
     name: "manage events",
-    component: () => import("@/views/admin/Events.vue"),
-    beforeEnter: checkAdmin
+    component: () => import("@/views/admin/EventsList.vue"),
+    beforeEnter: checkAdmin,
   },
   {
     path: "/admin/events/edit/:id",
     name: "edit event",
     component: () => import("@/views/admin/EditEvent.vue"),
-    beforeEnter: checkAdmin
+    beforeEnter: checkAdmin,
   },
   // errors
   {
     path: "/unauthorized",
     name: "403",
-    component: () => import("@/views/error/Unauthorized.vue")
+    component: () => import("@/views/error/Unauthorized.vue"),
   },
   {
     path: "*",
     name: "404",
-    component: () => import("@/views/error/NotFound.vue")
-  }
+    component: () => import("@/views/error/NotFound.vue"),
+  },
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes
+  routes,
 });
 
 export default router;
