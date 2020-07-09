@@ -3,8 +3,16 @@
     <div class="inside">
       <h1>Admin Console</h1>
       <ul>
-        <li><router-link to="/admin/events">Manage Events</router-link></li>
-        <li><router-link to="/admin/home">Manage Home</router-link></li>
+        <li>
+          <router-link to="/admin/events">
+            Manage Events
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/admin/home">
+            Manage Home
+          </router-link>
+        </li>
       </ul>
     </div>
   </div>

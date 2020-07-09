@@ -2,7 +2,9 @@
   <div id="error-page">
     <h1>{{ code }} Error 🤖</h1>
     <h2>{{ description }}</h2>
-    <router-link to="/">Return Home</router-link>
+    <router-link to="/">
+      Return Home
+    </router-link>
   </div>
 </template>
 

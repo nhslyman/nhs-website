@@ -6,7 +6,11 @@
       <p>Start with secondary headings (##) here</p>
 
       <div class="action-button save">
-        <button type="submit" class="submit" @click="saveChanges">
+        <button
+          type="submit"
+          class="submit"
+          @click="saveChanges"
+        >
           <p>Save Changes</p>
         </button>
       </div>
@@ -29,7 +33,6 @@ export default class AdminConsole extends Vue {
     if (this.homeText == null) {
       return;
     }
-    console.log("save");
     this.$store.dispatch("text/setHome", this.homeText);
   }
 

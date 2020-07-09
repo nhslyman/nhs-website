@@ -1,15 +1,24 @@
 <template>
-  <div v-if="events != null" id="volunteer">
+  <div
+    v-if="events != null"
+    id="volunteer"
+  >
     <h1>Volunteer Oppurtunities</h1>
     <h2>Signed Up</h2>
-    <div v-for="event in regristeredEvents" :key="event.id">
+    <div
+      v-for="event in regristeredEvents"
+      :key="event.id"
+    >
       <EventPreview :event="event" />
     </div>
     <div v-if="regristeredEvents.length == 0">
       <p>You haven't selected any events... Yet.</p>
     </div>
     <h2>Avaliable</h2>
-    <div v-for="event in availableEvents" :key="event.id">
+    <div
+      v-for="event in availableEvents"
+      :key="event.id"
+    >
       <EventPreview :event="event" />
     </div>
     <div v-if="availableEvents.length == 0">

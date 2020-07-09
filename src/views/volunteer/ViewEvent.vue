@@ -1,5 +1,8 @@
 <template>
-  <div v-if="event" id="view-event">
+  <div
+    v-if="event"
+    id="view-event"
+  >
     <div class="inside">
       <h2>{{ event.name }}</h2>
 
@@ -7,7 +10,7 @@
         <div class="text">
           <div class="blurb">
             <p>{{ event.blurb }}</p>
-            <br />
+            <br>
             <div v-html="details" />
           </div>
           <div v-if="event.wholeShift">
@@ -17,19 +20,24 @@
 
         <div class="shifts">
           <h3>Select Shift(s)</h3>
-          <div v-for="shift in event.shifts" :key="shift.id">
+          <div
+            v-for="shift in event.shifts"
+            :key="shift.id"
+          >
             <div class="shift">
               <input
                 v-model="selectedShifts"
                 type="checkbox"
                 :value="shift.id"
                 :disabled="signedUp"
-              />
+              >
               <strong>{{ shift.time.humanReadable }}</strong>
               <div class="attendance">
                 <p>Signed Up: {{ shift.signedUp.length }}</p>
                 <p>Target: {{ shift.target }}</p>
-                <p v-if="shift.max != 0">Maximum: {{ shift.max }}</p>
+                <p v-if="shift.max != 0">
+                  Maximum: {{ shift.max }}
+                </p>
               </div>
             </div>
           </div>
@@ -60,7 +68,10 @@
             class="action-button"
             :class="{ disabled: selectedShifts.length == 0 }"
           >
-            <button :disabled="selectedShifts.length == 0" @click="signUp">
+            <button
+              :disabled="selectedShifts.length == 0"
+              @click="signUp"
+            >
               <p>Sign Up</p>
             </button>
           </div>

@@ -1,5 +1,8 @@
 <template>
-  <div class="date-form" @keyup="emit">
+  <div
+    class="date-form"
+    @keyup="emit"
+  >
     <input
       ref="month"
       v-model="month"
@@ -9,7 +12,7 @@
       @input="updateMonth"
       @blur="month = month.padStart(2, 0)"
       @keydown="blockChar"
-    />
+    >
 
     <span class="divider">/</span>
 
@@ -22,7 +25,7 @@
       @input="updateDay"
       @blur="day = day.padStart(2, 0)"
       @keydown="blockChar"
-    />
+    >
 
     <span class="divider">/</span>
     <input
@@ -33,7 +36,7 @@
       placeholder="yy"
       @blur="year = year.padStart(2, 0)"
       @keydown="blockChar"
-    />
+    >
   </div>
 </template>
 

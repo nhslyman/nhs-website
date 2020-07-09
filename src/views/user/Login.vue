@@ -2,7 +2,10 @@
   <div id="login">
     <div class="inside">
       <h1>Login</h1>
-      <form action="#" @submit.prevent="submit">
+      <form
+        action="#"
+        @submit.prevent="submit"
+      >
         <div class="group">
           <label for="email">
             Email
@@ -18,7 +21,7 @@
               placeholder="Email"
               required
               autofocus
-            />
+            >
           </div>
         </div>
 
@@ -36,12 +39,15 @@
               autocomplete="current-password"
               placeholder="Password"
               required
-            />
+            >
           </div>
         </div>
 
         <div>
-          <button type="submit" class="submit">
+          <button
+            type="submit"
+            class="submit"
+          >
             <p>Login</p>
           </button>
         </div>
@@ -53,7 +59,10 @@
         </router-link>
       </div>
 
-      <div v-if="error != ''" class="error">
+      <div
+        v-if="error != ''"
+        class="error"
+      >
         <p>{{ error }}</p>
       </div>
     </div>

@@ -1,5 +1,8 @@
 <template>
-  <div class="date-form" @keyup="emit">
+  <div
+    class="date-form"
+    @keyup="emit"
+  >
     <input
       ref="hour"
       v-model="hour"
@@ -8,7 +11,7 @@
       placeholder="hh"
       @input="updateHour"
       @keydown="blockChar"
-    />
+    >
 
     <span class="divider">:</span>
 
@@ -20,7 +23,7 @@
       placeholder="mm"
       @blur="minute = minute.padStart(2, '0')"
       @keydown="blockChar"
-    />
+    >
 
     <button
       class="input period"

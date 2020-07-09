@@ -2,7 +2,10 @@
   <div id="register">
     <div class="inside">
       <h1>Register</h1>
-      <form action="#" @submit.prevent="submit">
+      <form
+        action="#"
+        @submit.prevent="submit"
+      >
         <div class="group">
           <label for="firstName">
             First Name
@@ -18,7 +21,7 @@
               placeholder="First Name"
               required
               autofocus
-            />
+            >
           </div>
         </div>
 
@@ -36,7 +39,7 @@
               autocomplete="family-name"
               placeholder="Last Name"
               required
-            />
+            >
           </div>
         </div>
 
@@ -54,7 +57,7 @@
               autocomplete="email"
               placeholder="Email"
               required
-            />
+            >
           </div>
         </div>
 
@@ -72,7 +75,7 @@
               autocomplete="new-password"
               placeholder="Password"
               required
-            />
+            >
           </div>
         </div>
 
@@ -90,18 +93,24 @@
               autocomplete="new-password"
               placeholder="Comfirm Password"
               required
-            />
+            >
           </div>
         </div>
 
         <div>
-          <button type="submit" class="submit">
+          <button
+            type="submit"
+            class="submit"
+          >
             <p>Register</p>
           </button>
         </div>
       </form>
 
-      <div v-if="error != ''" class="error">
+      <div
+        v-if="error != ''"
+        class="error"
+      >
         <p>{{ error }}</p>
       </div>
     </div>

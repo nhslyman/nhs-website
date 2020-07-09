@@ -7,14 +7,20 @@
         :value="contents"
         @input="edited"
       />
-      <div id="preview" ref="preview" v-html="compiledMarkdown" />
+      <div
+        id="preview"
+        ref="preview"
+        v-html="compiledMarkdown"
+      />
     </div>
     <p>
       This field is Markdown that will be rendered as HTML. For formatting
       rules, read
-      <a href="https://www.markdownguide.org/basic-syntax/" target="_blank">
-        here</a
-      >. Use two spaces instead of tab.
+      <a
+        href="https://www.markdownguide.org/basic-syntax/"
+        target="_blank"
+      >
+        here</a>. Use two spaces instead of tab.
     </p>
   </div>
 </template>

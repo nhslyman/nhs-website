@@ -5,7 +5,6 @@ module.exports = {
   },
   extends: [
     "plugin:vue/recommended",
-    "@vue/prettier",
     "@vue/typescript",
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended"

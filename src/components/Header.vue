@@ -2,7 +2,10 @@
   <div id="nav">
     <div id="inside">
       <div id="logo">
-        <img alt="Lyman NHS Logo" src="../assets/logo.svg" />
+        <img
+          alt="Lyman NHS Logo"
+          src="../assets/logo.svg"
+        >
         <router-link to="/">
           <h1>Lyman NHS</h1>
         </router-link>
@@ -19,17 +22,30 @@
               </template>
             </div>
             <div class="dropdown-content">
-              <router-link v-if="admin" to="/admin">Admin Console</router-link>
-              <router-link to="/user">Manage Account</router-link>
-              <button @click="signOut">Sign out</button>
+              <router-link
+                v-if="admin"
+                to="/admin"
+              >
+                Admin Console
+              </router-link>
+              <router-link to="/user">
+                Manage Account
+              </router-link>
+              <button @click="signOut">
+                Sign out
+              </button>
             </div>
           </div>
         </template>
         <template v-else>
           <p>
-            <router-link to="/login">Login</router-link>
+            <router-link to="/login">
+              Login
+            </router-link>
             <span> or </span>
-            <router-link to="/register">Register</router-link>
+            <router-link to="/register">
+              Register
+            </router-link>
           </p>
         </template>
       </div>

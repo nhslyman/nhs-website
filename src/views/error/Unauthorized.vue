@@ -1,5 +1,8 @@
 <template>
-  <ErrorPage code="403" description="Access Denied: Unauthorized" />
+  <ErrorPage
+    code="403"
+    description="Access Denied: Unauthorized"
+  />
 </template>
 
 <script lang="ts">

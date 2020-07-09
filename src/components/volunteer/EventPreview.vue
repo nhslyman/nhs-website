@@ -14,13 +14,18 @@
         </div>
 
         <div class="shifts">
-          <div v-for="shift in event.shifts" :key="shift.id">
+          <div
+            v-for="shift in event.shifts"
+            :key="shift.id"
+          >
             <div class="shift">
               <strong>{{ shift.time.humanReadable }}</strong>
               <div class="attendance">
                 <p>Signed Up: {{ shift.signedUp.length }}</p>
                 <p>Target: {{ shift.target }}</p>
-                <p v-if="shift.max != 0">Maximum: {{ shift.max }}</p>
+                <p v-if="shift.max != 0">
+                  Maximum: {{ shift.max }}
+                </p>
               </div>
             </div>
           </div>

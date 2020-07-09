@@ -1,19 +1,29 @@
 <template>
-  <div id="shift-editor" @keyup="emit">
+  <div
+    id="shift-editor"
+    @keyup="emit"
+  >
     <div class="action-button new">
       <button @click="newShift()">
         <p>New Shift</p>
       </button>
     </div>
 
-    <div v-for="(shift, index) in shifts" :key="shift.id" class="shift">
+    <div
+      v-for="(shift, index) in shifts"
+      :key="shift.id"
+      class="shift"
+    >
       <div class="fields">
         <div class="group">
           <label for="date">
             <h3>Date</h3>
           </label>
           <div>
-            <DateForm v-model="shift.time.day" name="date" />
+            <DateForm
+              v-model="shift.time.day"
+              name="date"
+            />
           </div>
         </div>
 
@@ -22,7 +32,10 @@
             <h3>Start Time</h3>
           </label>
           <div>
-            <TimeForm v-model="shift.time.startTime" name="start-time" />
+            <TimeForm
+              v-model="shift.time.startTime"
+              name="start-time"
+            />
           </div>
         </div>
 
@@ -31,7 +44,10 @@
             <h3>End Time</h3>
           </label>
           <div>
-            <TimeForm v-model="shift.time.endTime" name="end-time" />
+            <TimeForm
+              v-model="shift.time.endTime"
+              name="end-time"
+            />
           </div>
         </div>
 
@@ -47,7 +63,7 @@
               name="target"
               min="0"
               @keydown="blockChar"
-            />
+            >
           </div>
         </div>
 
@@ -63,7 +79,7 @@
               name="max"
               min="0"
               @keydown="blockChar"
-            />
+            >
           </div>
         </div>
       </div>
@@ -74,9 +90,13 @@
         </button>
       </div>
     </div>
-    <p class="disclaimer">If no max, put 0</p>
-    <br />
-    <p class="disclaimer">(Shifts are sorted automatically on save)</p>
+    <p class="disclaimer">
+      If no max, put 0
+    </p>
+    <br>
+    <p class="disclaimer">
+      (Shifts are sorted automatically on save)
+    </p>
   </div>
 </template>
 

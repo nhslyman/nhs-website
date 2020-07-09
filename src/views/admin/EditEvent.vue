@@ -1,5 +1,8 @@
 <template>
-  <div v-if="event" id="edit-event">
+  <div
+    v-if="event"
+    id="edit-event"
+  >
     <div class="inside">
       <h1>Edit Event</h1>
       <div class="form">
@@ -15,7 +18,7 @@
               class="form-control name-editor"
               name="name"
               placeholder="Name"
-            />
+            >
           </div>
         </div>
 
@@ -64,13 +67,17 @@
               v-model="event.wholeShift"
               type="checkbox"
               name="wholeShift"
-            />
+            >
             <label for="wholeShift"> Must Attend Entire Shift</label>
           </div>
         </div>
 
         <div class="action-button save">
-          <button type="submit" class="submit" @click="saveChanges">
+          <button
+            type="submit"
+            class="submit"
+            @click="saveChanges"
+          >
             <p>Save Changes</p>
           </button>
         </div>
@@ -99,8 +106,8 @@ import ResizeAuto from "@/components/util/ResizeAuto.vue";
   components: {
     MDEditor,
     ShiftsEditor,
-    ResizeAuto
-  }
+    ResizeAuto,
+  },
 })
 export default class EditEvent extends Vue {
   event: EventInfo | null = null;
@@ -111,7 +118,7 @@ export default class EditEvent extends Vue {
 
   get index(): number {
     return this.events.findIndex(
-      event => event.id === this.$route.params["id"]
+      (event) => event.id === this.$route.params["id"]
     );
   }
 
@@ -123,7 +130,7 @@ export default class EditEvent extends Vue {
     this.sortShifts();
     this.$store.dispatch("events/setEvent", {
       eventID: this.event.id,
-      event: this.event
+      event: this.event,
     });
   }
 

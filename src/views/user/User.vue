@@ -2,7 +2,10 @@
   <div id="register">
     <div class="inside">
       <h1>Manage Account Info</h1>
-      <form action="#" @submit.prevent="updateName">
+      <form
+        action="#"
+        @submit.prevent="updateName"
+      >
         <h2>Edit Name</h2>
         <div class="group">
           <label for="firstName">
@@ -19,7 +22,7 @@
               placeholder="First Name"
               required
               autofocus
-            />
+            >
           </div>
         </div>
 
@@ -37,25 +40,37 @@
               autocomplete="family-name"
               placeholder="Last Name"
               required
-            />
+            >
           </div>
         </div>
 
         <div>
-          <button type="submit" class="submit">
+          <button
+            type="submit"
+            class="submit"
+          >
             <p>Update</p>
           </button>
         </div>
 
-        <div v-if="nameError != ''" class="error">
+        <div
+          v-if="nameError != ''"
+          class="error"
+        >
           <p>{{ nameError }}</p>
         </div>
-        <div v-if="nameSuccess" class="success">
+        <div
+          v-if="nameSuccess"
+          class="success"
+        >
           <p>Name Updated!</p>
         </div>
       </form>
 
-      <form action="#" @submit.prevent="updateEmail">
+      <form
+        action="#"
+        @submit.prevent="updateEmail"
+      >
         <h2>Change Email</h2>
         <div class="group">
           <label for="email">
@@ -71,25 +86,37 @@
               autocomplete="email"
               placeholder="Email"
               required
-            />
+            >
           </div>
         </div>
 
         <div>
-          <button type="submit" class="submit">
+          <button
+            type="submit"
+            class="submit"
+          >
             <p>Update</p>
           </button>
         </div>
 
-        <div v-if="emailError != ''" class="error">
+        <div
+          v-if="emailError != ''"
+          class="error"
+        >
           <p>{{ emailError }}</p>
         </div>
-        <div v-if="emailSuccess" class="success">
+        <div
+          v-if="emailSuccess"
+          class="success"
+        >
           <p>Email Updated!</p>
         </div>
       </form>
 
-      <form action="#" @submit.prevent="updatePassword">
+      <form
+        action="#"
+        @submit.prevent="updatePassword"
+      >
         <h2>Change Password</h2>
 
         <input
@@ -98,7 +125,7 @@
           autocomplete="email"
           :value="user.email"
           style="display:none"
-        />
+        >
 
         <div class="group">
           <label for="password">
@@ -114,7 +141,7 @@
               autocomplete="current-password"
               placeholder="Current Password"
               required
-            />
+            >
           </div>
         </div>
 
@@ -132,7 +159,7 @@
               autocomplete="new-password"
               placeholder="New Password"
               required
-            />
+            >
           </div>
         </div>
 
@@ -150,20 +177,29 @@
               autocomplete="new-password"
               placeholder="Comfirm Password"
               required
-            />
+            >
           </div>
         </div>
 
         <div>
-          <button type="submit" class="submit">
+          <button
+            type="submit"
+            class="submit"
+          >
             <p>Update</p>
           </button>
         </div>
 
-        <div v-if="passwordError != ''" class="error">
+        <div
+          v-if="passwordError != ''"
+          class="error"
+        >
           <p>{{ passwordError }}</p>
         </div>
-        <div v-if="passwordSuccess" class="success">
+        <div
+          v-if="passwordSuccess"
+          class="success"
+        >
           <p>Password Updated!</p>
         </div>
       </form>

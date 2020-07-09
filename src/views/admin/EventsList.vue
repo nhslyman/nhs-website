@@ -4,15 +4,21 @@
       <h1>Manage Events</h1>
       <div class="content">
         <h2>Future</h2>
-        <div v-for="event in futureEvents" :key="event.id">
-          <hr />
+        <div
+          v-for="event in futureEvents"
+          :key="event.id"
+        >
+          <hr>
           <EventListItem :event="event" />
         </div>
 
-        <hr />
+        <hr>
         <h2>Past</h2>
-        <div v-for="event in pastEvents" :key="event.id">
-          <hr />
+        <div
+          v-for="event in pastEvents"
+          :key="event.id"
+        >
+          <hr>
           <EventListItem :event="event" />
         </div>
       </div>
