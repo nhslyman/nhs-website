@@ -44,7 +44,7 @@
         </div>
       </div>
 
-      <template v-if="tooClose">
+      <template v-if="eventStatus === 'closed'">
         <div class="too-late-text">
           <p>
             Signups for this event are now locked in.
@@ -55,7 +55,7 @@
           </p>
         </div>
       </template>
-      <template v-else>
+      <template v-else-if="eventStatus === 'open'">
         <template v-if="signedUp">
           <div class="action-button unregister">
             <button @click="unregister">
@@ -83,7 +83,7 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { EventInfo, Shift, RSVP, UserAttributes } from "@/models";
+import { EventInfo, Shift, RSVP, UserAttributes, PlainDate } from "@/models";
 import marked from "marked";
 
 import EventPreview from "@/components/volunteer/EventPreview.vue";
@@ -192,35 +192,28 @@ export default class ViewEvent extends Vue {
     return this.rsvp != undefined;
   }
 
-  get tooClose(): boolean {
+  get eventStatus(): String {
+    // TODO: log errors
     if (this.event == undefined) {
-      return false;
+      return "error";
     }
     if (this.event.shifts.length == 0) {
-      return false;
+      return "error";
     }
 
     const firstShift = this.event.shifts[0].time.day;
-    const currentDate = new Date();
+    const currentDate = PlainDate.now();
 
-    if (firstShift.year < currentDate.getFullYear()) {
-      return true;
+    const diff = PlainDate.diff(firstShift, currentDate);
+    if (diff > 1) {
+      // first shift is more than one whole day away
+      return "open";
+    } if (diff < 0) {
+      // event is in the past
+      return "past";
     } else {
-      if (
-        firstShift.year == currentDate.getFullYear() &&
-        firstShift.month < currentDate.getMonth() + 1
-      ) {
-        return true;
-      } else {
-        if (
-          firstShift.month == currentDate.getMonth() + 1 &&
-          firstShift.day - currentDate.getDate() <= 1
-        ) {
-          return true;
-        } else {
-          return false;
-        }
-      }
+      // event is closed off
+      return "closed";
     }
   }
 

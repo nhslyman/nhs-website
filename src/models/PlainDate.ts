@@ -24,7 +24,11 @@ class PlainDate {
     return parseInt(this.yy + this.mm + this.dd);
   }
 
-  pad(num: number): string {
+  get stdDate() {
+    return new Date(this.year, this.month - 1, this.day)
+  }
+
+  private pad(num: number): string {
     if (num == 0) {
       return "00";
     }
@@ -45,6 +49,11 @@ class PlainDate {
       yesterday.getMonth() + 1,
       yesterday.getFullYear()
     );
+  }
+
+  static diff(first: PlainDate, second: PlainDate): Number {
+    var diff =  Math.floor(( first.stdDate.valueOf() - second.stdDate.valueOf() ) / 86400000);
+    return diff
   }
 }
 

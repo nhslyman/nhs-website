@@ -26,7 +26,7 @@ import MDEditor from "@/components/inputs/MDEditor.vue";
 @Component({
   components: { MDEditor },
 })
-export default class AdminConsole extends Vue {
+export default class EditHome extends Vue {
   homeText: String | null = null;
 
   saveChanges() {

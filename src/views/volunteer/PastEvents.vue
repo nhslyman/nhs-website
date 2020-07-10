@@ -3,8 +3,7 @@
     v-if="events != null"
     id="events"
   >
-    <h1>Volunteer Oppurtunities</h1>
-    <h2>Signed Up</h2>
+    <h1>Your Past Events</h1>
     <div
       v-for="event in regristeredEvents"
       :key="event.id"
@@ -12,17 +11,7 @@
       <EventPreview :event="event" />
     </div>
     <div v-if="regristeredEvents.length == 0">
-      <p>You haven't selected any events... Yet.</p>
-    </div>
-    <h2>Avaliable</h2>
-    <div
-      v-for="event in availableEvents"
-      :key="event.id"
-    >
-      <EventPreview :event="event" />
-    </div>
-    <div v-if="availableEvents.length == 0">
-      <p>No more events avaliable</p>
+      <p>You haven't participated in any events... Yet.</p>
     </div>
   </div>
 </template>
@@ -36,9 +25,9 @@ import EventPreview from "@/components/volunteer/EventPreview.vue";
 @Component({
   components: { EventPreview }
 })
-export default class Events extends Vue {
+export default class PastEvents extends Vue {
   get events(): EventInfo[] {
-    return this.$store.getters["events/sortedFutureEvents"];
+    return this.$store.getters["events/sortedPastEvents"];
   }
 
   get attributes(): UserAttributes {
@@ -57,15 +46,6 @@ export default class Events extends Vue {
       this.signedUpEvents.some(
         signedUpEvent => signedUpEvent.eventID == event.id
       )
-    );
-  }
-
-  get availableEvents() {
-    return this.events.filter(
-      event =>
-        !this.signedUpEvents.some(
-          signedUpEvent => signedUpEvent.eventID == event.id
-        )
     );
   }
 }

@@ -28,6 +28,12 @@
               >
                 Admin Console
               </router-link>
+              <router-link
+                v-if="admin"
+                to="/events/past"
+              >
+                Your Past Events
+              </router-link>
               <router-link to="/user">
                 Manage Account
               </router-link>
