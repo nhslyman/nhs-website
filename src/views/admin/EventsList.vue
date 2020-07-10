@@ -1,7 +1,15 @@
 <template>
   <div id="admin-console">
     <div class="inside">
-      <h1>Manage Events</h1>
+      <div id="title-row">
+        <h1>Manage Events</h1>
+        <div id="new-button">
+          <router-link :to="'/admin/events/new/'">
+            <p>New Event</p>
+          </router-link>
+        </div>
+      </div>
+      
       <div class="content">
         <h2>Future</h2>
         <div
@@ -63,60 +71,32 @@ export default class Events extends Vue {
   }
 
   .content {
-    margin-top: 0.25em;
-  }
-
-  .spacer {
-    height: 10px;
-    width: 10px;
-  }
-
-  .event {
-    display: flex;
-    flex-direction: column;
-    margin-left: auto;
-    margin-right: auto;
-    align-items: center;
-
     @media (min-width: 500px) {
-      flex-wrap: nowrap;
-      flex-direction: row;
+      margin-top: 0.5em;
     }
 
-    .edit {
-      margin: 10px;
-    }
+    margin-top: 1.5em;
+  }
 
-    .event-text {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      width: 50%;
+  #title-row {
+    @media (min-width: 500px) {
+      height: 3em;
 
-      @media (min-width: 500px) {
-        flex-wrap: wrap;
-        flex-direction: row;
-        width: auto;
+      h1 {
+        float: left;
+      }
+
+      #new-button {
+        float: right;
       }
     }
 
-    .buttons {
-      display: flex;
-      flex-direction: row;
+    #new-button {
+      @include button;
 
-      @media (min-width: 500px) {
-        flex-direction: column;
-      }
-
-      .button {
-        @include button;
-        width: 5em;
-
-        a {
-          color: white;
-          text-decoration: none;
-        }
+      a {
+        color: white;
+        text-decoration: none;
       }
     }
   }

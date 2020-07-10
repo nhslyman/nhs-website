@@ -17,6 +17,10 @@ export default class Events extends VuexModule {
   private events: EventDict = {};
   private unsubscribes: ActionDict = {};
 
+  get eventsDict() {
+    return this.events;
+  }
+
   // TODO: move to query to reduce database reads
   get futureEvents(): EventInfo[] {
     let array = Object.values(this.events);

@@ -1,5 +1,15 @@
 <template>
   <div class="event">
+    <div class="event-text">
+      <p>
+        <strong>{{ event.name }}</strong>
+      </p>
+      <span class="spacer" />
+      <p>{{ event.shifts[0].time.day.humanReadable }}</p>
+    </div>
+
+    <span class="spacer" />
+
     <div class="buttons">
       <div class="button">
         <router-link :to="'/admin/events/view/' + event.id">
@@ -12,14 +22,6 @@
           <p>edit</p>
         </router-link>
       </div>
-    </div>
-    <span class="spacer" />
-    <div class="event-text">
-      <p>
-        <strong>{{ event.name }}</strong>
-      </p>
-      <span class="spacer" />
-      <p>{{ event.shifts[0].time.day.humanReadable }}</p>
     </div>
   </div>
 </template>
@@ -39,6 +41,7 @@ export default class EventListItem extends Vue {
 @import "@/shared-style/mixins.scss";
 
 .event {
+  padding: 0 1em;
   display: flex;
   flex-direction: column;
   margin-left: auto;
@@ -48,6 +51,7 @@ export default class EventListItem extends Vue {
   @media (min-width: 500px) {
     flex-wrap: nowrap;
     flex-direction: row;
+    justify-content: space-between;
   }
 
   .edit {
@@ -59,13 +63,18 @@ export default class EventListItem extends Vue {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    width: 50%;
+    width: 90%;
 
     @media (min-width: 500px) {
       flex-wrap: wrap;
       flex-direction: row;
       width: auto;
     }
+  }
+
+  .spacer {
+    height: 10px;
+    width: 10px;
   }
 
   .buttons {

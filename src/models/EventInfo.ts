@@ -21,6 +21,10 @@ class EventInfo {
   get id() {
     return this._id;
   }
+
+  static get empty(): EventInfo {
+    return new EventInfo("", "", "", [], false);
+  }
 }
 
 export { EventInfo };

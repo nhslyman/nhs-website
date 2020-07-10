@@ -5,73 +5,12 @@
   >
     <div class="inside">
       <h1>Edit Event</h1>
-      <div class="form">
-        <div class="group">
-          <label for="name">
-            <h2>Event Name</h2>
-          </label>
+      
+      <EventEditor
+        v-model="event"
+      />
 
-          <div>
-            <input
-              v-model="event.name"
-              type="text"
-              class="form-control name-editor"
-              name="name"
-              placeholder="Name"
-            >
-          </div>
-        </div>
-
-        <div class="group">
-          <label for="blurb">
-            <h2>Blurb</h2>
-          </label>
-
-          <div>
-            <ResizeAuto>
-              <template v-slot:default="{ resize }">
-                <textarea
-                  ref="blurb"
-                  v-model="event.blurb"
-                  class="form-control"
-                  name="blurb"
-                  @input="resize"
-                />
-              </template>
-            </ResizeAuto>
-          </div>
-        </div>
-
-        <div class="group">
-          <label for="details">
-            <h2>Details</h2>
-          </label>
-
-          <div>
-            <MDEditor v-model="event.details" />
-            <p>Please don't use headings (#) here</p>
-          </div>
-        </div>
-
-        <div class="group">
-          <label for="shifts">
-            <h2>Shifts</h2>
-          </label>
-
-          <div>
-            <ShiftsEditor v-model="event.shifts" />
-          </div>
-
-          <div>
-            <input
-              v-model="event.wholeShift"
-              type="checkbox"
-              name="wholeShift"
-            >
-            <label for="wholeShift"> Must Attend Entire Shift</label>
-          </div>
-        </div>
-
+      <div id="buttons">
         <div class="action-button save">
           <button
             type="submit"
@@ -81,12 +20,11 @@
             <p>Save Changes</p>
           </button>
         </div>
-      </div>
-
-      <div class="action-button delete">
-        <button @click="deleteEvent">
-          <p>Delete Event</p>
-        </button>
+        <div class="action-button delete">
+          <button @click="deleteEvent">
+            <p>Delete Event</p>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -94,51 +32,67 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { EventInfo } from "@/models";
+import { mapGetters } from "vuex";
 import { deepCopy } from "@/util";
 import { plainToClass } from "class-transformer";
 
-import MDEditor from "@/components/inputs/MDEditor.vue";
-import ShiftsEditor from "@/components/admin/ShiftsEditor.vue";
-import ResizeAuto from "@/components/util/ResizeAuto.vue";
+import { EventInfo } from "@/models";
+
+import EventEditor from "@/components/admin/EventEditor.vue"
+
+interface EventDict {
+  [key: string]: EventInfo;
+}
 
 @Component({
   components: {
-    MDEditor,
-    ShiftsEditor,
-    ResizeAuto,
+    EventEditor
   },
+  computed: {
+    ...mapGetters("events", {
+      events: "eventsDict"
+    })
+  }
 })
-export default class EditEvent extends Vue {
-  event: EventInfo | null = null;
+export default class NewEvent extends Vue {
+  private editedEvent: EventInfo | null = null
 
-  get events(): EventInfo[] {
-    return this.$store.getters["events/sortedEvents"];
+  get selectedID() {
+    return this.$route.params["id"]
   }
 
-  get index(): number {
-    return this.events.findIndex(
-      (event) => event.id === this.$route.params["id"]
+  events!: EventDict;
+
+  get event(): EventInfo {
+    // make sure its not still refrencing the vuex data
+    const event = plainToClass(
+      EventInfo,
+      deepCopy<EventInfo>(this.events[this.selectedID])
     );
+    return event;
+  }
+
+  set event(value: EventInfo) {
+    this.editedEvent = value;
   }
 
   // buttons
   saveChanges() {
-    if (this.event == null) {
+    if (this.editedEvent == null) {
       return;
     }
     this.sortShifts();
     this.$store.dispatch("events/setEvent", {
-      eventID: this.event.id,
-      event: this.event,
+      eventID: this.editedEvent.id,
+      event: this.editedEvent,
     });
   }
 
   sortShifts() {
-    if (this.event == null) {
+    if (this.editedEvent == null) {
       return;
     }
-    this.event.shifts = this.event.shifts.sort((a, b) => {
+    this.editedEvent.shifts = this.editedEvent.shifts.sort((a, b) => {
       if (a.time.day.comparable > b.time.day.comparable) {
         return 1;
       } else if (a.time.day.comparable < b.time.day.comparable) {
@@ -162,19 +116,6 @@ export default class EditEvent extends Vue {
       // TODO: Cloud Function
     }
   }
-
-  // load copy of event
-  mounted() {
-    this.event = plainToClass(
-      EventInfo,
-      deepCopy<EventInfo>(this.events[this.index])
-    );
-  }
-
-  @Watch("events")
-  indexChanged() {
-    this.event = this.events[this.index];
-  }
 }
 </script>
 
@@ -187,39 +128,23 @@ export default class EditEvent extends Vue {
   @include std-size;
   @include std-position;
 
-  .name-editor {
-    width: 100%;
-  }
+  #buttons {
+    margin: 2.25em;
 
-  textarea {
-    @include rounded;
-    font-family: "Avenir", Helvetica, Arial, sans-serif;
-    font-size: 15px;
-    background-color: $insetEditor;
-    width: 100%;
-    resize: none;
-    box-sizing: border-box;
-    padding: 10px 20px;
-    border: 1px solid $boarderColor;
-  }
+    .action-button {
+      @include button;
+      margin-top: 1.25em;
+      margin-left: auto;
+      margin-right: auto;
 
-  .group {
-    margin-bottom: 1em;
-  }
+      p {
+        padding: 0.25em 0.5em;
+        color: white;
+      }
 
-  .action-button {
-    @include button;
-    margin-top: 1.6em;
-    margin-left: auto;
-    margin-right: auto;
-
-    p {
-      padding: 0.25em 0.5em;
-      color: white;
-    }
-
-    &.delete {
-      @include scary-button-color;
+      &.delete {
+        @include scary-button-color;
+      }
     }
   }
 }
