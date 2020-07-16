@@ -106,6 +106,12 @@ const routes = [
     beforeEnter: checkAdmin,
   },
   {
+    path: "/admin/events/users/:id",
+    name: "users for event",
+    component: () => import("@/views/admin/EventUsers.vue"),
+    beforeEnter: checkAdmin,
+  },
+  {
     path: "/admin/events/edit/:id",
     name: "edit event",
     component: () => import("@/views/admin/EditEvent.vue"),

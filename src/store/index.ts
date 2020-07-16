@@ -5,6 +5,7 @@ import VuexPersist from "vuex-persist";
 import User from "@/store/modules/User";
 import Events from "@/store/modules/Events";
 import Text from "@/store/modules/Text";
+import Users from "@/store/modules/Users";
 
 import { RSVP } from "@/models";
 
@@ -26,13 +27,15 @@ const store = new Vuex.Store<State>({
   modules: {
     user: User,
     events: Events,
-    text: Text
+    text: Text,
+    users: Users,
   },
   actions: {
     setListeners(context: any) {
       context.dispatch("user/setListener");
       context.dispatch("events/setListeners");
       context.dispatch("text/setListeners");
+      context.dispatch("users/setListeners");
     },
     async signUpForEvent(context: any, payload: RSVP) {
       await context.dispatch("user/signUpForEvent", payload);

@@ -12,7 +12,7 @@
 
     <div class="buttons">
       <div class="button">
-        <router-link :to="'/admin/events/view/' + event.id">
+        <router-link :to="'/admin/events/users/' + event.id">
           <p>users</p>
         </router-link>
       </div>
