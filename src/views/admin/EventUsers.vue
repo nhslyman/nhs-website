@@ -15,7 +15,7 @@
           v-for="userId in shift.signedUp"
           :key="userId"
         >
-          <p>{{ nameFromID(userId) }}</p>
+          <UserListItem :user-id="userId" />
         </div>
       </div>
     </div>
@@ -30,6 +30,8 @@ import { plainToClass } from "class-transformer";
 
 import { EventInfo, UserAttributes } from "@/models";
 
+import UserListItem from "@/components/admin/UserListItem.vue";
+
 interface EventDict {
   [key: string]: EventInfo;
 }
@@ -38,7 +40,11 @@ interface UserDict {
   [key: string]: UserAttributes;
 }
 
-@Component
+@Component({
+  components: {
+    UserListItem
+  }
+})
 export default class NewEvent extends Vue {
   private editedEvent: EventInfo | null = null
 
@@ -49,14 +55,6 @@ export default class NewEvent extends Vue {
   get event() {
     let eventDict = this.$store.getters["events/eventsDict"] as EventDict;
     return eventDict[this.selectedID];
-  }
-
-  get usersDict(): UserDict {
-    return this.$store.getters["users/usersDict"]
-  }
-
-  nameFromID(id: string): string {
-    return this.usersDict[id].fullName;
   }
 }
 </script>
