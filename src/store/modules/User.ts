@@ -77,6 +77,8 @@ export default class User extends VuexModule {
       // set user
       if (userCred.user == null) {
         throw new Error("Account Registration Failed. Please Contact Support.");
+      } else {
+        userCred.user.sendEmailVerification();
       }
 
       // set attributes

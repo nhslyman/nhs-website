@@ -141,6 +141,9 @@ export default class Register extends Vue {
         firstName: this.form.firstName,
         lastName: this.form.lastName
       });
+      
+      this.$toaster.success("Account created! Check your email to verify your account.")
+
       this.$router.push("/");
     } catch (err) {
       this.$toaster.error(err.message)
