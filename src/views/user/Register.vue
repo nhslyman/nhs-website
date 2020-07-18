@@ -106,13 +106,6 @@
           </button>
         </div>
       </form>
-
-      <div
-        v-if="error != ''"
-        class="error"
-      >
-        <p>{{ error }}</p>
-      </div>
     </div>
   </div>
 </template>
@@ -150,7 +143,7 @@ export default class Register extends Vue {
       });
       this.$router.push("/");
     } catch (err) {
-      this.error = err.message;
+      this.$toaster.error(err.message)
     }
   }
 }

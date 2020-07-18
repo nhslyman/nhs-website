@@ -1,0 +1,167 @@
+.toaster {
+  // fix for min-height bug in IE
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  z-index: 10000;
+
+  // Positioning
+  &.top-right {
+    top: 10%;
+    right: 7%;
+  }
+
+  &.top-left {
+    top: 10%;
+    left: 7%;
+  }
+
+  &.top-center {
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &.bottom-right {
+    right: 5%;
+    bottom: 7%;
+  }
+
+  &.bottom-left {
+    left: 5%;
+    bottom: 7%;
+  }
+
+  &.bottom-center {
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 7%;
+  }
+
+  // fix positioning floating
+  &.top-left .toast,
+  &.bottom-left .toast {
+    float: left;
+  }
+
+  &.top-right .toast,
+  &.bottom-right .toast {
+    float: right;
+  }
+
+  // toast element styling
+  .toast {
+    font-family: "Avenir", Helvetica, Arial, sans-serif;
+    border-radius: 2px;
+    min-height: 38px;
+    line-height: 1.1em;
+    background-color: #353535;
+    padding: 6px 20px;
+    font-size: 15px;
+    font-weight: 300;
+    color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    top: 35px;
+    width: auto;
+    clear: both;
+    margin-top: 10px;
+    position: relative;
+    max-width: 100%;
+    height: auto;
+    word-break: normal;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: inherit;
+
+    &.success {
+      background: #4caf50;
+    }
+
+    &.error {
+      background: #f44336;
+    }
+
+    &.info {
+      background: #3f51b5;
+    }
+
+    // Toast Action Styling
+    .action {
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.8rem;
+      padding: 8px;
+      margin: 5px -7px 5px 7px;
+      border-radius: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      font-weight: 600;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .toaster {
+    min-width: 100%;
+
+    .toast:first-child {
+      margin-top: 0;
+    }
+
+    &.top-right {
+      top: 0;
+      right: 0;
+    }
+
+    &.top-left {
+      top: 0;
+      left: 0;
+    }
+
+    &.top-center {
+      top: 0;
+      left: 0;
+      transform: translateX(0);
+    }
+
+    &.bottom-right {
+      right: 0;
+      bottom: 0;
+    }
+
+    &.bottom-left {
+      left: 0;
+      bottom: 0;
+    }
+
+    &.bottom-center {
+      left: 0;
+      bottom: 0;
+      transform: translateX(0);
+    }
+
+    &.top-center,
+    &.bottom-center {
+      align-items: stretch !important;
+    }
+
+    &.top-right,
+    &.top-left,
+    &.bottom-left,
+    &.bottom-right {
+      .toast {
+        float: none;
+      }
+    }
+
+    .toast {
+      border-radius: 0;
+    }
+  }
+}

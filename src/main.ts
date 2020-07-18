@@ -21,6 +21,10 @@ firebase.auth().onAuthStateChanged(user => {
   store.dispatch("user/setUser", user);
 });
 
+// Add toast
+import Toaster from "@/toast";
+Vue.use(Toaster);
+
 // Create Vue Instance
 import "reflect-metadata"; // for class-transformer
 import Vue from "vue";
