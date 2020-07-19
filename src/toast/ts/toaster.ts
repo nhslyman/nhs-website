@@ -20,25 +20,27 @@ export class Toaster {
 
 
   // Showing
-  show(message: string, options?: ToastOptions): Toast {
+  success(message: string, duration?: number): Toast {
+    const options: ToastOptions = {
+      duration: duration,
+      type: "success"
+    };
     return this._show(message, options);
   }
 
-  success(message: string, options?: ToastOptions): Toast {
-    options = options || {};
-    options.type = "success";
+  info(message: string, duration?: number): Toast {
+    const options: ToastOptions = {
+      duration: duration,
+      type: "info"
+    };
     return this._show(message, options);
   }
 
-  info(message: string, options?: ToastOptions): Toast {
-    options = options || {};
-    options.type = "info";
-    return this._show(message, options);
-  }
-
-  error(message: string, options?: ToastOptions): Toast {
-    options = options || {};
-    options.type = "error";
+  error(message: string, duration?: number): Toast {
+    const options: ToastOptions = {
+      duration: duration,
+      type: "error"
+    };
     return this._show(message, options);
   }
 
@@ -63,7 +65,7 @@ export class Toaster {
   _show(message: string, options?: ToastOptions) {
     // singleton feature
     if(this.options.singleton && this.toasts.length > 0) {
-      this.toasts[this.toasts.length - 1].goAway(0);
+      this.toasts[this.toasts.length - 1].goAway();
     }
   
     let toast = new Toast(message, options ?? {}, this);

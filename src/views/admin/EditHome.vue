@@ -33,7 +33,9 @@ export default class EditHome extends Vue {
     if (this.homeText == null) {
       return;
     }
-    this.$store.dispatch("text/setHome", this.homeText);
+    this.$store.dispatch("text/setHome", this.homeText).then(() => {
+      this.$toaster.success("Home text saved!", 3500);
+    });
   }
 
   mounted() {

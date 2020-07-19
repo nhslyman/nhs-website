@@ -19,5 +19,4 @@ declare module 'vue/types/vue' {
 }
 
 export * from "./ts/toaster"
-export { ToastOptions, ToastType } from "./ts/toast"
 export default ToasterPlugin

@@ -10,30 +10,25 @@ export class Toast {
   el: HTMLElement;
 
   constructor(message: string, options: ToastOptions, toaster: Toaster) {
-    this.id      = UID();
+    this.id = UID();
     this.message = message;
     this.options = options;
     this.toaster = toaster;
-    this.el      = this.createElement(message, options);
+    this.el = this.createElement(message, options);
   }
 
-  goAway(delay: number) {
-    // Animate toast out
-    setTimeout( () => {
-
+  goAway() {
+    if (this.toaster.options.position && this.toaster.options.position.includes('bottom')) {
       // if the toast is on bottom set it as bottom animation
-      if(this.toaster.options.position && this.toaster.options.position.includes('bottom')) {
-        animations.animateOutBottom(this.el, () => {
-          this.toaster.remove(this.id, this.el);
-        })
-        return;
-      }
-
-        animations.animateOut(this.el, () => {
-          this.toaster.remove(this.id, this.el);
-        })
-
-    }, delay);
+      animations.animateOutBottom(this.el, () => {
+        this.toaster.remove(this.id, this.el);
+      })
+    } else {
+      // otherwise, go out the top
+      animations.animateOut(this.el, () => {
+        this.toaster.remove(this.id, this.el);
+      })
+    }
   }
 
   changeText(text: string) {
@@ -50,31 +45,36 @@ export class Toast {
     el.classList.add('toast');
     el.classList.add(options.type ?? "default");
     el.innerHTML = message;
-  
+
     // create and append dismiss action
     let action = document.createElement('a');
     action.classList.add('action');
     action.classList.add('ripple');
-    action.text = "ok"
+    action.text = "ok";
     el.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.goAway(0);
+      e.preventDefault();
+      this.goAway();
     })
-    el.appendChild(action)
-  
+    el.appendChild(action);
+
     return el;
   }
-  
+
   display() {
     // Add toast to parent
     const container = this.toaster.container;
     container.appendChild(this.el);
-    
+
     // Animate toast in
     this.el.style.opacity = "0";
-    animations.animateIn(this.el)
+    animations.animateIn(this.el);
+
+    // set remove after duration if duration isn't null 
+    if (this.options.duration) {
+      setTimeout(() => { this.goAway() }, this.options.duration);
+    }
   }
-  
+
 }
 
 export type ToastType = 'success' | 'info' | 'error' | 'default'

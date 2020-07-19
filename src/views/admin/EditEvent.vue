@@ -85,6 +85,8 @@ export default class NewEvent extends Vue {
     this.$store.dispatch("events/setEvent", {
       eventID: this.editedEvent.id,
       event: this.editedEvent,
+    }).then(() => {
+      this.$toaster.success("Event saved!", 3500);
     });
   }
 

@@ -61,9 +61,7 @@ export default {
     })
   },
   clearAnimation: (toasts: Toast[]) => {
-
     let timeline = anime.timeline();
-
     toasts.forEach((t) => {
       timeline.add({
         targets: t.el,

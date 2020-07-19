@@ -43,6 +43,7 @@ export default class EditEvent extends Vue {
       eventID: this.event.id,
       event: this.event,
     }).then(_ => {
+      this.$toaster.success("Event created!");
       this.$router.push("/admin/events");
     })
   }
