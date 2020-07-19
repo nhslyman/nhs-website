@@ -55,7 +55,10 @@
 
       <div id="toNew">
         <router-link to="/register">
-          <p>New Here? Create a new account</p>
+          <p>New here?</p>
+        </router-link>
+        <router-link to="/forgot">
+          <p>Forgot your password?</p>
         </router-link>
       </div>
 
@@ -70,7 +73,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class Login extends Vue {

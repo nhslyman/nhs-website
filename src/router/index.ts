@@ -57,6 +57,12 @@ const routes = [
     beforeEnter: checkLoggedOut,
   },
   {
+    path: "/forgot",
+    name: "forgot password",
+    component: () => import("@/views/user/Forgot.vue"),
+    beforeEnter: checkLoggedOut,
+  },
+  {
     path: "/user",
     name: "user",
     component: () => import("@/views/user/User.vue"),
