@@ -1,11 +1,15 @@
-import { Vue, VueConstructor } from 'vue/types/vue'
-import { PluginFunction } from "vue"
-import { Toaster } from "./ts/toaster"
-import { ToastOptions } from "./ts/toast"
+import { VueConstructor } from 'vue/types/vue'
+import { Toaster, ToasterOptions } from "./ts/toaster"
+import ToastComponent from './toast.vue';
 
+export function ToasterPlugin(vue: VueConstructor, options?: ToasterOptions) {
+    if (!options) {
+        options = {};
+    }
 
-declare class ToasterPlugin {
-  static install: PluginFunction<ToastOptions>
+    const toaster = new Toaster(options);
+    vue.component('toaster', ToastComponent);
+    vue.toaster = vue.prototype.$toaster = toaster;
 }
 
 declare module 'vue/types/vue' {
@@ -19,4 +23,3 @@ declare module 'vue/types/vue' {
 }
 
 export * from "./ts/toaster"
-export default ToasterPlugin

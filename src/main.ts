@@ -22,8 +22,8 @@ firebase.auth().onAuthStateChanged(user => {
 });
 
 // Add toast
-import Toaster from "@/toast";
-Vue.use(Toaster);
+import { ToasterPlugin } from "@/toast";
+Vue.use(ToasterPlugin);
 
 // Create Vue Instance
 import "reflect-metadata"; // for class-transformer
