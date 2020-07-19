@@ -1,13 +1,23 @@
 <template>
   <div id="nav">
     <div id="inside">
-      <div id="logo">
-        <img
-          alt="Lyman NHS Logo"
-          src="../assets/logo.svg"
-        >
+      <img
+        id="logo"
+        alt="Lyman NHS Logo"
+        src="../assets/logo.svg"
+      >
+      <div id="links">
         <router-link to="/">
-          <h1>Lyman NHS</h1>
+          <p>Home</p>
+        </router-link>
+        <router-link to="/events">
+          <p>Events</p>
+        </router-link>
+        <router-link
+          v-if="admin"
+          to="/admin"
+        >
+          Admin Console
         </router-link>
       </div>
       <div id="user">
@@ -22,12 +32,6 @@
               </template>
             </div>
             <div class="dropdown-content">
-              <router-link
-                v-if="admin"
-                to="/admin"
-              >
-                Admin Console
-              </router-link>
               <router-link
                 v-if="admin"
                 to="/events/past"
@@ -101,38 +105,40 @@ export default class Header extends Vue {
   }
 
   #inside {
-    padding: 20px;
+    padding: 1.5em 0.25em;
     display: flex;
     align-items: center;
+    justify-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+
+    @media (min-width: $maxMobileSize) {
+      flex-direction: row;
+      padding: 1.5em 2.5em;
+    }
   }
 
   #logo {
+    max-height: 3em;
+  }
+
+  #links {
     display: flex;
-    float: left;
-    align-items: center;
-    text-align: center;
+    flex-direction: row;
 
-    img {
-      max-height: 3em;
-
-      @media (min-width: $maxMobileSize) {
-        max-height: 4em;
-      }
-    }
-
-    h1 {
-      padding-left: 0.4em;
+    a {
+      font-size: 1.2em;
+      padding: 0 0.75em;
     }
   }
 
   #user {
     display: flex;
-    margin-left: auto;
 
     #name {
       color: $headingColor;
-      padding: 16px;
-      font-size: 16px;
+      padding: 0.15em 0;
+      font-size: 0.85em;
       border: none;
       cursor: pointer;
 
