@@ -14,7 +14,7 @@
 
           <div>
             <input
-              v-model="name.first"
+              v-model="nameForm.first"
               type="text"
               class="form-control"
               name="first-name"
@@ -33,7 +33,7 @@
 
           <div>
             <input
-              v-model="name.last"
+              v-model="nameForm.last"
               type="text"
               class="form-control"
               name="last-name"
@@ -52,19 +52,6 @@
             <p>Update</p>
           </button>
         </div>
-
-        <div
-          v-if="nameError != ''"
-          class="error"
-        >
-          <p>{{ nameError }}</p>
-        </div>
-        <div
-          v-if="nameSuccess"
-          class="success"
-        >
-          <p>Name Updated!</p>
-        </div>
       </form>
 
       <form
@@ -73,13 +60,27 @@
       >
         <h2>Change Email</h2>
         <div class="group">
+          <label for="password">
+            Current Password
+          </label>
+          <div>
+            <input
+              v-model="emailForm.password"
+              type="password"
+              class="form-control"
+              name="password"
+              autocomplete="current-password"
+              placeholder="Current Password"
+              required
+            >
+          </div>
+
           <label for="email">
             Email
           </label>
-
           <div>
             <input
-              v-model="email"
+              v-model="emailForm.email"
               type="email"
               class="form-control"
               name="email"
@@ -97,19 +98,6 @@
           >
             <p>Update</p>
           </button>
-        </div>
-
-        <div
-          v-if="emailError != ''"
-          class="error"
-        >
-          <p>{{ emailError }}</p>
-        </div>
-        <div
-          v-if="emailSuccess"
-          class="success"
-        >
-          <p>Email Updated!</p>
         </div>
       </form>
 
@@ -134,7 +122,7 @@
 
           <div>
             <input
-              v-model="password.current"
+              v-model="passwordForm.current"
               type="password"
               class="form-control"
               name="password"
@@ -152,7 +140,7 @@
 
           <div>
             <input
-              v-model="password.new"
+              v-model="passwordForm.new"
               type="password"
               class="form-control"
               name="new-password"
@@ -170,7 +158,7 @@
 
           <div>
             <input
-              v-model="password.comfirmNew"
+              v-model="passwordForm.comfirmNew"
               type="password"
               class="form-control"
               name="comfirm-password"
@@ -188,19 +176,6 @@
           >
             <p>Update</p>
           </button>
-        </div>
-
-        <div
-          v-if="passwordError != ''"
-          class="error"
-        >
-          <p>{{ passwordError }}</p>
-        </div>
-        <div
-          v-if="passwordSuccess"
-          class="success"
-        >
-          <p>Password Updated!</p>
         </div>
       </form>
     </div>
@@ -223,39 +198,31 @@ export default class Register extends Vue {
   }
 
   // form handling
-  name = {
+  nameForm = {
     first: "",
     last: ""
   };
 
-  email = this.user.email || "";
+  emailForm = {
+    password: "",
+    email: this.user.email || ""
+  };
 
-  password = {
+  passwordForm = {
     current: "",
     new: "",
     comfirmNew: ""
   };
 
   created() {
-    this.name.first = this.attributes.firstName;
-    this.name.last = this.attributes.lastName;
+    this.nameForm.first = this.attributes.firstName;
+    this.nameForm.last = this.attributes.lastName;
   }
 
-  nameError: string = "";
-  emailError: string = "";
-  passwordError: string = "";
-
-  nameSuccess = false;
-  emailSuccess = false;
-  passwordSuccess = false;
-
-  async updateName() {
-    this.nameError = "";
-    this.nameSuccess = false;
-
+  updateName() {
     if (
-      this.name.first == this.attributes.firstName &&
-      this.name.last == this.attributes.lastName
+      this.nameForm.first == this.attributes.firstName &&
+      this.nameForm.last == this.attributes.lastName
     ) {
       return;
     }
@@ -264,73 +231,83 @@ export default class Register extends Vue {
       .dispatch(
         "user/setAttributes",
         new UserAttributes(
-          this.name.first,
-          this.name.last,
+          this.nameForm.first,
+          this.nameForm.last,
           this.$store.state.user.attributes.admin
         )
       )
       .then(() => {
-        this.nameSuccess = true;
+        this.$toaster.success("Name Updated!")
       })
       .catch(err => {
-        this.nameError = err.message;
+        this.$toaster.error(err.message);
       });
   }
 
   async updateEmail() {
-    this.emailError = "";
-    this.emailSuccess = false;
-
-    if (this.email == this.user.email) {
+    if (this.emailForm.email == this.user.email) {
       return;
     }
 
+    // reauthenticate
+    let credential = firebase.auth.EmailAuthProvider.credential(
+      this.user.email || "",
+      this.emailForm.password
+    );
     try {
-      await this.user.updateEmail(this.email);
+      await this.user.reauthenticateWithCredential(credential);
     } catch (err) {
-      this.emailError = err.message;
+      this.$toaster.error("Current Password is Incorrect");
       return;
     }
 
-    this.emailSuccess = true;
+    // update email
+    try {
+      await this.user.updateEmail(this.emailForm.email);
+      await this.user.sendEmailVerification();
+      this.$toaster.success("Email Updated! Click on the link sent to your new email to verify it.");
+    } catch (err) {
+      this.$toaster.error(err.message);
+      return;
+    }
   }
 
   async updatePassword() {
-    this.passwordError = "";
-    this.passwordSuccess = false;
-
     // check comfirm password matches
-    if (this.password.new != this.password.comfirmNew) {
-      this.passwordError = "Passwords do not match";
+    if (this.passwordForm.new != this.passwordForm.comfirmNew) {
+      this.$toaster.error("Passwords do not match");
       return;
     }
 
     // verify current password
-    var user = firebase.auth().currentUser;
+    let user = firebase.auth().currentUser;
     if (user == null) {
-      this.passwordError = "Could Not Access Current User";
+      this.$toaster.error("Could Not Access Current User");
       return;
     }
-    var credential = firebase.auth.EmailAuthProvider.credential(
+    let credential = firebase.auth.EmailAuthProvider.credential(
       user.email || "",
-      this.password.current
+      this.passwordForm.current
     );
 
     try {
       await user.reauthenticateWithCredential(credential);
     } catch (err) {
-      this.passwordError = "Current Password Incorrect";
+      this.$toaster.error("Current Password is Incorrect");
       return;
     }
 
     // set password
     try {
-      await user.updatePassword(this.password.new);
+      await user.updatePassword(this.passwordForm.new);
     } catch (err) {
-      this.passwordError = err.message;
+      this.$toaster.error(err.message);
     }
 
-    this.passwordSuccess = true;
+    this.$toaster.success("Password updated!");
+    this.$store.dispatch("user/signOut").then(() => {
+      this.$router.push("/login");
+    });
   }
 }
 </script>
@@ -353,11 +330,6 @@ export default class Register extends Vue {
     width: 20%;
     padding: 0.2em;
     font-size: 0.75em;
-  }
-
-  .success {
-    @include alert;
-    background-color: green;
   }
 }
 </style>

@@ -48,14 +48,14 @@ export default class Login extends Vue {
   email = "";
 
   submit() {
-    var auth = firebase.auth();
+    let auth = firebase.auth();
     auth
       .sendPasswordResetEmail(this.email)
       .then(() => {
         this.$toaster.success("Password Reset Email Sent!")
       })
-      .catch((error) => {
-        this.$toaster.error(error)
+      .catch((err) => {
+        this.$toaster.error(err.message)
       });
   }
 }

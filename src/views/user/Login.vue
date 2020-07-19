@@ -61,13 +61,6 @@
           <p>Forgot your password?</p>
         </router-link>
       </div>
-
-      <div
-        v-if="error != ''"
-        class="error"
-      >
-        <p>{{ error }}</p>
-      </div>
     </div>
   </div>
 </template>
@@ -77,25 +70,23 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class Login extends Vue {
-  // form handling
   form = {
     email: "",
-    password: ""
+    password: "",
   };
 
-  error: string = "";
-
-  async submit() {
-    this.error = "";
-    try {
-      await this.$store.dispatch("user/signIn", {
+  submit() {
+    this.$store
+      .dispatch("user/signIn", {
         email: this.form.email,
-        password: this.form.password
+        password: this.form.password,
+      })
+      .then(() => {
+        this.$router.push("/");
+      })
+      .catch(() => {
+        this.$toaster.error("Incorrect Username/Password");
       });
-      this.$router.push("/");
-    } catch (err) {
-      this.error = "Invalid Username/Password";
-    }
   }
 }
 </script>

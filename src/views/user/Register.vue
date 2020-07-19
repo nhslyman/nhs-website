@@ -124,13 +124,9 @@ export default class Register extends Vue {
     comfirmPassword: ""
   };
 
-  error: string = "";
-
   async submit() {
-    this.error = "";
-
     if (this.form.password != this.form.comfirmPassword) {
-      this.error = "Passwords do not match";
+      this.$toaster.error("Passwords do not match");
       return;
     }
 
