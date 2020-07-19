@@ -1,6 +1,6 @@
-import animations from './animations'
-import { Toaster } from './toaster'
-import { UID } from '@/util';
+import animations from "./animations"
+import { Toaster } from "./toaster"
+import { UID } from "@/util";
 
 export class Toast {
   id: string;
@@ -18,7 +18,7 @@ export class Toast {
   }
 
   goAway() {
-    if (this.toaster.options.position && this.toaster.options.position.includes('bottom')) {
+    if (this.toaster.options.position && this.toaster.options.position.includes("bottom")) {
       // if the toast is on bottom set it as bottom animation
       animations.animateOutBottom(this.el, () => {
         this.toaster.remove(this.id, this.el);
@@ -41,17 +41,17 @@ export class Toast {
 
   createElement(message: string, options: ToastOptions) {
     // Create element
-    let el = document.createElement('div');
-    el.classList.add('toast');
+    let el = document.createElement("div");
+    el.classList.add("toast");
     el.classList.add(options.type ?? "default");
     el.innerHTML = message;
 
     // create and append dismiss action
-    let action = document.createElement('a');
-    action.classList.add('action');
-    action.classList.add('ripple');
+    let action = document.createElement("a");
+    action.classList.add("action");
+    action.classList.add("ripple");
     action.text = "ok";
-    el.addEventListener('click', (e) => {
+    el.addEventListener("click", (e) => {
       e.preventDefault();
       this.goAway();
     })
@@ -69,7 +69,7 @@ export class Toast {
     this.el.style.opacity = "0";
     animations.animateIn(this.el);
 
-    // set remove after duration if duration isn't null 
+    // set remove after duration if duration is not null 
     if (this.options.duration) {
       setTimeout(() => { this.goAway() }, this.options.duration);
     }
@@ -77,7 +77,7 @@ export class Toast {
 
 }
 
-export type ToastType = 'success' | 'info' | 'error' | 'default'
+export type ToastType = "success" | "info" | "error" | "default"
 
 export interface ToastOptions {
   /**
@@ -85,7 +85,7 @@ export interface ToastOptions {
    */
   duration?: number,
   /**
-   * Type of the Toast ['success', 'info', 'error']. (default: 'default')
+   * Type of the Toast ["success", "info", "error"]. (default: "default")
    */
   type?: ToastType,
 }

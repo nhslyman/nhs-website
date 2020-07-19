@@ -1,7 +1,7 @@
 import { UID } from "@/util"
 
 import { Toast, ToastOptions } from "./toast"
-import animations from './animations';
+import animations from "./animations";
 
 export class Toaster {
 
@@ -76,13 +76,13 @@ export class Toaster {
   }
 
   makeToastContainer(options: ToasterOptions): HTMLDivElement {
-    const container = document.createElement('div');
+    const container = document.createElement("div");
     container.id = this.id;
     container.classList.add("toaster");
     container.classList.add(options.position ?? "bottom-right");
-    container.setAttribute('role', 'status');
-    container.setAttribute('aria-live', 'polite');
-    container.setAttribute('aria-atomic', 'false');
+    container.setAttribute("role", "status");
+    container.setAttribute("aria-live", "polite");
+    container.setAttribute("aria-atomic", "false");
   
     document.body.appendChild(container);
     return container
@@ -90,11 +90,11 @@ export class Toaster {
 
 }
 
-export type ToastPosition = 'top-right' | 'top-center' | 'top-left' | 'bottom-right' | 'bottom-center' | 'bottom-left'
+export type ToastPosition = "top-right" | "top-center" | "top-left" | "bottom-right" | "bottom-center" | "bottom-left"
 
 export interface ToasterOptions {
   /**
-   * Position of the toast container (default: 'bottom-right')
+   * Position of the toast container (default: "bottom-right")
    */
   position?: ToastPosition,
   /**

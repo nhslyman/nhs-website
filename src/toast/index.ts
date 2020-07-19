@@ -1,6 +1,6 @@
-import { VueConstructor } from 'vue/types/vue'
+import { VueConstructor } from "vue/types/vue"
 import { Toaster, ToasterOptions } from "./ts/toaster"
-import ToastComponent from './toast.vue';
+import ToastComponent from "./toast.vue";
 
 export function ToasterPlugin(vue: VueConstructor, options?: ToasterOptions) {
     if (!options) {
@@ -8,11 +8,11 @@ export function ToasterPlugin(vue: VueConstructor, options?: ToasterOptions) {
     }
 
     const toaster = new Toaster(options);
-    vue.component('toaster', ToastComponent);
+    vue.component("toaster", ToastComponent);
     vue.toaster = vue.prototype.$toaster = toaster;
 }
 
-declare module 'vue/types/vue' {
+declare module "vue/types/vue" {
   interface VueConstructor {
     toaster: Toaster
   }
