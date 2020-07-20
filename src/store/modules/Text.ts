@@ -1,15 +1,12 @@
 import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
 import { db } from "@/main";
-
-interface ActionDict {
-  [key: string]: () => void;
-}
+import { Dict, VoidAction } from '@/util';
 
 @Module({ namespaced: true })
 export default class Text extends VuexModule {
   // properties
   private home: String = "";
-  private unsubscribes: ActionDict = {};
+  private unsubscribes: Dict<VoidAction> = {};
 
   get homeText(): String {
     return this.home;
@@ -30,7 +27,7 @@ export default class Text extends VuexModule {
 
   // firestore coordination
   @Mutation
-  setUnsubscribes(actions: ActionDict) {
+  setUnsubscribes(actions: Dict<VoidAction>) {
     this.unsubscribes = actions;
   }
 
@@ -48,7 +45,7 @@ export default class Text extends VuexModule {
   @Action
   async setListeners() {
     const document = await db.collection("text").doc("home");
-    let unsubs: ActionDict = {};
+    let unsubs: Dict<VoidAction> = {};
     unsubs["home"] = document.onSnapshot(
       (snap) => {
         const homeText = snap.data() || {};

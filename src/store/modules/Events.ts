@@ -2,21 +2,13 @@ import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
 import { plainToClass, classToPlain } from "class-transformer";
 import { EventInfo, RSVP, PlainDate, UserAttributes } from "@/models";
 import { db } from "@/main";
-import { deepCopy } from '@/util';
-
-interface EventDict {
-  [key: string]: EventInfo;
-}
-
-interface ActionDict {
-  [key: string]: () => void;
-}
+import { deepCopy, Dict, VoidAction } from '@/util';
 
 @Module({ namespaced: true })
 export default class Events extends VuexModule {
   // properties
-  private events: EventDict = {};
-  private unsubscribes: ActionDict = {};
+  private events: Dict<EventInfo> = {};
+  private unsubscribes: Dict<VoidAction> = {};
 
   get eventsDict() {
     return this.events;
@@ -78,7 +70,7 @@ export default class Events extends VuexModule {
 
   // set event(s)
   @Mutation
-  private _setEvents(events: EventDict) {
+  private _setEvents(events: Dict<EventInfo>) {
     this.events = events;
   }
 
@@ -96,7 +88,7 @@ export default class Events extends VuexModule {
   // delete event
   @Action
   async deleteEvent(id: string) {
-    const eventToDelete = deepCopy((this.context.getters["eventsDict"] as EventDict)[id]);
+    const eventToDelete = deepCopy((this.context.getters["eventsDict"] as Dict<EventInfo>)[id]);
 
     // delete event itself
     try {
@@ -200,7 +192,7 @@ export default class Events extends VuexModule {
 
   // firestore coordination
   @Mutation
-  setUnsubscribes(actions: ActionDict) {
+  setUnsubscribes(actions: Dict<VoidAction>) {
     this.unsubscribes = actions;
   }
 
@@ -236,7 +228,7 @@ export default class Events extends VuexModule {
   @Action
   async setListeners() {
     const collection = await db.collection("events").get();
-    let unsubs: ActionDict = {};
+    let unsubs: Dict<VoidAction> = {};
     collection.docs.forEach((doc) => {
       const id = doc.id;
       unsubs[id] = doc.ref.onSnapshot(

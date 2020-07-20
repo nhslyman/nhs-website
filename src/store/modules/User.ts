@@ -3,17 +3,14 @@ import firebase from "firebase/app";
 import { plainToClass, classToPlain } from "class-transformer";
 import { UserAttributes, RSVP } from "@/models";
 import { db } from "@/main";
-
-type OptUser = firebase.User | null;
-type OptAttributes = UserAttributes | null;
-type OptAction = (() => void) | null;
+import { Optional, VoidAction } from '@/util';
 
 @Module({ namespaced: true })
 export default class User extends VuexModule {
   // properties
-  user: OptUser = null;
-  attributes: OptAttributes = null;
-  private unsubscribe: OptAction = null;
+  user: Optional<firebase.User> = null;
+  attributes: Optional<UserAttributes> = null;
+  private unsubscribe: Optional<VoidAction> = null;
 
   get loggedIn() {
     return this.user !== null;
@@ -21,18 +18,18 @@ export default class User extends VuexModule {
 
   // basic setters
   @Mutation
-  private _setUser(user: OptUser) {
+  private _setUser(user: Optional<firebase.User>) {
     this.user = user;
   }
 
   @Mutation
-  private _setAttributes(attributes: OptAttributes) {
+  private _setAttributes(attributes: Optional<UserAttributes>) {
     this.attributes = attributes;
   }
 
   // setters with side effects
   @Action
-  async setUser(user: OptUser) {
+  async setUser(user: Optional<firebase.User>) {
     this.context.commit("_setUser", user);
     if (this.unsubscribe != null) {
       this.unsubscribe();
@@ -151,7 +148,7 @@ export default class User extends VuexModule {
 
   // firestore coordination
   @Mutation
-  setUnsubscribe(action: OptAction) {
+  setUnsubscribe(action: Optional<VoidAction>) {
     this.unsubscribe = action;
   }
 
