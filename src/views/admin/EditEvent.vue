@@ -5,10 +5,8 @@
   >
     <div class="inside">
       <h1>Edit Event</h1>
-      
-      <EventEditor
-        v-model="event"
-      />
+
+      <EventEditor v-model="event" />
 
       <div id="buttons">
         <div class="action-button save">
@@ -38,7 +36,7 @@ import { plainToClass } from "class-transformer";
 
 import { EventInfo } from "@/models";
 
-import EventEditor from "@/components/admin/EventEditor.vue"
+import EventEditor from "@/components/admin/EventEditor.vue";
 
 interface EventDict {
   [key: string]: EventInfo;
@@ -46,19 +44,19 @@ interface EventDict {
 
 @Component({
   components: {
-    EventEditor
+    EventEditor,
   },
   computed: {
     ...mapGetters("events", {
-      events: "eventsDict"
-    })
-  }
+      events: "eventsDict",
+    }),
+  },
 })
 export default class NewEvent extends Vue {
-  private editedEvent: EventInfo | null = null
+  private editedEvent: EventInfo | null = null;
 
   get selectedID() {
-    return this.$route.params["id"]
+    return this.$route.params["id"];
   }
 
   events!: EventDict;
@@ -82,12 +80,14 @@ export default class NewEvent extends Vue {
       return;
     }
     this.sortShifts();
-    this.$store.dispatch("events/setEvent", {
-      eventID: this.editedEvent.id,
-      event: this.editedEvent,
-    }).then(() => {
-      this.$toaster.success("Event saved!", 3500);
-    });
+    this.$store
+      .dispatch("events/setEvent", {
+        eventID: this.editedEvent.id,
+        event: this.editedEvent,
+      })
+      .then(() => {
+        this.$toaster.success("Event saved!", 3500);
+      });
   }
 
   sortShifts() {
@@ -110,12 +110,19 @@ export default class NewEvent extends Vue {
   }
 
   deleteEvent() {
+    if (this.event == null) {
+      return;
+    }
     if (
       confirm(
-        `Are you sure you want to delete ${this.event?.name || "this event"}?`
+        `Are you sure you want to delete ${this.event.name || "this event"}?`
       )
     ) {
-      // TODO: Cloud Function
+      this.$store.dispatch("events/deleteEvent", this.event.id).then(() => {
+        this.$router.push("/admin/events");
+      }).catch((err: string) => {
+        this.$router.push(err);
+      })
     }
   }
 }

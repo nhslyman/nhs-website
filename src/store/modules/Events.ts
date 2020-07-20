@@ -1,7 +1,8 @@
 import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
 import { plainToClass, classToPlain } from "class-transformer";
-import { EventInfo, RSVP, PlainDate } from "@/models";
+import { EventInfo, RSVP, PlainDate, UserAttributes } from "@/models";
 import { db } from "@/main";
+import { deepCopy } from '@/util';
 
 interface EventDict {
   [key: string]: EventInfo;
@@ -29,7 +30,7 @@ export default class Events extends VuexModule {
       (event) =>
         event instanceof EventInfo && // check that nothing strange slipped in
         event.shifts[event.shifts.length - 1].time.day.comparable > // check that the last shift is in a past day
-          PlainDate.yesterday().comparable
+        PlainDate.yesterday().comparable
     );
     return array;
   }
@@ -42,7 +43,7 @@ export default class Events extends VuexModule {
       (event) =>
         event instanceof EventInfo && // check that nothing strange slipped in
         event.shifts[event.shifts.length - 1].time.day.comparable <=
-          PlainDate.yesterday().comparable // check that the last shift is in a past day
+        PlainDate.yesterday().comparable // check that the last shift is in a past day
     );
     return array;
   }
@@ -75,7 +76,7 @@ export default class Events extends VuexModule {
     return array;
   }
 
-  // basic setters
+  // set event(s)
   @Mutation
   private _setEvents(events: EventDict) {
     this.events = events;
@@ -86,11 +87,50 @@ export default class Events extends VuexModule {
     this.events[payload.eventID] = payload.event;
   }
 
-  // events
   @Action
   async setEvent(payload: { eventID: string; event: EventInfo }) {
     this.context.commit("_setEvent", payload);
     await this.context.dispatch("pushEvent", payload.eventID);
+  }
+
+  // delete event
+  @Action
+  async deleteEvent(id: string) {
+    const eventToDelete = deepCopy((this.context.getters["eventsDict"] as EventDict)[id]);
+
+    // delete event itself
+    try {
+      await db.collection("events").doc(id).delete();
+    } catch {
+      throw "Unable to delete"
+    }
+    this.context.commit("_deleteEvent", id);
+
+    // remove event from each user that has signed up
+    eventToDelete.shifts.forEach(shift => {
+      shift.signedUp.forEach(async userID => {
+        const ref = db.collection("users").doc(userID);
+        const data = (await ref.get()).data() as UserAttributes;
+        if (data == undefined) { return }
+        data.events = data.events.filter((event: RSVP) => {
+          event.eventID != id
+        })
+        ref.set(data);
+      })
+    })
+  }
+
+  @Mutation
+  private _deleteEvent(id: string) {
+    this.unsubscribes[id]();
+
+    let events = deepCopy(this.events);
+    delete events[id];
+    this.events = events;
+
+    let unsubscribes = deepCopy(this.unsubscribes);
+    delete unsubscribes[id];
+    this.unsubscribes = unsubscribes;
   }
 
   // attendance
