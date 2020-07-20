@@ -126,44 +126,29 @@ export default class Events extends VuexModule {
   }
 
   // attendance
-  @Mutation
-  addAttendance(payload: {
-    eventID: string;
-    shiftIDs: string[];
-    userID: string;
+  @Action
+  removeAllAttendanceForUser(payload: {
+    deleteId: string,
+    attributes: UserAttributes
   }) {
-    this.events[payload.eventID].shifts = this.events[
-      payload.eventID
-    ].shifts.map((shift) => {
-      if (payload.shiftIDs.includes(shift.id)) {
-        shift.signedUp.push(payload.userID);
-      }
-      return shift;
-    });
+    this.context.commit("_removeAllAttendanceForUser", payload);
+    payload.attributes.events.forEach(rsvp =>
+      this.context.dispatch("pushShifts", rsvp.eventID)
+    )
   }
 
   @Mutation
-  removeAttendance(payload: {
-    eventID: string;
-    shiftIDs: string[];
-    userID: string;
+  private _removeAllAttendanceForUser(payload: {
+    deleteId: string,
+    attributes: UserAttributes
   }) {
-    this.events[payload.eventID].shifts = this.events[
-      payload.eventID
-    ].shifts.map((shift) => {
-      const modified = payload.shiftIDs.some(
-        (selectedShiftID) => selectedShiftID == shift.id
-      );
-      if (modified) {
-        const newPeople = shift.signedUp.filter(
-          (userID) => userID != payload.userID
-        );
-        shift.signedUp = newPeople;
-        return shift;
-      } else {
-        return shift;
-      }
-    });
+    payload.attributes.events.forEach(rsvp =>
+      this.events[rsvp.eventID].shifts.forEach(shift =>
+        shift.signedUp = shift.signedUp.filter(userID =>
+          userID != payload.deleteId
+        )
+      )
+    )
   }
 
   @Action
@@ -188,6 +173,46 @@ export default class Events extends VuexModule {
     });
 
     await this.context.dispatch("pushShifts", payload.eventID);
+  }
+
+  @Mutation
+  private addAttendance(payload: {
+    eventID: string;
+    shiftIDs: string[];
+    userID: string;
+  }) {
+    this.events[payload.eventID].shifts = this.events[
+      payload.eventID
+    ].shifts.map((shift) => {
+      if (payload.shiftIDs.includes(shift.id)) {
+        shift.signedUp.push(payload.userID);
+      }
+      return shift;
+    });
+  }
+
+  @Mutation
+  private removeAttendance(payload: {
+    eventID: string;
+    shiftIDs: string[];
+    userID: string;
+  }) {
+    this.events[payload.eventID].shifts = this.events[
+      payload.eventID
+    ].shifts.map((shift) => {
+      const modified = payload.shiftIDs.some(
+        (selectedShiftID) => selectedShiftID == shift.id
+      );
+      if (modified) {
+        const newPeople = shift.signedUp.filter(
+          (userID) => userID != payload.userID
+        );
+        shift.signedUp = newPeople;
+        return shift;
+      } else {
+        return shift;
+      }
+    });
   }
 
   // firestore coordination

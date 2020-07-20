@@ -1,5 +1,8 @@
 <template>
-  <div id="register">
+  <div
+    v-if="user"
+    id="register"
+  >
     <div class="inside">
       <h1>Manage Account Info</h1>
       <form
@@ -178,6 +181,37 @@
           </button>
         </div>
       </form>
+
+      <form
+        action="#"
+        @submit.prevent="deleteUser"
+      >
+        <h2>Delete Account</h2>
+        <div class="group">
+          <label for="password">
+            Current Password
+          </label>
+
+          <div>
+            <input
+              v-model="deleteForm.password"
+              type="password"
+              class="form-control"
+              name="password"
+              autocomplete="current-password"
+              placeholder="Current Password"
+              required
+            >
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="submit danger"
+        >
+          <p>Delete</p>
+        </button>
+      </form>
     </div>
   </div>
 </template>
@@ -186,6 +220,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import firebase from "firebase/app";
 import { UserAttributes } from "@/models";
+import { db } from "@/main";
 
 @Component
 export default class Register extends Vue {
@@ -200,18 +235,22 @@ export default class Register extends Vue {
   // form handling
   nameForm = {
     first: "",
-    last: ""
+    last: "",
   };
 
   emailForm = {
     password: "",
-    email: this.user.email || ""
+    email: this.user.email || "",
   };
 
   passwordForm = {
     current: "",
     new: "",
-    comfirmNew: ""
+    comfirmNew: "",
+  };
+
+  deleteForm = {
+    password: "",
   };
 
   created() {
@@ -237,9 +276,9 @@ export default class Register extends Vue {
         )
       )
       .then(() => {
-        this.$toaster.success("Name Updated!")
+        this.$toaster.success("Name Updated!");
       })
-      .catch(err => {
+      .catch((err) => {
         this.$toaster.error(err.message);
       });
   }
@@ -265,7 +304,9 @@ export default class Register extends Vue {
     try {
       await this.user.updateEmail(this.emailForm.email);
       await this.user.sendEmailVerification();
-      this.$toaster.success("Email Updated! Click on the link sent to your new email to verify it.");
+      this.$toaster.success(
+        "Email Updated! Click on the link sent to your new email to verify it."
+      );
     } catch (err) {
       this.$toaster.error(err.message);
       return;
@@ -309,6 +350,51 @@ export default class Register extends Vue {
       this.$router.push("/login");
     });
   }
+
+  async deleteUser() {
+    // comfirm destructive action
+    if (
+      !confirm("Are you sure you want to delete permanently your account?")
+    ) {
+      return;
+    }
+
+    // verify current password
+    let user = firebase.auth().currentUser;
+    if (user == null) {
+      this.$toaster.error("Could Not Access Current User");
+      return;
+    }
+    let credential = firebase.auth.EmailAuthProvider.credential(
+      user.email || "",
+      this.deleteForm.password
+    );
+    try {
+      await user.reauthenticateWithCredential(credential);
+    } catch (err) {
+      this.$toaster.error("Current Password is Incorrect");
+      return;
+    }
+
+    // delete user from all shifts
+    this.$store.dispatch("events/removeAllAttendanceForUser", {
+      deleteId: this.user.uid,
+      attributes: this.attributes
+    })
+    
+    // delete user
+    try {
+      await db.collection("users").doc(this.user.uid).delete();
+      await this.user.delete();
+    } catch {
+      this.$toaster.error("Delete failed")
+      return;
+    }
+    
+    // react to success
+    this.$toaster.success("Account deleted")
+    this.$router.push("/");
+  }
 }
 </script>
 
@@ -330,6 +416,10 @@ export default class Register extends Vue {
     width: 20%;
     padding: 0.2em;
     font-size: 0.75em;
+
+    &.danger {
+      @include scary-button-color;
+    }
   }
 }
 </style>
