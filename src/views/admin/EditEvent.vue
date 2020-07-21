@@ -79,6 +79,10 @@ export default class NewEvent extends Vue {
     if (this.editedEvent == null) {
       return;
     }
+    if (this.editedEvent.shifts.length == 0) {
+      this.$toaster.error("You must first add a shift.");
+      return;
+    }
     this.sortShifts();
     this.$store
       .dispatch("events/setEvent", {

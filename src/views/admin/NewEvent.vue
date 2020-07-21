@@ -38,6 +38,10 @@ export default class EditEvent extends Vue {
   event: EventInfo = EventInfo.empty;
 
   create() {
+    if (this.event.shifts == null || this.event.shifts.length == 0) {
+      this.$toaster.error("You must first add a shift.");
+      return;
+    }
     this.sortShifts();
     this.$store.dispatch("events/setEvent", {
       eventID: this.event.id,
