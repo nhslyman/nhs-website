@@ -14,7 +14,7 @@
           <p>Events</p>
         </router-link>
         <router-link
-          v-if="admin"
+          v-if="loggedIn && admin"
           to="/admin"
         >
           Admin Console

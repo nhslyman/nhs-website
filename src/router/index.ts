@@ -73,6 +73,7 @@ const routes = [
     path: "/events",
     name: "volunteer events",
     component: () => import("@/views/volunteer/Events.vue"),
+    beforeEnter: checkLoggedIn,
   },
   {
     path: "/events/past",
