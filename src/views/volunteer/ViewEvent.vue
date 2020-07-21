@@ -29,13 +29,16 @@
                 v-model="selectedShifts"
                 type="checkbox"
                 :value="shift.id"
-                :disabled="signedUp"
+                :disabled="signedUp || (shift.signedUp >= shift.max)"
               >
               <strong>{{ shift.time.humanReadable }}</strong>
               <div class="attendance">
                 <p>Signed Up: {{ shift.signedUp.length }}</p>
                 <p>Target: {{ shift.target }}</p>
-                <p v-if="shift.max != 0">
+                <p
+                  v-if="shift.max != 0"
+                  :class="{ 'bold':(shift.signedUp >= shift.max) }"
+                >
                   Maximum: {{ shift.max }}
                 </p>
               </div>
@@ -284,6 +287,10 @@ export default class ViewEvent extends Vue {
     @media (min-width: $maxMobileSize) {
       width: 60%;
     }
+  }
+
+  .bold {
+    font-weight: bold;
   }
 }
 </style>
