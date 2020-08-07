@@ -29,7 +29,11 @@
                 v-model="selectedShifts"
                 type="checkbox"
                 :value="shift.id"
-                :disabled="signedUp || (shift.signedUp >= shift.max)"
+                :disabled="
+                  signedUp
+                    || eventStatus === 'closed'
+                    || (shift.max != 0 && (shift.signedUp.length >= shift.max))
+                "
               >
               <strong>{{ shift.time.humanReadable }}</strong>
               <div class="attendance">
@@ -37,7 +41,7 @@
                 <p>Target: {{ shift.target }}</p>
                 <p
                   v-if="shift.max != 0"
-                  :class="{ 'bold':(shift.signedUp >= shift.max) }"
+                  :class="{ 'bold':(shift.signedUp.length >= shift.max) }"
                 >
                   Maximum: {{ shift.max }}
                 </p>
