@@ -17,9 +17,7 @@ firebase.initializeApp(configOptions);
 
 export const db = firebase.firestore();
 
-firebase.auth().onAuthStateChanged(user => {
-  store.dispatch("user/setUser", user);
-});
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
 // Add toast
 import { ToasterPlugin } from "@/toast";
@@ -31,12 +29,20 @@ import Vue from "vue";
 import App from "./App.vue";
 import store from "./store";
 import router from "./router";
+import { Optional } from './util';
 
 Vue.config.productionTip = false;
-store.dispatch("setListeners");
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount("#app");
+// Start after firebase auth has loaded the user
+let app: Optional<Vue> = null;
+firebase.auth().onAuthStateChanged(user => {
+  store.dispatch("user/userChanged").then(() => {
+    if (!app) {
+      app = new Vue({
+        router,
+        store,
+        render: h => h(App)
+      }).$mount("#app");
+    }
+  })
+});

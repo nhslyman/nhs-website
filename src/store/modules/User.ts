@@ -10,16 +10,15 @@ export default class User extends VuexModule {
   // properties
   user: Optional<firebase.User> = null;
   attributes: Optional<UserAttributes> = null;
-  private unsubscribe: Optional<VoidAction> = null;
 
   get loggedIn() {
-    return this.user !== null;
+    return this.user != null;
   }
 
   // basic setters
   @Mutation
-  private _setUser(user: Optional<firebase.User>) {
-    this.user = user;
+  private _getUser() {
+    this.user = firebase.auth().currentUser;
   }
 
   @Mutation
@@ -27,17 +26,10 @@ export default class User extends VuexModule {
     this.attributes = attributes;
   }
 
-  // setters with side effects
   @Action
-  async setUser(user: Optional<firebase.User>) {
-    this.context.commit("_setUser", user);
-    if (this.unsubscribe != null) {
-      this.unsubscribe();
-      this.context.commit("setUnsubscribe", null);
-    }
-    if (user) {
-      this.context.dispatch("setListener", user);
-    }
+  async userChanged() {
+    this.context.commit("_getUser");
+    await this.context.dispatch("getAttributes");
   }
 
   @Action
@@ -147,28 +139,20 @@ export default class User extends VuexModule {
   }
 
   // firestore coordination
-  @Mutation
-  setUnsubscribe(action: Optional<VoidAction>) {
-    this.unsubscribe = action;
-  }
-
   @Action
-  setListener() {
-    if (this.user == null) {
-      this.context.commit("setUnsubscribe", null);
+  async getAttributes() {
+    if (!this.user) {
+      this.context.commit("_setAttributes", null);
       return;
     }
     const document = db.collection("users").doc(this.user.uid);
-    const unsubscribe = document.onSnapshot(
-      snap => {
-        let attributes = plainToClass(UserAttributes, snap.data());
-        this.context.commit("_setAttributes", attributes);
-      },
-      err => {
-        // TODO: server log
-      }
-    );
-    this.context.commit("setUnsubscribe", unsubscribe);
+    const snap = await document.get()
+    const data = snap.data()
+    if (data) {
+      this.context.commit("_setAttributes", plainToClass(UserAttributes, data));
+    } else {
+      this.context.commit("_setAttributes", null);
+    }
   }
 
   @Action

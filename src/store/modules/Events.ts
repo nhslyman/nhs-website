@@ -1,4 +1,5 @@
 import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
+import Vue from "vue";
 import { plainToClass, classToPlain } from "class-transformer";
 import { EventInfo, RSVP, PlainDate, UserAttributes } from "@/models";
 import { db } from "@/main";
@@ -9,6 +10,7 @@ export default class Events extends VuexModule {
   // properties
   private events: Dict<EventInfo> = {};
   private unsubscribes: Dict<VoidAction> = {};
+  private initialSetUpOccurred = false;
 
   get eventsDict() {
     return this.events;
@@ -76,7 +78,7 @@ export default class Events extends VuexModule {
 
   @Mutation
   private _setEvent(payload: { eventID: string; event: EventInfo }) {
-    this.events[payload.eventID] = payload.event;
+    Vue.set(this.events, payload.eventID, payload.event) // needs to use this for getters to update
   }
 
   @Action
@@ -226,6 +228,11 @@ export default class Events extends VuexModule {
     this.unsubscribes[payload.eventID] = payload.action;
   }
 
+  @Mutation
+  didSetUp() {
+    this.initialSetUpOccurred = true;
+  }
+
   @Action
   async pushShifts(eventID: string) {
     const eventRef = db.collection("events").doc(eventID);
@@ -252,6 +259,9 @@ export default class Events extends VuexModule {
 
   @Action
   async setListeners() {
+    if (this.initialSetUpOccurred) {
+      return
+    }
     const collection = await db.collection("events").get();
     let unsubs: Dict<VoidAction> = {};
     collection.docs.forEach((doc) => {
@@ -271,5 +281,6 @@ export default class Events extends VuexModule {
       );
     });
     this.context.commit("setUnsubscribes", unsubs);
+    this.context.commit("didSetUp");
   }
 }

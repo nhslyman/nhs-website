@@ -7,6 +7,7 @@ export default class Text extends VuexModule {
   // properties
   private home: String = "";
   private unsubscribes: Dict<VoidAction> = {};
+  private initialSetUpOccurred = false;
 
   get homeText(): String {
     return this.home;
@@ -31,6 +32,11 @@ export default class Text extends VuexModule {
     this.unsubscribes = actions;
   }
 
+  @Mutation
+  didSetUp() {
+    this.initialSetUpOccurred = true;
+  }
+
   @Action
   async pushHome(text: string) {
     const newText: any = { value: text };
@@ -44,6 +50,10 @@ export default class Text extends VuexModule {
 
   @Action
   async setListeners() {
+    if (this.initialSetUpOccurred) {
+      return;
+    }
+
     const document = await db.collection("text").doc("home");
     let unsubs: Dict<VoidAction> = {};
     unsubs["home"] = document.onSnapshot(
@@ -56,5 +66,6 @@ export default class Text extends VuexModule {
       }
     );
     this.context.commit("setUnsubscribes", unsubs);
+    this.context.commit("didSetUp");
   }
 }

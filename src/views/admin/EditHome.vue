@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 
 import MDEditor from "@/components/inputs/MDEditor.vue";
 
@@ -28,6 +28,10 @@ import MDEditor from "@/components/inputs/MDEditor.vue";
 })
 export default class EditHome extends Vue {
   homeText: String | null = null;
+
+  get savedHomeText() {
+    return this.$store.getters["text/homeText"]
+  }
 
   saveChanges() {
     if (this.homeText == null) {
@@ -39,7 +43,12 @@ export default class EditHome extends Vue {
   }
 
   mounted() {
-    this.homeText = this.$store.getters["text/homeText"];
+    this.homeText = this.savedHomeText;
+  }
+
+  @Watch("savedHomeText")
+  updateHomeText() {
+    this.homeText = this.savedHomeText;
   }
 }
 </script>

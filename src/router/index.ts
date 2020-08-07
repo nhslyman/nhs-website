@@ -6,11 +6,9 @@ Vue.use(VueRouter);
 
 async function checkAdmin(to: Route, from: Route, next: Function) {
   const loggedIn: boolean = store.getters["user/loggedIn"];
-  const admin: boolean | undefined = store.state.user.attributes?.admin;
+  const admin: boolean = store.state.user.attributes?.admin ?? false;
   if (!loggedIn) {
     next("/login");
-  } else if (admin == undefined) {
-    next(false);
   } else if (admin) {
     next();
   } else {
@@ -36,12 +34,54 @@ async function checkLoggedOut(to: Route, from: Route, next: Function) {
   }
 }
 
+async function normalEventPage(to: Route, from: Route, next: Function) {
+  const loggedIn: boolean = store.getters["user/loggedIn"];
+  if (loggedIn) {
+    store.dispatch("events/setListeners");
+    next();
+  } else {
+    next("/login");
+  }
+}
+
+async function adminEventPage(to: Route, from: Route, next: Function) {
+  const loggedIn: boolean = store.getters["user/loggedIn"];
+  const admin: boolean = store.state.user.attributes?.admin ?? false;
+  if (!loggedIn) {
+    next("/login");
+  } else if (admin) {
+    store.dispatch("events/setListeners");
+    next();
+  } else {
+    next("unauthorized");
+  }
+}
+
+async function normalHomePage(to: Route, from: Route, next: Function) {
+  store.dispatch("text/setListeners");
+  next();
+}
+
+async function adminHomePage(to: Route, from: Route, next: Function) {
+  const loggedIn: boolean = store.getters["user/loggedIn"];
+  const admin: boolean = store.state.user.attributes?.admin ?? false;
+  if (!loggedIn) {
+    next("/login");
+  } else if (admin) {
+    store.dispatch("text/setListeners");
+    next();
+  } else {
+    next("unauthorized");
+  }
+}
+
 const routes = [
   // home
   {
     path: "/",
     name: "home",
     component: () => import("@/views/Home.vue"),
+    beforeEnter: normalHomePage,
   },
   // account
   {
@@ -73,19 +113,19 @@ const routes = [
     path: "/events",
     name: "volunteer events",
     component: () => import("@/views/volunteer/Events.vue"),
-    beforeEnter: checkLoggedIn,
+    beforeEnter: normalEventPage,
   },
   {
     path: "/events/past",
     name: "past events",
     component: () => import("@/views/volunteer/PastEvents.vue"),
-    beforeEnter: checkLoggedIn,
+    beforeEnter: normalEventPage,
   },
   {
     path: "/events/view/:id",
     name: "view event",
     component: () => import("@/views/volunteer/ViewEvent.vue"),
-    beforeEnter: checkLoggedIn,
+    beforeEnter: normalEventPage,
   },
   // admin
   {
@@ -98,31 +138,31 @@ const routes = [
     path: "/admin/home",
     name: "edit home text",
     component: () => import("@/views/admin/EditHome.vue"),
-    beforeEnter: checkAdmin,
+    beforeEnter: adminHomePage,
   },
   {
     path: "/admin/events",
     name: "manage events",
     component: () => import("@/views/admin/EventsList.vue"),
-    beforeEnter: checkAdmin,
+    beforeEnter: adminEventPage,
   },
   {
     path: "/admin/events/new",
     name: "new event",
     component: () => import("@/views/admin/NewEvent.vue"),
-    beforeEnter: checkAdmin,
+    beforeEnter: adminEventPage,
   },
   {
     path: "/admin/events/users/:id",
     name: "users for event",
     component: () => import("@/views/admin/EventUsers.vue"),
-    beforeEnter: checkAdmin,
+    beforeEnter: adminEventPage,
   },
   {
     path: "/admin/events/edit/:id",
     name: "edit event",
     component: () => import("@/views/admin/EditEvent.vue"),
-    beforeEnter: checkAdmin,
+    beforeEnter: adminEventPage,
   },
   // errors
   {
