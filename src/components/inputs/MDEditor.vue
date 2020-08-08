@@ -28,7 +28,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Emit, Watch } from "vue-property-decorator";
 import marked from "marked";
-import { Debounce } from "@/util";
+import { Debounce, Optional } from "@/util";
 
 @Component
 export default class MDEditor extends Vue {
@@ -40,16 +40,20 @@ export default class MDEditor extends Vue {
   }
 
   // value from parent
-  @Prop() value!: string;
+  @Prop() value: Optional<string>;
 
   mounted() {
-    this.contents = this.value;
+    if (this.value) {
+      this.contents = this.value;
+    }
     window.addEventListener("resize", this.debounceResize);
   }
 
   @Watch("value")
-  valueChanged(value: string) {
-    this.contents = value;
+  valueChanged(value: Optional<string>) {
+    if (value) {
+      this.contents = value;
+    }
   }
 
   // responding to editing

@@ -68,6 +68,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch, Emit } from "vue-property-decorator";
 import { EventInfo } from "@/models";
+import { Optional } from '@/util';
 
 import MDEditor from "@/components/inputs/MDEditor.vue";
 import ShiftsEditor from "@/components/admin/ShiftsEditor.vue";
@@ -85,15 +86,19 @@ export default class EventEditor extends Vue {
   event: EventInfo = EventInfo.empty;
 
   // value from parent
-  @Prop() value!: EventInfo;
+  @Prop() value: Optional<EventInfo>;
 
   mounted() {
-    this.event = this.value;
+    if (this.value) {
+      this.event = this.value;
+    }
   }
 
   @Watch("value")
-  valueChanged(value: EventInfo) {
-    this.event = value;
+  valueChanged(value: Optional<EventInfo>) {
+    if (value) {
+      this.event = value;
+    }
   }
 
   // emiting

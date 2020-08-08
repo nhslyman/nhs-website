@@ -83,8 +83,12 @@ export default class Events extends VuexModule {
 
   @Action
   async setEvent(payload: { eventID: string; event: EventInfo }) {
+    let isNew = this.events[payload.eventID] == null;
     this.context.commit("_setEvent", payload);
     await this.context.dispatch("pushEvent", payload.eventID);
+    if (isNew) {
+      this.context.dispatch("newListener", payload.eventID);
+    }
   }
 
   // delete event
@@ -117,14 +121,8 @@ export default class Events extends VuexModule {
   @Mutation
   private _deleteEvent(id: string) {
     this.unsubscribes[id]();
-
-    let events = deepCopy(this.events);
-    delete events[id];
-    this.events = events;
-
-    let unsubscribes = deepCopy(this.unsubscribes);
-    delete unsubscribes[id];
-    this.unsubscribes = unsubscribes;
+    Vue.delete(this.events, id);
+    Vue.delete(this.unsubscribes, id);
   }
 
   // attendance
@@ -224,8 +222,8 @@ export default class Events extends VuexModule {
   }
 
   @Mutation
-  addUnsubscribe(payload: { eventID: string; action: () => void }) {
-    this.unsubscribes[payload.eventID] = payload.action;
+  addUnsubscribe(payload: { eventID: string; unsub: VoidAction }) {
+    Vue.set(this.unsubscribes, payload.eventID, payload.unsub);
   }
 
   @Mutation
@@ -282,5 +280,26 @@ export default class Events extends VuexModule {
     });
     this.context.commit("setUnsubscribes", unsubs);
     this.context.commit("didSetUp");
+  }
+
+  @Action
+  newListener(eventID: string) {
+    const unsub = db.collection("events").doc(eventID).onSnapshot(
+      (snap) => {
+        const event = snap.data() || {};
+        const obj = plainToClass(EventInfo, event);
+        this.context.commit("_setEvent", {
+          eventID: eventID,
+          event: obj,
+        });
+      },
+      (err) => {
+        // TODO: server log
+      }
+    )
+    this.context.commit("addUnsubscribe", {
+      eventID: eventID,
+      unsub: unsub
+    })
   }
 }

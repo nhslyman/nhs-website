@@ -31,7 +31,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { mapGetters } from "vuex";
-import { deepCopy } from "@/util";
+import { deepCopy, Optional } from "@/util";
 import { plainToClass } from "class-transformer";
 
 import { EventInfo } from "@/models";
@@ -53,7 +53,7 @@ interface EventDict {
   },
 })
 export default class NewEvent extends Vue {
-  private editedEvent: EventInfo | null = null;
+  private editedEvent: Optional<EventInfo> = null;
 
   get selectedID() {
     return this.$route.params["id"];
@@ -61,16 +61,25 @@ export default class NewEvent extends Vue {
 
   events!: EventDict;
 
-  get event(): EventInfo {
+  get event(): Optional<EventInfo> {
     // make sure its not still refrencing the vuex data
+    const eventPlain = this.events[this.selectedID]
+    if (!eventPlain) {
+      this.$router.push("/admin/events");
+      return null;
+    }
     const event = plainToClass(
       EventInfo,
-      deepCopy<EventInfo>(this.events[this.selectedID])
+      deepCopy<EventInfo>(eventPlain)
     );
     return event;
   }
 
-  set event(value: EventInfo) {
+  set event(value: Optional<EventInfo>) {
+    if (!value) {
+      this.$router.push("/admin/events");
+      return;
+    }
     this.editedEvent = value;
   }
 
@@ -122,11 +131,12 @@ export default class NewEvent extends Vue {
         `Are you sure you want to delete ${this.event.name || "this event"}?`
       )
     ) {
-      this.$store.dispatch("events/deleteEvent", this.event.id).then(() => {
-        this.$router.push("/admin/events");
-      }).catch((err: string) => {
-        this.$router.push(err);
-      })
+      // will auto route back to home on successful delete
+      // because of the event getter null check
+      this.$store.dispatch("events/deleteEvent", this.event.id)
+        .catch((err: string) => {
+          this.$toaster.error(err);
+        })
     }
   }
 }

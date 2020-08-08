@@ -92,6 +92,7 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { EventInfo, Shift, RSVP, UserAttributes, PlainDate } from "@/models";
 import marked from "marked";
+import { Optional } from '@/util';
 
 import EventPreview from "@/components/volunteer/EventPreview.vue";
 
@@ -106,7 +107,7 @@ export default class ViewEvent extends Vue {
     return this.$store.getters["events/sortedEvents"];
   }
 
-  get event() {
+  get event(): Optional<EventInfo> {
     let event = this.events.find(
       event => event.id === this.$route.params["id"]
     );
