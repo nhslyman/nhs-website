@@ -20,7 +20,7 @@
         href="https://www.markdownguide.org/basic-syntax/"
         target="_blank"
       >
-        here</a>. Use two spaces instead of tab.
+        here</a>. The style is under the column titled "Markdown." Use two spaces instead of tab.
     </p>
   </div>
 </template>

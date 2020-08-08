@@ -33,17 +33,23 @@
             </div>
             <div class="dropdown-content">
               <router-link
-                v-if="admin"
+                class="dropdown-item"
                 to="/events/past"
               >
                 Your Past Events
               </router-link>
-              <router-link to="/user">
+              <router-link
+                class="dropdown-item"
+                to="/user"
+              >
                 Manage Account
               </router-link>
-              <button @click="signOut">
+              <a
+                class="dropdown-item"
+                @click="signOut"
+              >
                 Sign out
-              </button>
+              </a>
             </div>
           </div>
         </template>
@@ -138,7 +144,7 @@ export default class Header extends Vue {
     #name {
       color: $headingColor;
       padding: 0.15em 0;
-      font-size: 0.85em;
+      font-size: 1.25em;
       border: none;
       cursor: pointer;
 
@@ -150,6 +156,10 @@ export default class Header extends Vue {
     .dropdown {
       position: relative;
       display: inline-block;
+
+      &:hover .dropdown-content {
+        display: block;
+      }
     }
 
     .dropdown-content {
@@ -157,29 +167,22 @@ export default class Header extends Vue {
       position: absolute;
       right: 0;
       background-color: #f9f9f9;
-      min-width: 160px;
+      min-width: 170px;
       box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
       z-index: 1;
     }
 
-    .dropdown-content * {
+    .dropdown-item {
+      font-size: 1em;
       color: black;
       padding: 12px 16px;
       text-decoration: none;
       display: block;
-      width: 100%;
-    }
+      text-align: center;
 
-    .dropdown-content *:hover {
-      background-color: #f1f1f1;
-    }
-
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
-
-    p {
-      font-size: 1.5em;
+      &:hover {
+        background-color: #f1f1f1;
+      }
     }
   }
 }

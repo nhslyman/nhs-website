@@ -40,7 +40,7 @@
 
       <div>
         <MDEditor v-model="event.details" />
-        <p>Please don't use headings (#) here</p>
+        <p>Please don't use headings (#...) here.</p>
       </div>
     </div>
 

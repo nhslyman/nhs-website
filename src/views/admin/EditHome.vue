@@ -3,7 +3,7 @@
     <div class="inside">
       <h1>Edit Home Text</h1>
       <MDEditor v-model="homeText" />
-      <p>Start with secondary headings (##) here</p>
+      <p>Start with secondary headings (##) here.</p>
 
       <div class="action-button save">
         <button

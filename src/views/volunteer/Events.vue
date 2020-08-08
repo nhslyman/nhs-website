@@ -14,7 +14,7 @@
     <div v-if="regristeredEvents.length == 0">
       <p>You haven't selected any events... Yet.</p>
     </div>
-    <h2>Avaliable</h2>
+    <h2>Available</h2>
     <div
       v-for="event in availableEvents"
       :key="event.id"
@@ -22,7 +22,7 @@
       <EventPreview :event="event" />
     </div>
     <div v-if="availableEvents.length == 0">
-      <p>No more events avaliable</p>
+      <p>No more events available</p>
     </div>
   </div>
 </template>
