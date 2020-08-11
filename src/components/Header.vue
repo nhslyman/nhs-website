@@ -54,7 +54,7 @@
           </div>
         </template>
         <template v-else>
-          <p>
+          <p id="logged-out">
             <router-link to="/login">
               Login
             </router-link>
@@ -131,10 +131,22 @@ export default class Header extends Vue {
   #links {
     display: flex;
     flex-direction: row;
+    align-items: center;
 
     a {
-      font-size: 1.2em;
+      font-size: 1.4em;
       padding: 0 0.75em;
+    }
+  }
+
+  #logged-out {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    a {
+      font-size: 1.4em;
+      padding: 0 0.5em;
     }
   }
 

@@ -4,25 +4,32 @@
       <h1>Manage Users</h1>
       <div
         v-for="user in users"
-        id="user-section"
         :key="user.id"
       >
-        <p>{{ user.user.firstName }} {{ user.user.lastName }}</p>
-        <p v-if="user.id == currentUid">
-          Cannot Edit Curent User
-        </p>
-        <button
-          v-else-if="user.user.admin"
-          @click="setAdmin(false, user.id)"
-        >
-          Revoke Admin
-        </button>
-        <button
-          v-else
-          @click="setAdmin(true, user.id)"
-        >
-          Make admin
-        </button>
+        <div class="user-section">
+          <div class="user-info">
+            <p>{{ user.user.firstName }} {{ user.user.lastName }}</p>
+          </div>
+        
+          <div class="admin-button">
+            <p v-if="user.id == currentUid">
+              Cannot Edit Curent User
+            </p>
+            <button
+              v-else-if="user.user.admin"
+              @click="setAdmin(false, user.id)"
+            >
+              Revoke Admin
+            </button>
+            <button
+              v-else
+              @click="setAdmin(true, user.id)"
+            >
+              Make admin
+            </button>
+          </div>
+        </div>
+        
         <hr>
       </div>
     </div>
@@ -95,15 +102,28 @@ export default class NewEvent extends Vue {
 
 #edit-users {
   @include shadow-box;
-  @include std-size;
+  @include skinny-size;
   @include std-position;
 
-  #user-section {
-    margin: 1.4em;
+  .user-section {
+    padding: 1em;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+
+    @media (max-width: 750px) {
+      flex-wrap: none;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-content: flex-start;
+      align-items: flex-start;
+    }
 
     p {
       font-size: 1.2em;
-      margin-bottom: 0.3em;
     }
 
     button {
@@ -113,8 +133,6 @@ export default class NewEvent extends Vue {
   }
 
   hr {
-    margin-top: 0.75em;
-    margin-bottom: 0.75em;
     border-top: 1px solid darkgrey;
   }
 }
