@@ -19,8 +19,8 @@ service cloud.firestore {
       allow read;
       allow create;
       allow delete: if request.auth.uid == user;
-      allow write:  if request.auth.uid == user
-                    && notUpdating("admin");
+      allow write:  if request.auth.uid == user && notUpdating("admin")
+                    || isAdmin(database) && onlyUpdating("admin");
     }
     match /events/{event} {
       allow read:   if request.auth != null;

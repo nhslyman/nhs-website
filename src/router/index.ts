@@ -141,6 +141,12 @@ const routes = [
     beforeEnter: adminHomePage,
   },
   {
+    path: "/admin/users",
+    name: "manage users",
+    component: () => import("@/views/admin/EditUsers.vue"),
+    beforeEnter: checkAdmin,
+  },
+  {
     path: "/admin/events",
     name: "manage events",
     component: () => import("@/views/admin/EventsList.vue"),
