@@ -1,68 +1,129 @@
 <template>
-  <div class="shift">
-    <input
-      v-model="localSelected"
-      type="checkbox"
-      :value="shift.id"
-      :disabled="locked"
-    >
-    <strong>{{ shift.time.humanReadable }}</strong>
+  <div class="shift-option">
+    <!-- Content -->
+    <h4>{{ shift.time.humanReadable }}</h4>
     <div class="attendance">
       <p>Signed Up: {{ shift.signedUp.length }}</p>
       <p>Target: {{ shift.target }}</p>
       <p
         v-if="shift.max != 0"
-        :class="{ 'bold':(shift.signedUp.length >= shift.max) }"
+        :class="{ 'bold': eventStatus === ShiftState.Full }"
       >
         Maximum: {{ shift.max }}
       </p>
     </div>
+
+    <!-- Button -->
+    <template v-if="eventStatus === ShiftState.Locked">
+      <div class="too-late-text">
+        <p>Signups are now locked in.</p>
+      </div>
+    </template>
+    <template v-else-if="eventStatus === ShiftState.Open">
+      <template v-if="signedUp">
+        <div class="action-button unregister">
+          <button
+            class="unregister"
+            @click="unregister"
+          >
+            <p>Unregister</p>
+          </button>
+        </div>
+      </template>
+      <template v-else>
+        <button @click="signUp">
+          <p>Sign Up</p>
+        </button>
+      </template>
+    </template>
+    <template v-else-if="eventStatus === ShiftState.Full">
+      <p class="too-late-text">
+        This shift is full
+      </p>
+    </template>
+    <template v-else-if="eventStatus === ShiftState.Past">
+      <p class="too-late-text">
+        This shift has passed
+      </p>
+    </template>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch, Emit } from "vue-property-decorator";
-import { Shift, PlainDate, ShiftState } from "@/models";
+import { Shift, PlainDate, ShiftState, EventInfo, RSVP, UserAttributes } from "@/models";
 import { Optional } from '@/util';
 
 @Component
 export default class ViewEvent extends Vue {
   // set by parent
   @Prop() shift!: Shift
-  @Prop() signedUp!: boolean
+  @Prop() event!: EventInfo;
 
-  // synced back
-  localSelected: string[] = [];
-  @Prop() selected!: string[]
-
-  mounted() {
-    this.localSelected = this.selected;
+  // sign up and unregister
+  signUp() {
+    // triggers both user and event action
+    this.$store
+      .dispatch("signUpForShift", {
+        eventID: this.event.id,
+        shiftID: this.shift.id,
+      })
+      .then(() => {
+        this.$toaster.success("Signed up!");
+      })
+      .catch((err) => {
+        // TODO: server log
+      });
   }
 
-  @Watch("selected")
-  selectedChanged(selected: string[]) {
-    this.localSelected = selected;
+  unregister() {
+    if (confirm("Are you sure you want to unregister?")) {
+      // triggers both user and event action
+      this.$store
+        .dispatch("unregisterForShift", {
+          eventID: this.event.id,
+          shiftID: this.shift.id,
+        })
+        .then(() => {
+          this.$toaster.success("Unregistered");
+        })
+        .catch(() => {
+          // TODO: server log
+        });
+    }
   }
 
-  @Watch("localSelected")
-  @Emit("input")
-  emit() {
-    return this.localSelected;
+  // date based event status
+  ShiftState = ShiftState; // exposes enum to vue template
+
+  get eventStatus(): ShiftState {
+    return this.shift.state;
   }
 
-  // if checkbox is disabled
-  get locked() {
-    return this.signedUp
-          || this.dateToLate
-          || this.full;
+  // find if signed up
+  get signedUp(): boolean {
+    if (!this.rsvp) {
+      return false;
+    }
+    return this.rsvp.shiftIDs.includes(this.shift.id);
   }
 
-  get full() {
-    return this.shift.max != 0 && (this.shift.signedUp.length >= this.shift.max);
+  get rsvp(): Optional<RSVP> {
+    return this.signedUpEvents.find(rsvp => 
+      rsvp.eventID == this.event!.id
+    );
   }
 
-  get dateToLate(): boolean {
-    return this.shift.state != ShiftState.Open;
+  get signedUpEvents(): RSVP[] {
+    if (this.attributes == null) {
+      return [];
+    } else {
+      return this.attributes.events;
+    }
+  }
+
+  get attributes(): Optional<UserAttributes> {
+    return this.$store.state.user.attributes;
   }
 }
 </script>
@@ -71,47 +132,31 @@ export default class ViewEvent extends Vue {
 @import "@/shared-style/variables.scss";
 @import "@/shared-style/mixins.scss";
 
-#view-event {
-  @include shadow-box;
-  @include event-format;
-  @include std-size;
-  @include std-position;
+.shift-option {
+  margin-bottom: 1em; 
 
   h3 {
     width: 100%;
     margin-bottom: 0.5em;
   }
 
-  strong {
-    padding-left: 0.25em;
-  }
+  button {
+    @include button;
 
-  .unregister {
-    @include scary-button-color;
-  }
-
-  .disabled {
-    background-color: gray;
-
-    &:hover {
-      background-color: gray;
+    &.unregister {
+      @include scary-button-color;
     }
   }
 
   .too-late-text {
-    margin-top: 1.75em;
-    width: 80%;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
+    @include button;
 
-    p {
-      padding-bottom: 0.5em;
+    background-color: #797979;
+
+    &:hover {
+      background-color: #797979;
     }
 
-    @media (min-width: $maxMobileSize) {
-      width: 60%;
-    }
   }
 
   .bold {

@@ -26,6 +26,9 @@ class Shift {
     const diff = PlainDate.diff(this.time.day, currentDate);
     if (diff > 1) {
       // last shift is more than one whole day away
+      if (this.max != 0 && (this.signedUp.length >= this.max)) {
+        return ShiftState.Full;
+      }
       return ShiftState.Open;
     } if (diff < 0) {
       // last shift is in the past
@@ -40,7 +43,13 @@ class Shift {
 enum ShiftState {
   Open,
   Locked,
-  Past
+  Past,
+  Full
 }
 
-export { Shift, ShiftState };
+interface ShiftSignUp {
+  eventID: string;
+  shiftID: string;
+}
+
+export { Shift, ShiftState, ShiftSignUp };

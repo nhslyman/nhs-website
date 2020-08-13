@@ -1,9 +1,10 @@
 import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
+import Vue from "vue";
 import firebase from "firebase/app";
 import { plainToClass, classToPlain } from "class-transformer";
-import { UserAttributes, RSVP } from "@/models";
+import { UserAttributes, RSVP, ShiftSignUp } from "@/models";
 import { db } from "@/main";
-import { Optional, VoidAction } from '@/util';
+import { Optional } from '@/util';
 
 @Module({ namespaced: true })
 export default class User extends VuexModule {
@@ -101,41 +102,66 @@ export default class User extends VuexModule {
       });
   }
 
-  // Events
-  @Mutation
-  addEvent(payload: RSVP) {
-    if (this.attributes == null) {
+  // Add/Remove Shifts
+  @Action
+  async signUpForShift(payload: ShiftSignUp) {
+    if (this.attributes == null || this.user == null) {
       return;
     }
-    this.attributes.events.push(payload);
+    if (this.attributes.events)
+    this.context.commit("addShift", payload);
+    this.context.dispatch("pushEvents");
+  }
+
+  @Action
+  async unregisterForShift(payload: ShiftSignUp) {
+    if (!this.attributes || !this.user) {
+      return;
+    }
+    this.context.commit("removeShift", payload);
+    this.context.dispatch("pushEvents");
   }
 
   @Mutation
-  removeEvent(eventID: string) {
+  addShift(payload: ShiftSignUp) {
     if (this.attributes == null) {
       return;
     }
-    this.attributes.events = this.attributes.events.filter(
-      event => event.eventID != eventID
+    let index = this.attributes.events.findIndex(
+      (event) => event.eventID == payload.eventID
     );
+    if (index != -1) {
+      // the event already exists
+      this.attributes.events[index].shiftIDs.push(payload.shiftID);
+    } else {
+      // create new event in user
+      this.attributes.events.push({
+        eventID: payload.eventID,
+        shiftIDs: [payload.shiftID]
+      });
+    }
   }
 
-  @Action
-  async signUpForEvent(payload: RSVP) {
-    if (this.attributes == null || this.user == null) {
+  @Mutation
+  removeShift(payload: ShiftSignUp) {
+    if (this.attributes == null) {
       return;
     }
-    this.context.commit("addEvent", payload);
-    this.context.dispatch("pushEvents");
-  }
 
-  @Action
-  async unregisterForEvent(payload: RSVP) {
-    if (this.attributes == null || this.user == null) {
+    const eventIndex = this.attributes.events.findIndex(
+      event => event.eventID == payload.eventID
+    );
+
+    if (this.attributes.events[eventIndex].shiftIDs.length == 1) {
+      // no shifts would be left, so just delete the whole event
+      Vue.delete(this.attributes.events, eventIndex);
       return;
     }
-    this.context.commit("removeEvent", payload.eventID);
-    this.context.dispatch("pushEvents");
+
+    const shiftIndex = this.attributes.events[eventIndex].shiftIDs.findIndex(
+      id => id == payload.shiftID
+    )
+    Vue.delete(this.attributes.events[eventIndex].shiftIDs, shiftIndex);
   }
 
   // firestore coordination

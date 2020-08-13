@@ -1,7 +1,7 @@
 import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
 import Vue from "vue";
 import { plainToClass, classToPlain } from "class-transformer";
-import { EventInfo, RSVP, PlainDate, UserAttributes } from "@/models";
+import { EventInfo, RSVP, PlainDate, UserAttributes, ShiftSignUp } from "@/models";
 import { db } from "@/main";
 import { deepCopy, Dict, VoidAction } from '@/util';
 
@@ -152,11 +152,11 @@ export default class Events extends VuexModule {
   }
 
   @Action
-  async signUpForEvent(payload: RSVP) {
+  async signUpForShift(payload: ShiftSignUp) {
     const userID: string = this.context.rootState.user.user.uid;
     this.context.commit("addAttendance", {
       eventID: payload.eventID,
-      shiftIDs: payload.shiftIDs,
+      shiftID: payload.shiftID,
       userID: userID,
     });
 
@@ -164,11 +164,11 @@ export default class Events extends VuexModule {
   }
 
   @Action
-  async unregisterForEvent(payload: RSVP) {
+  async unregisterForShift(payload: ShiftSignUp) {
     const userID = this.context.rootState.user.user.uid;
     this.context.commit("removeAttendance", {
       eventID: payload.eventID,
-      shiftIDs: payload.shiftIDs,
+      shiftID: payload.shiftID,
       userID: userID,
     });
 
@@ -178,41 +178,24 @@ export default class Events extends VuexModule {
   @Mutation
   private addAttendance(payload: {
     eventID: string;
-    shiftIDs: string[];
+    shiftID: string;
     userID: string;
   }) {
-    this.events[payload.eventID].shifts = this.events[
-      payload.eventID
-    ].shifts.map((shift) => {
-      if (payload.shiftIDs.includes(shift.id)) {
-        shift.signedUp.push(payload.userID);
-      }
-      return shift;
-    });
+    const index = this.events[payload.eventID].shifts.findIndex(
+      shift => shift.id == payload.shiftID
+    )
+    this.events[payload.eventID].shifts[index].signedUp.push(payload.userID);
   }
 
   @Mutation
   private removeAttendance(payload: {
     eventID: string;
-    shiftIDs: string[];
+    shiftID: string;
     userID: string;
   }) {
-    this.events[payload.eventID].shifts = this.events[
-      payload.eventID
-    ].shifts.map((shift) => {
-      const modified = payload.shiftIDs.some(
-        (selectedShiftID) => selectedShiftID == shift.id
-      );
-      if (modified) {
-        const newPeople = shift.signedUp.filter(
-          (userID) => userID != payload.userID
-        );
-        shift.signedUp = newPeople;
-        return shift;
-      } else {
-        return shift;
-      }
-    });
+    const shiftID = this.events[payload.eventID].shifts.findIndex(shift => shift.id == payload.shiftID);
+    const userID = this.events[payload.eventID].shifts[shiftID].signedUp.findIndex(uid => uid == payload.userID);
+    Vue.delete(this.events[payload.eventID].shifts[shiftID].signedUp, userID);
   }
 
   // firestore coordination
