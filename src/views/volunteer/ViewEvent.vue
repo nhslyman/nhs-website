@@ -24,45 +24,28 @@
             v-for="shift in event.shifts"
             :key="shift.id"
           >
-            <div class="shift">
-              <input
-                v-model="selectedShifts"
-                type="checkbox"
-                :value="shift.id"
-                :disabled="
-                  signedUp
-                    || eventStatus === 'closed'
-                    || (shift.max != 0 && (shift.signedUp.length >= shift.max))
-                "
-              >
-              <strong>{{ shift.time.humanReadable }}</strong>
-              <div class="attendance">
-                <p>Signed Up: {{ shift.signedUp.length }}</p>
-                <p>Target: {{ shift.target }}</p>
-                <p
-                  v-if="shift.max != 0"
-                  :class="{ 'bold':(shift.signedUp.length >= shift.max) }"
-                >
-                  Maximum: {{ shift.max }}
-                </p>
-              </div>
-            </div>
+            <ShiftOption
+              :shift="shift"
+              :signed-up="signedUp"
+              :selected="selectedShifts"
+              @input="edited"
+            />
           </div>
         </div>
       </div>
 
-      <template v-if="eventStatus === 'closed'">
+      <template v-if="eventStatus === ShiftState.Locked">
         <div class="too-late-text">
           <p>
-            Signups for this event are now locked in.
+            Signups for all shifts are now locked in.
           </p>
           <p v-if="signedUp">
-            In the case of an emergency, please contact the volunteer
-            coordinator if you will not be able to attend.
+            In the case of an emergency, please contact a volunteer coordinator
+            if you will not be able to attend.
           </p>
         </div>
       </template>
-      <template v-else-if="eventStatus === 'open'">
+      <template v-else-if="eventStatus === ShiftState.Open">
         <template v-if="signedUp">
           <div class="action-button unregister">
             <button @click="unregister">
@@ -84,34 +67,57 @@
           </div>
         </template>
       </template>
+      <template v-else-if="eventStatus === ShiftState.Past">
+        <p class="too-late-text">
+          This event has passed.
+        </p>
+      </template>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { EventInfo, Shift, RSVP, UserAttributes, PlainDate } from "@/models";
+import { EventInfo, Shift, RSVP, UserAttributes, ShiftState} from "@/models";
 import marked from "marked";
-import { Optional } from '@/util';
+import { Optional, Dict } from "@/util";
 
-import EventPreview from "@/components/volunteer/EventPreview.vue";
+import ShiftOption from "@/components/volunteer/ShiftOption.vue";
 
 @Component({
-  components: { EventPreview }
+  components: { ShiftOption },
 })
 export default class ViewEvent extends Vue {
-  // shared
+  // shift selector
   selectedShifts: string[] = [];
 
-  get events(): EventInfo[] {
-    return this.$store.getters["events/sortedEvents"];
+  edited(selected: string[]) {
+    this.selectedShifts = selected;
   }
 
+  // events
   get event(): Optional<EventInfo> {
-    let event = this.events.find(
-      event => event.id === this.$route.params["id"]
-    );
-    return event;
+    return this.events[this.id];
+  }
+
+  get id(): string {
+    return this.$route.params["id"];
+  }
+
+  get events(): Dict<EventInfo> {
+    return this.$store.getters["events/eventsDict"];
+  }
+
+
+  // rendered details
+  get details() {
+    if (this.event == null) {
+      return "";
+    }
+    marked.setOptions({
+      renderer: this.renderer, // opens link in new tab
+    });
+    return marked(this.event.details);
   }
 
   get renderer(): marked.Renderer {
@@ -124,17 +130,7 @@ export default class ViewEvent extends Vue {
     return renderer;
   }
 
-  get details() {
-    if (this.event == null) {
-      return "";
-    }
-    marked.setOptions({
-      renderer: this.renderer // opens link in new tab
-    });
-    return marked(this.event.details);
-  }
-
-  // able to sign up
+  // sign up and undo
   signUp() {
     if (this.event == null) {
       return;
@@ -143,7 +139,7 @@ export default class ViewEvent extends Vue {
     this.$store
       .dispatch("signUpForEvent", {
         eventID: this.event.id,
-        shiftIDs: this.selectedShifts
+        shiftIDs: this.selectedShifts,
       })
       .then(() => {
         this.$router.push("/events");
@@ -153,30 +149,63 @@ export default class ViewEvent extends Vue {
       });
   }
 
-  // alredy signed up
-  mounted() {
-    if (this.rsvp == undefined) {
+  unregister() {
+    if (!this.event) {
       return;
     }
-
-    if (this.signedUp) {
-      this.selectedShifts = this.rsvp.shiftIDs;
+    if (confirm("Are you sure you want to unregister?")) {
+      // triggers both user and event action
+      this.$store
+        .dispatch("unregisterForEvent", {
+          eventID: this.event.id,
+          shiftIDs: this.selectedShifts,
+        })
+        .then(() => {
+          this.$router.push("/events");
+        })
+        .catch(() => {
+          // TODO: server log
+        });
     }
+  }
+
+  // date based event status
+  ShiftState = ShiftState; // exposes enum to vue template
+
+  get eventStatus(): ShiftState {
+    // TODO: log errors
+    if (this.event == undefined) {
+      throw new Error("No event");
+    }
+    if (this.event.shifts.length == 0) {
+      throw new Error("No shifts in event");
+    }
+
+    const lastShift = this.event.shifts[this.event.shifts.length - 1];
+    return lastShift.state;
+  }
+
+  // load stuff if already signed up
+  mounted() {
+    this.selectedShifts = this.rsvp?.shiftIDs ?? [];
   }
 
   @Watch("signedUp")
-  signedUpChanged(signedUp: boolean) {
-    if (this.rsvp == undefined) {
-      return;
-    }
-
-    if (signedUp) {
-      this.selectedShifts = this.rsvp.shiftIDs;
-    }
+  signedUpChanged() {
+    this.selectedShifts = this.rsvp?.shiftIDs ?? [];
   }
 
-  get attributes(): UserAttributes | null {
-    return this.$store.state.user.attributes;
+  get signedUp(): boolean {
+    return this.rsvp != null;
+  }
+
+  get rsvp(): Optional<RSVP> {
+    if (!this.event) {
+      return null;
+    }
+    return this.signedUpEvents.find((rsvp) => {
+      return rsvp.eventID == this.event!.id;
+    });
   }
 
   get signedUpEvents(): RSVP[] {
@@ -187,62 +216,8 @@ export default class ViewEvent extends Vue {
     }
   }
 
-  get rsvp(): RSVP | undefined {
-    if (this.event == undefined) {
-      return undefined;
-    }
-    return this.signedUpEvents.find(rsvp => {
-      return rsvp.eventID == this.event!.id;
-    });
-  }
-
-  get signedUp(): boolean {
-    return this.rsvp != undefined;
-  }
-
-  get eventStatus(): String {
-    // TODO: log errors
-    if (this.event == undefined) {
-      return "error";
-    }
-    if (this.event.shifts.length == 0) {
-      return "error";
-    }
-
-    const firstShift = this.event.shifts[0].time.day;
-    const currentDate = PlainDate.now();
-
-    const diff = PlainDate.diff(firstShift, currentDate);
-    if (diff > 1) {
-      // first shift is more than one whole day away
-      return "open";
-    } if (diff < 0) {
-      // event is in the past
-      return "past";
-    } else {
-      // event is closed off
-      return "closed";
-    }
-  }
-
-  unregister() {
-    if (this.event == null) {
-      return;
-    }
-    if (confirm("Are you sure you want to unregister?")) {
-      // triggers both user and event action
-      this.$store
-        .dispatch("unregisterForEvent", {
-          eventID: this.event.id,
-          shiftIDs: this.selectedShifts
-        })
-        .then(() => {
-          this.$router.push("/events");
-        })
-        .catch(() => {
-          // TODO: server log
-        });
-    }
+  get attributes(): Optional<UserAttributes> {
+    return this.$store.state.user.attributes;
   }
 }
 </script>

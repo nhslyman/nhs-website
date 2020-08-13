@@ -1,6 +1,6 @@
 import { UID } from "@/util";
 import { Type } from "class-transformer";
-import { ShiftTime } from "@/models";
+import { ShiftTime, PlainDate } from "@/models";
 
 class Shift {
   @Type(() => ShiftTime) public time: ShiftTime;
@@ -20,6 +20,27 @@ class Shift {
   get id() {
     return this._id;
   }
+
+  get state(): ShiftState {
+    const currentDate = PlainDate.now();
+    const diff = PlainDate.diff(this.time.day, currentDate);
+    if (diff > 1) {
+      // last shift is more than one whole day away
+      return ShiftState.Open;
+    } if (diff < 0) {
+      // last shift is in the past
+      return ShiftState.Past;
+    } else {
+      // last shift is less than a day away
+      return ShiftState.Locked;
+    }
+  }
 }
 
-export { Shift };
+enum ShiftState {
+  Open,
+  Locked,
+  Past
+}
+
+export { Shift, ShiftState };
