@@ -155,18 +155,18 @@
         </div>
 
         <div class="group">
-          <label for="comfirmPassword">
-            Comfirm Password
+          <label for="confirmPassword">
+            confirm Password
           </label>
 
           <div>
             <input
-              v-model="passwordForm.comfirmNew"
+              v-model="passwordForm.confirmNew"
               type="password"
               class="form-control"
-              name="comfirm-password"
+              name="confirm-password"
               autocomplete="new-password"
-              placeholder="Comfirm Password"
+              placeholder="Confirm Password"
               required
             >
           </div>
@@ -246,7 +246,7 @@ export default class Register extends Vue {
   passwordForm = {
     current: "",
     new: "",
-    comfirmNew: "",
+    confirmNew: "",
   };
 
   deleteForm = {
@@ -314,8 +314,8 @@ export default class Register extends Vue {
   }
 
   async updatePassword() {
-    // check comfirm password matches
-    if (this.passwordForm.new != this.passwordForm.comfirmNew) {
+    // check confirm password matches
+    if (this.passwordForm.new != this.passwordForm.confirmNew) {
       this.$toaster.error("Passwords do not match");
       return;
     }
@@ -352,7 +352,7 @@ export default class Register extends Vue {
   }
 
   async deleteUser() {
-    // comfirm destructive action
+    // confirm destructive action
     if (
       !confirm("Are you sure you want to delete permanently your account?")
     ) {

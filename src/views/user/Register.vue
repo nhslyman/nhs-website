@@ -80,18 +80,18 @@
         </div>
 
         <div class="group">
-          <label for="comfirmPassword">
-            Comfirm Password
+          <label for="confirmPassword">
+            confirm Password
           </label>
 
           <div>
             <input
-              v-model="form.comfirmPassword"
+              v-model="form.confirmPassword"
               type="password"
               class="form-control"
-              name="comfirmPassword"
+              name="confirmPassword"
               autocomplete="new-password"
-              placeholder="Comfirm Password"
+              placeholder="Confirm Password"
               required
             >
           </div>
@@ -121,11 +121,11 @@ export default class Register extends Vue {
     lastName: "",
     email: "",
     password: "",
-    comfirmPassword: ""
+    confirmPassword: ""
   };
 
   async submit() {
-    if (this.form.password != this.form.comfirmPassword) {
+    if (this.form.password != this.form.confirmPassword) {
       this.$toaster.error("Passwords do not match");
       return;
     }
