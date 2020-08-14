@@ -17,7 +17,7 @@
           v-if="loggedIn && admin"
           to="/admin"
         >
-          Admin Console
+          <p>Admin Console</p>
         </router-link>
       </div>
       <div id="user">
