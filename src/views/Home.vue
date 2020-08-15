@@ -1,6 +1,6 @@
 <template>
   <div id="home">
-    <h1>Lyman NHS Info</h1>
+    <h1>{{ orgName }} Info</h1>
     <div v-html="content" />
   </div>
 </template>
@@ -8,9 +8,12 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import marked from "marked";
+import { orgName } from '@/main';
 
 @Component
 export default class Home extends Vue {
+  orgName = orgName
+  
   get content() {
     return marked(this.$store.getters["text/homeText"]);
   }

@@ -3,8 +3,8 @@
     <div id="inside">
       <img
         id="logo"
-        alt="Lyman NHS Logo"
-        src="../assets/logo.svg"
+        alt="Logo"
+        src="/logo.svg"
       >
       <div id="links">
         <router-link to="/">

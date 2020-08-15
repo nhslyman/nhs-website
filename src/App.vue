@@ -2,19 +2,28 @@
   <div id="app">
     <Header />
     <router-view />
+    <Footer />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import Header from "@/components/Header.vue";
+import Header from "@/components/marginals/Header.vue";
+import Footer from "@/components/marginals/Footer.vue";
+import { orgName } from '@/main';
 
 @Component({
   components: {
-    Header
+    Header, Footer
   }
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  orgName = orgName;
+  
+  beforeCreate() {
+    document.title = orgName;
+  }
+}
 </script>
 
 <style lang="scss">
@@ -24,6 +33,13 @@ export default class App extends Vue {}
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  // sticky footer
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
 }
 
 * {

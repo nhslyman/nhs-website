@@ -35,7 +35,7 @@ export default class AdminConsole extends Vue {}
 @import "@/shared-style/mixins.scss";
 
 #admin-console {
-  @include std-size;
+  @include skinny-size;
   @include shadow-box;
   @include std-position;
   color: black;
