@@ -15,9 +15,9 @@
 
     <!-- Button -->
     <template v-if="eventStatus === ShiftState.Locked">
-      <div class="too-late-text">
-        <p>Signups are now locked in.</p>
-      </div>
+      <p class="too-late-text">
+        Signups are now locked in.
+      </p>
     </template>
     <template v-else-if="eventStatus === ShiftState.Open">
       <template v-if="signedUp">
@@ -152,6 +152,8 @@ export default class ViewEvent extends Vue {
     @include button;
 
     background-color: #797979;
+    padding: 5px;
+    line-height: 120%;
 
     &:hover {
       background-color: #797979;

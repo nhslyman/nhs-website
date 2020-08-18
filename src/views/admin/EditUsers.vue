@@ -106,7 +106,7 @@ export default class NewEvent extends Vue {
   @include std-position;
 
   .user-section {
-    padding: 1em;
+    padding: 0.5em;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
@@ -130,10 +130,6 @@ export default class NewEvent extends Vue {
       padding: 0.2em 0.1em;
       @include button;
     }
-  }
-
-  hr {
-    border-top: 1px solid darkgrey;
   }
 }
 </style>

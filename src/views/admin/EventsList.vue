@@ -64,12 +64,6 @@ export default class Events extends Vue {
   @include std-position;
   color: black;
 
-  hr {
-    margin-top: 0.75em;
-    margin-bottom: 0.75em;
-    border-top: 1px solid darkgrey;
-  }
-
   .content {
     @media (min-width: 500px) {
       margin-top: 0.5em;

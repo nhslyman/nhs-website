@@ -35,7 +35,6 @@ export default class Home extends Vue {
 
   p {
     padding: 10px 0;
-    line-height: 150%;
   }
 }
 </style>

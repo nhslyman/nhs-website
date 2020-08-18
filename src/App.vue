@@ -65,6 +65,15 @@ h2 {
   color: $headingColor;
 }
 
+p {
+  line-height: 150%;
+}
+
+hr {
+  border-top: 1px solid darkgrey;
+  margin: 0.75em 0;
+}
+
 a {
   color: $linkColor;
 

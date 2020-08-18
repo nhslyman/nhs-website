@@ -20,7 +20,8 @@
         href="https://www.markdownguide.org/basic-syntax/"
         target="_blank"
       >
-        here</a>. The style is under the column titled "Markdown." Use two spaces instead of tab.
+        here</a>. The style is under the column titled "Markdown." Use two spaces instead
+      of tab.
     </p>
   </div>
 </template>
@@ -107,7 +108,7 @@ export default class MDEditor extends Vue {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @import "@/shared-style/mixins.scss";
 @import "@/shared-style/variables.scss";
 
@@ -115,7 +116,8 @@ export default class MDEditor extends Vue {
   @include rounded;
   border: 1px solid $boarderColor;
 
-  * {
+  #inputField,
+  #preview {
     display: inline-block;
     width: 49%;
     height: 100%;
@@ -123,13 +125,19 @@ export default class MDEditor extends Vue {
     box-sizing: border-box;
     padding: 10px 20px;
   }
-}
 
-#inputField {
-  border-right: 1px solid $boarderColor;
-  resize: none;
-  background-color: $insetEditor;
-  font-size: 14px;
-  font-family: "SFMono-Regular", "Consolas", "Monaco", courier, monospace;
+  #inputField {
+    border-right: 1px solid $boarderColor;
+    resize: none;
+    background-color: $insetEditor;
+    font-size: 14px;
+    font-family: "SFMono-Regular", "Consolas", "Monaco", courier, monospace;
+  }
+
+  #preview {
+    h2 {
+      padding-top: 1.25em;
+    }
+  }
 }
 </style>
