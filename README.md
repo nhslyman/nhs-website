@@ -32,7 +32,11 @@ This setup references using basic git commands, explanations can be found [here]
       1. Go to Database > Cloud Firestore in the sidebar
       2. Select test starting mode
       3. Select the location closest to your physical location
-   8. Optionally, [connect to a domain](https://firebase.google.com/docs/hosting/custom-domain) (this requires paying ~$12/year for a domain)
+   8. Enable authentication
+      1. Go to Authentication in the side bar
+      2. Click "Set up sign-in method"
+      3. Enable email/password (do NOT check passwordless sign-in)
+   9. Optionally, [connect to a domain](https://firebase.google.com/docs/hosting/custom-domain) (this requires paying ~$12/year for a domain)
 3. Edit
    1. Firebase
       1. In `.firebaserc`, replace `PUT-PROJECT-ID-HERE` with your project id
@@ -50,7 +54,8 @@ This setup references using basic git commands, explanations can be found [here]
    2. Open the project folder in terminal
    3. Run `npm install -g firebase-tools`
    4. Run `firebase login` and follow the instructions that pop up
-   5. Run `npm install && npm run build && firebase deploy`
+   5. Run `firebase use --add YOUR_PROJECT_ID`
+   6. Run `npm install && npm run build && firebase deploy`
 
 ## Development
 
