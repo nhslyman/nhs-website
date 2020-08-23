@@ -19,7 +19,13 @@
         Signups are now locked in.
       </p>
     </template>
-    <template v-else-if="eventStatus === ShiftState.Open">
+    <template v-else-if="eventStatus === ShiftState.Past">
+      <p class="too-late-text">
+        This shift has passed
+      </p>
+    </template>
+    <!-- open or full -->
+    <template v-else>
       <template v-if="signedUp">
         <div class="action-button unregister">
           <button
@@ -31,20 +37,17 @@
         </div>
       </template>
       <template v-else>
-        <button @click="signUp">
-          <p>Sign Up</p>
-        </button>
+        <template v-if="eventStatus === ShiftState.Full">
+          <p class="too-late-text">
+            This shift is full
+          </p>
+        </template>
+        <template v-else>
+          <button @click="signUp">
+            <p>Sign Up</p>
+          </button>
+        </template>
       </template>
-    </template>
-    <template v-else-if="eventStatus === ShiftState.Full">
-      <p class="too-late-text">
-        This shift is full
-      </p>
-    </template>
-    <template v-else-if="eventStatus === ShiftState.Past">
-      <p class="too-late-text">
-        This shift has passed
-      </p>
     </template>
   </div>
 </template>
