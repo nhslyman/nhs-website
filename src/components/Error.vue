@@ -22,9 +22,7 @@ export default class ErrorPage extends Vue {
 @import "@/shared-style/variables.scss";
 
 #error-page {
-  margin-left: auto;
-  margin-right: auto;
-  padding: 2.5% 25% 10% 25%;
+  margin: 4em auto;
   max-width: 50em;
   color: black;
 
