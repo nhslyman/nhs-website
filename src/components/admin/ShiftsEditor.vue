@@ -86,6 +86,17 @@
             >
           </div>
         </div>
+
+        <div class="action-button group">
+          <button @click="toggleOverride(index)">
+            <template v-if="shift.forceUnlocked">
+              <p>Disable Lock Override</p>
+            </template>
+            <template v-else>
+              <p>Enable Lock Override</p>
+            </template>
+          </button>
+        </div>
       </div>
 
       <div class="action-button delete">
@@ -114,8 +125,8 @@ import TimeForm from "@/components/inputs/TimeForm.vue";
 @Component({
   components: {
     DateForm,
-    TimeForm
-  }
+    TimeForm,
+  },
 })
 export default class ShiftsEditor extends Vue {
   // displayed value
@@ -146,7 +157,7 @@ export default class ShiftsEditor extends Vue {
     const date = PlainDate.now();
     const time = new Time(12, 0, false);
     const shiftTime = new ShiftTime(date, time, time);
-    const shift = new Shift(shiftTime, [], 0, 0);
+    const shift = new Shift(shiftTime, [], 0, 0, false);
     this.shifts.push(shift);
   }
 
@@ -154,6 +165,10 @@ export default class ShiftsEditor extends Vue {
     if (confirm("Are you sure you want to delete this shift?")) {
       this.$delete(this.shifts, index);
     }
+  }
+
+  toggleOverride(index: number) {
+    this.shifts[index].forceUnlocked = !this.shifts[index].forceUnlocked;
   }
 
   // emiting

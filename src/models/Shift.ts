@@ -11,6 +11,7 @@ class Shift {
     public signedUp: string[],
     public target: number,
     public max: number,
+    public forceUnlocked: boolean,
     id: string = UID()
   ) {
     this.time = time;
@@ -35,7 +36,11 @@ class Shift {
       return ShiftState.Past;
     } else {
       // last shift is less than a day away
-      return ShiftState.Locked;
+      if (this.forceUnlocked) {
+        return ShiftState.Open;
+      } else {
+        return ShiftState.Locked;
+      }
     }
   }
 }
