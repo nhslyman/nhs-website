@@ -15,9 +15,16 @@
 
     <!-- Button -->
     <template v-if="eventStatus === ShiftState.Locked">
-      <p class="too-late-text">
-        Signups are now locked in.
-      </p>
+      <template v-if="signedUp">
+        <p class="too-late-text">
+          Your signup is now locked in
+        </p>
+      </template>
+      <template v-else>
+        <p class="too-late-text">
+          Signups are now locked
+        </p>
+      </template>
     </template>
     <template v-else-if="eventStatus === ShiftState.Past">
       <p class="too-late-text">
