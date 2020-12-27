@@ -84,7 +84,7 @@ export default class User extends VuexModule {
     }
   }
 
-  @Action({ rawError: true })
+  @Action
   async signIn(payload: { email: string; password: string }) {
     // calls setUser automatically on success
     await firebase
@@ -105,10 +105,9 @@ export default class User extends VuexModule {
   // Add/Remove Shifts
   @Action
   async signUpForShift(payload: ShiftSignUp) {
-    if (this.attributes == null || this.user == null) {
+    if (!this.attributes?.events || !this.user) {
       return;
     }
-    if (this.attributes.events)
     this.context.commit("addShift", payload);
     this.context.dispatch("pushEvents");
   }

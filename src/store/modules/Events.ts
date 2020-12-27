@@ -83,7 +83,7 @@ export default class Events extends VuexModule {
 
   @Action
   async setEvent(payload: { eventID: string; event: EventInfo }) {
-    let isNew = this.events[payload.eventID] == null;
+    let isNew = this.context.getters["eventsDict"][payload.eventID] == null;
     this.context.commit("_setEvent", payload);
     await this.context.dispatch("pushEvent", payload.eventID);
     if (isNew) {

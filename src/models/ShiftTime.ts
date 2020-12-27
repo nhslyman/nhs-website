@@ -20,11 +20,8 @@ class ShiftTime {
     return this.day.humanReadable + " " + this.humanReadableTimeRange;
   }
 
-  get comparable(): number {
-    return parseInt(
-      this.day.comparable +
-        this.startTime.minutesIntoDay.toString().padStart(4, "0")
-    );
+  get comparable() {
+    return (this.day.comparable * 10000) + this.startTime.minutesIntoDay // 1140 minutes in day
   }
 }
 
