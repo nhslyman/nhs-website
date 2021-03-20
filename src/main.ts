@@ -1,8 +1,16 @@
 // Customizable
 
-const configOptions = { _: "INSERT CONFIG HERE" };
+const configOptions = {
+  apiKey: "AIzaSyC6Hd4EZR-XQ_afNY0KHN3bR7xFKdYPZJ4",
+  authDomain: "nhs-lyman.firebaseapp.com",
+  databaseURL: "https://nhs-lyman.firebaseio.com",
+  projectId: "nhs-lyman",
+  storageBucket: "nhs-lyman.appspot.com",
+  messagingSenderId: "496342887911",
+  appId: "1:496342887911:web:39a07b6395e99a7c91a142"
+};
 
-export const orgName = "ORG_NAME"
+export const orgName = "Lyman NHS"
 
 // Firebase
 import firebase from "firebase/app";

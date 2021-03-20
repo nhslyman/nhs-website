@@ -11,6 +11,8 @@
   "cSpell.ignoreWords": [
     "vuex",
     "firestore",
+    "nhslyman",
+    "lymannhs",
   ],
   "search.exclude": {
     "package-lock.json": true
